@@ -1,8 +1,27 @@
 # harness/prompts
 
-从本目录向用户仓 `docs/harness/prompts/` 复制 **子集**（非全量帽子库）。
+从本目录向用户仓 **`docs/harness/prompts/`** 复制 **Starter 子集**（非 Ink 全量帽子库）。
 
-## v0.1 待补
+## v0.1 已交付（T3 · M2）
 
-- 链式执行常模
-- `TEMPLATE-execute-invoke` / `TEMPLATE-self-check-invoke` 精简版
+| 文件 | 状态 | 说明 |
+|------|------|------|
+| [`10-requirements.md`](./10-requirements.md) | ✅ | 需求 / 任务分析 · 精简 + POINTER |
+| [`22-task-audit.md`](./22-task-audit.md) | ✅ | 任务审核 · 落盘 reviews · HG-AUDIT-R1 |
+| [`30-execute-code.md`](./30-execute-code.md) | ✅ | 执行编码 · Verify · human_gate 拒开工 |
+
+## 完整库（POINTER · 不复制全文）
+
+Ink 工作区维护完整帽子链：`docs/harness/prompts/`（00/20/40/50、TEMPLATE-*-invoke、PROMPT_*_chain_*）。
+
+嵌入用户仓后可在 README 追加：
+
+```markdown
+## 完整 Harness 库
+- 上游：Cyning12/cyning-ink-workspace `docs/harness/prompts/`（只读对照）
+```
+
+## 链式执行
+
+- 串行 Task 链：工作区 `PROMPT_cursor_task_chain_serial_v1.md`（M3 `harness ctx` 前手工 `@` 引用）
+- 每帽 invoke：[`../invokes/TEMPLATE_invoke.md`](../invokes/TEMPLATE_invoke.md)
