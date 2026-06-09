@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "preset": "harness-only",
+  "description": "仅过程轨 + Cursor 规则（不覆盖图谱/业务 task）",
+  "paths": {
+    "ide_cursor": ".cursor/rules/06-harness-pointer.mdc"
+  },
+  "tracks": {
+    "graph": false,
+    "wiki": false,
+    "standards": false,
+    "harness_prompts": true,
+    "harness_invoke_template": true,
+    "ide_cursor": true,
+    "ci": "none"
+  }
+}

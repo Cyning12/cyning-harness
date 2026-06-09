@@ -1,15 +1,22 @@
 # 安装向导 · Onboarding 问卷（v1 · 文档版）
 
 > **状态**：`active`（M2 v0.1）  
-> **形态**：**文档演练**问卷；交互脚本规划 M3+  
+> **形态**：**脚本优先**（[`wizard/README.md`](./README.md)）；本文档为 preset 说明备查  
 > **关联**：[`docs/ONBOARDING.md`](../docs/ONBOARDING.md) · GUIDANCE D3 IDE 轨
 
 ---
 
 ## 使用方式
 
-按序勾选下列选项，在 **你的业务仓库** 根目录执行对应复制步骤。  
-**默认不全选 IDE 入口** — 只生成你实际使用的 IDE 文件。
+**推荐**：在业务仓根执行脚本（见 [`README.md`](./README.md)）：
+
+```bash
+/path/to/cyning-harness/wizard/install.sh --preset ios-cursor
+# 日后 git pull 产品包后：
+CYNING_HARNESS=/path/to/cyning-harness wizard/harness-sync.sh apply
+```
+
+下文为 **preset 含义** 与手工备查。默认不全选 IDE 入口。
 
 ---
 

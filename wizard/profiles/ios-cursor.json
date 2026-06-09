@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "preset": "ios-cursor",
+  "description": "存量 iOS · S2：图谱模板 + wiki + L1 + harness + Cursor（无 Node CI）",
+  "paths": {
+    "ide_cursor": ".cursor/rules/06-harness-pointer.mdc"
+  },
+  "tracks": {
+    "graph": true,
+    "wiki": true,
+    "standards_l1": true,
+    "standards_l2": false,
+    "harness_prompts": true,
+    "harness_invoke_template": true,
+    "harness_task_bootstrap": true,
+    "ide_cursor": true,
+    "ci": "none"
+  }
+}

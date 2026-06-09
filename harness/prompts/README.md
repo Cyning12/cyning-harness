@@ -8,7 +8,8 @@
 |------|------|------|
 | [`10-requirements.md`](./10-requirements.md) | ✅ | 需求 / 任务分析 · 精简 + POINTER |
 | [`22-task-audit.md`](./22-task-audit.md) | ✅ | 任务审核 · 落盘 reviews · HG-AUDIT-R1 |
-| [`30-execute-code.md`](./30-execute-code.md) | ✅ | 执行编码 · Verify · human_gate 拒开工 |
+| [`30-execute-code.md`](./30-execute-code.md) | ✅ v0.1.1 | 执行编码 · 强制闸扫描 · AUDIT approved |
+| [`TEMPLATE_30_gate_stop.md`](./TEMPLATE_30_gate_stop.md) | ✅ v0.1.1 | 30 拒开工输出模板 |
 
 ## 完整库（POINTER · 不复制全文）
 

@@ -30,9 +30,9 @@ cd cyning-harness
 ```
 
 1. 阅读 [`docs/ONBOARDING.md`](docs/ONBOARDING.md)  
-2. 运行或跟随 `wizard/`（选择：新/旧仓、语言栈、IDE 入口）  
-3. 将选定模板 **复制或生成** 到你的业务仓库（非覆盖式合并）  
-4. 用自选 IDE（Cursor、Claude Code 等）`@` task + prompts 执行过程轨  
+2. **推荐** [`wizard/install.sh`](wizard/install.sh) 或存量 [`wizard/adopt-existing.sh`](wizard/adopt-existing.sh)  
+3. 产品包 `git pull` 后：[`wizard/harness-sync.sh`](wizard/harness-sync.sh) `apply` 升级到业务仓  
+4. 用自选 IDE `@` task + prompts；30 前可跑 [`wizard/gate-check.sh`](wizard/gate-check.sh)  
 
 ---
 
@@ -67,8 +67,8 @@ cyning-harness/
 
 | 项 | 值 |
 |----|-----|
-| 当前 | **v0.0.1** — 架构与模板骨架 |
-| 目标 | **v0.1.0** — 五轨 Onboarding 可跟做 |
+| 当前 | **v0.1.1** — 人工闸修补 + wizard 同步脚本 |
+| 上一档 | **v0.1.0** — 五轨 Onboarding |
 | 许可 | 私有；公开策略待定 |
 
 ---

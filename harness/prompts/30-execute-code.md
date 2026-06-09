@@ -7,12 +7,18 @@
 
 **执行编码** Agent：在 task 边界内改代码/配置；以 **Verify** 证明未破坏关键路径。
 
+## 开工前（强制 · 先于任何改码）
+
+1. 读 `docs/tasks/active/task_*.md` **人工闸**表与 `failure_paths`
+2. **首输出**「人工闸扫描」表（见 [`TEMPLATE_30_gate_stop.md`](./TEMPLATE_30_gate_stop.md)）
+3. 任一 **blocks 30** 的闸为 `pending` → **拒开工**（仅 STOP + 签闸指引）；**禁止**改业务码、禁止落 30 invoke
+4. **真值在 task 表**；维护者聊天 Prompt **不能**替代 `HG-AUDIT-R1` = `approved`
+
 ## 只做什么
 
 - 读 task **必读列表** + `AGENTS.md` + `_tech_graph/` + L2（涉码）
 - `test_strategy: required` → **先** 可失败测试再改实现
-- 扫描 **human_gate**：对 **30** 为 `pending` → **拒开工**
-- 运行 task **验证命令**；回填 `### 自检结论（执行者）`
+- 闸扫描通过后：运行 task **验证命令**；回填 `### 自检结论（执行者）`
 - invoke 快照落盘 `docs/harness/invokes/by-task/<task_slug>/`
 
 ## 禁止什么
@@ -21,17 +27,17 @@
 - 静默扩 scope；SPEC 矛盾走变更请求
 - **`HG-GRAPH-MODULES` pending** 时改业务码（D4-a）
 - **`HG-AUDIT-R1` pending** 时改码
+- 在自检中写「发 30 Prompt = 授权」
 
 ## 输入假设
 
-- 22 R1 通过或 task 明示可执行
+- 22 R1 **内容**通过 **且** task 表 **`HG-AUDIT-R1` = `approved`**
 - cwd = task `worktree_root` 或子仓根
 
 ## 输出形状
 
-- diff + PR 验证说明
-- invoke + task 自检回填
-- 下一棒 Prompt（链式）或交还 00
+- （拒开工）仅闸扫描 STOP 模板
+- （通过）diff + PR 验证说明 + invoke + task 自检回填 + 下一棒 40 Prompt
 
 ## 交接物
 
@@ -40,4 +46,4 @@
 
 ## 给 Cursor
 
-`Harness`、`30`、`Verify`、`test_strategy`、`human_gate`、`拒开工`、`自检结论`
+`Harness`、`30`、`Verify`、`test_strategy`、`human_gate`、`拒开工`、`HG-AUDIT-R1`、`自检结论`

@@ -1,36 +1,82 @@
-# wizard · 安装向导
+# wizard · 安装与同步
 
-**状态**：`v0.1` · M2 文档版问卷已交付
+> **v0.1.1+**：脚本化接入与 **已接入仓升级**（替代纯手工 `cp` 清单）
 
-## v0.1 已交付（T5 · M2）
+---
 
-| 文件 | 说明 |
-|------|------|
-| [`ONBOARDING_wizard_v1_zh.md`](./ONBOARDING_wizard_v1_zh.md) | 勾选问卷：新/存量 · 栈 · IDE · 五轨复制步骤 |
+## 1. 首次接入
 
-## 问卷输入 → 输出
+```bash
+cd /path/to/your-project
+/path/to/cyning-harness/wizard/install.sh --preset ios-cursor
+```
 
-| 输入 | 选项 |
-|------|------|
-| 仓库类型 | 新仓 / 存量 S0～S3 |
-| 语言栈 | 前端 TS · 后端 Python · 全栈 · 其他 |
-| IDE | Cursor（推荐）· CLAUDE.md · AGENTS.md |
+| preset | 用途 |
+|--------|------|
+| `harness-only` | 仅 prompts + Cursor 规则（最小） |
+| `ios-cursor` | iOS S2 五轨 · 无 Node CI |
+| `fullstack-node-py` | 全栈 + quality + pytest |
 
-| 输出 | 路径 |
-|------|------|
-| 目录清单 | `docs/_tech_graph/` · `coding_wiki/` · `standards/` · `harness/` · CI |
-| IDE 片段 | [`../ide/adapters/`](../ide/adapters/README.md) 按勾选复制 |
-| 首张 task | `harness/templates/TASK_graph_bootstrap.md` 或 `TASK_TEMPLATE.md` |
+生成：
 
-## 使用
+- `.cyning-harness/profile.json` — 同步轨道配置
+- `.cyning-harness/local.json` — 产品包路径
 
-1. 打开 [`ONBOARDING_wizard_v1_zh.md`](./ONBOARDING_wizard_v1_zh.md) 按步勾选  
-2. 对照 [`docs/ONBOARDING.md`](../docs/ONBOARDING.md) 五轨检查清单验收  
-3. M3 规划：交互脚本 / `harness init` CLI（**非** v0.1 范围）
+---
 
-## 修订记录
+## 2. 拉取产品包后 · 升级到已用项目（常用）
 
-| 版本 | 日期 | 说明 |
-|------|------|------|
-| v0.0.1 | 2026-06-09 | 占位 · 手工 ONBOARDING |
-| v0.1.0 | 2026-06-09 | T5 文档版 wizard |
+```bash
+cd /path/to/cyning-harness && git pull
+
+cd /path/to/ios_buy   # 业务仓
+CYNING_HARNESS=/path/to/cyning-harness \
+  "$CYNING_HARNESS/wizard/harness-sync.sh" plan
+
+CYNING_HARNESS=/path/to/cyning-harness \
+  "$CYNING_HARNESS/wizard/harness-sync.sh" apply
+```
+
+**默认同步**（不洗业务数据）：
+
+- `docs/harness/prompts/*.md`
+- `docs/harness/invokes/TEMPLATE_invoke.md`
+- `.cursor/rules/06-harness-pointer.mdc`（路径见 profile）
+
+**不覆盖**：`docs/tasks/`、`docs/harness/reviews/`、`invokes/by-task/*`、已填 `01_struct.md`。
+
+强制重拷图谱/wiki（慎用）：
+
+```bash
+FORCE_TRACKS=1 "$CYNING_HARNESS/wizard/harness-sync.sh" apply --target /path/to/project
+```
+
+---
+
+## 3. 人工闸检查（30 前）
+
+```bash
+"$CYNING_HARNESS/wizard/gate-check.sh" --target /path/to/project
+```
+
+- `HG-AUDIT-R1` 非 `approved` → 退出码 2 · **30 不可开工**
+- 辅助维护者，**不替代** Agent 闸扫描表
+
+---
+
+## 4. 与 ECC install-manifest（B2）的关系
+
+| ECC | cyning-harness |
+|-----|----------------|
+| `install-plan.js` | `harness-sync.sh plan` |
+| `install-apply.js` | `harness-sync.sh apply` |
+| npm 全局包 | 本地 clone + profile.json |
+| 261 skills 选择性装 | **五轨勾选** + 默认只升 harness 纪律层 |
+
+脚本解决 **「产品包更新 → 已接入仓同步」**；**不解决**人签 `HG-AUDIT-R1`（须维护者改 task 表）。
+
+---
+
+## 5. 文档问卷
+
+交互问卷仍见 [`ONBOARDING_wizard_v1_zh.md`](./ONBOARDING_wizard_v1_zh.md)；**推荐以本目录脚本为准**。
