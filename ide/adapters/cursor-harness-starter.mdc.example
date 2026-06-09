@@ -1,0 +1,33 @@
+---
+description: Harness Starter — 读序、task 与 Verify 纪律（嵌入业务仓 · Cursor 默认推荐）
+alwaysApply: true
+globs:
+  - "**/*"
+---
+
+# Harness Starter（业务仓 · Cursor）
+
+> **单源真值**：`docs/coding_wiki/` 读序 + `docs/standards/` + `AGENTS.md`。  
+> **本规则**：≤15 行摘要 + **POINTER**；条文真值不在此重复。
+
+## 执行 task 前
+
+1. Open Folder = **本仓根**（非 monorepo 子路径）
+2. 读当前 `docs/tasks/active/task_*.md`：`test_strategy` · `failure_paths` · 必读列表
+3. 涉码：读 `docs/_tech_graph/` 相关 flow + L2；**HG-GRAPH-MODULES** pending 时 **30 拒改码**
+4. 过程 invoke：`docs/harness/invokes/by-task/<task_slug>/`
+
+## Verify（合并前）
+
+| 栈 | 命令（与 `.github/workflows/` 一致） |
+|----|--------------------------------------|
+| 前端 | `pnpm lint` → `pnpm test` → `pnpm build` |
+| 后端 | `pytest tests`（按仓 marker 裁剪） |
+
+## 关键词
+
+`Harness`、`task`、`invoke`、`_tech_graph`、`HG-GRAPH-MODULES`、`test_strategy`
+
+## 完整库 POINTER
+
+Ink 工作区：`docs/harness/prompts/`（00/22/40/50 等 · 只读对照）
