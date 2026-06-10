@@ -4,6 +4,26 @@
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-06-10
+
+### Added
+
+- **OSS fork 选题**：`wizard/scan-upstream-issues.sh` — `gh` + `jq` 扫描上游 issue、可选 PR 占坑检查、`table` / `markdown` / `json` 输出
+- **扫描预设**：`wizard/profiles/issue-scan-presets.json`（`kimi-open-bug` · `kimi-c2-candidate` · `kimi-open-all` · `kimi-open-enhancement`；可自定义 `--repo`）
+- **OSS fork 一键初始化**（v0.1.1 起累积、本版文档收口）：`wizard/bootstrap-oss-fork-meta.sh` · preset `oss-fork-meta` · 可选 `--stub-dir`
+- **examples/oss-fork/**：kimi-code 图谱快照指针；**双 worktree** 拓扑与 issue 扫描说明
+
+### Changed
+
+- `wizard/README.md`：§4 上游 Issue 扫描 · OSS fork 工作流交叉引用
+- `wizard/bootstrap-oss-fork-meta.sh`：完成提示含 worktree / `scan-upstream-issues` · 默认 `docs/tasks/done/`
+- `examples/oss-fork/README.md`：过程轨 vs 产品 PR 纪律（v0.1.2）
+
+### Notes
+
+- **不含**：D3 `CLAUDE.md` / `AGENTS.md.fragment`（规划 v0.2）· Starter 仍 10/22/30
+- **试点证据**：MoonshotAI/kimi-code fork · C1 PR #622 · 工作区 `ISSUE_SCAN_kimi_code_open_c2_v1_zh.md`
+
 ## [0.1.1] - 2026-06-09
 
 ### Added

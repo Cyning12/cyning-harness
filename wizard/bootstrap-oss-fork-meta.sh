@@ -162,4 +162,6 @@ echo "1. 编辑 docs/_tech_graph/01_struct.md（对照仓内 AGENTS.md / README�
 echo "2. 签 task: docs/tasks/active/task_graph_bootstrap_${SLUG}_v1.md → HG-GRAPH-MODULES approved"
 echo "3. 检查: $CYNING_HARNESS/wizard/gate-check.sh --target $TARGET"
 echo "4. git add + commit + git push -u origin $BRANCH  # 仅你的 fork"
-echo "5. 上游 PR：仅从 main 拉 feature/*，不含 docs/harness"
+echo "5. 推荐 worktree: git worktree add ../$(basename "$TARGET")-meta $BRANCH"
+echo "6. 选题: $CYNING_HARNESS/wizard/scan-upstream-issues.sh --repo <upstream> ..."
+echo "7. 上游 PR：仅从 main 拉 feature/*，不含 docs/harness（见 examples/oss-fork/README.md）"

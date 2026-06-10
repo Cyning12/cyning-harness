@@ -13,3 +13,11 @@
 
 - 过程开发：`cyning/meta`（push 仅到 **你的 fork**）
 - 上游 PR：仅从干净 `main` → `feature/*`，**仅产品 diff**
+
+## worktree（v0.1.2）
+
+```bash
+git worktree add ../<fork>-meta cyning/meta
+```
+
+产品改码 Open `<fork>/`；task / invoke / 图谱 `@` `<fork>-meta/`。详见 `cyning-harness/examples/oss-fork/README.md`。

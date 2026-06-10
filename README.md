@@ -67,8 +67,8 @@ cyning-harness/
 
 | 项 | 值 |
 |----|-----|
-| 当前 | **v0.1.1** — 人工闸修补 + wizard 同步脚本 |
-| 上一档 | **v0.1.0** — 五轨 Onboarding |
+| 当前 | **v0.1.2** — OSS fork worktree 文档 · `scan-upstream-issues.sh` |
+| 上一档 | **v0.1.1** — 人工闸修补 + wizard 同步脚本 |
 | 许可 | 私有；公开策略待定 |
 
 ---

@@ -1,6 +1,6 @@
 # wizard · 安装与同步
 
-> **v0.1.1+**：脚本化接入与 **已接入仓升级**（替代纯手工 `cp` 清单）
+> **v0.1.2+**：脚本化接入 · OSS fork worktree · 上游 issue 扫描（`gh`）
 
 ---
 
@@ -33,15 +33,21 @@ CYNING_HARNESS=/path/to/cyning-harness \
 
 git add -A && git commit -m "chore(harness): cyning/meta bootstrap"
 git push -u origin cyning/meta
+
+# 推荐：过程轨只读 worktree（与 feature 产品分支并行）
+git worktree add ../some-oss-fork-meta cyning/meta
 ```
 
 **默认**：仅通用 `graph/templates` + 删 `10_flow_MAIN*`；**不**内置任何上游项目图谱。  
 **脚本不做**：`01_struct` 核对、`HG-GRAPH-MODULES` 人签、向上游 PR harness 文件。
 
+**双分支纪律**：见 [`examples/oss-fork/README.md`](../examples/oss-fork/README.md)（勿 merge `cyning/meta` → `main`）。
+
 生成：
 
 - `.cyning-harness/profile.json` — 同步轨道配置
 - `.cyning-harness/local.json` — 产品包路径
+- `docs/tasks/active/` + `docs/tasks/done/`
 
 ---
 
@@ -78,6 +84,7 @@ FORCE_TRACKS=1 "$CYNING_HARNESS/wizard/harness-sync.sh" apply --target /path/to/
 
 ```bash
 "$CYNING_HARNESS/wizard/gate-check.sh" --target /path/to/project
+# OSS fork meta worktree 时：--target /path/to/fork-meta
 ```
 
 - `HG-AUDIT-R1` 非 `approved` → 退出码 2 · **30 不可开工**
@@ -85,35 +92,40 @@ FORCE_TRACKS=1 "$CYNING_HARNESS/wizard/harness-sync.sh" apply --target /path/to/
 
 ---
 
-## 6. 上游 Issue 扫描（无 Agent）
+## 4. 上游 Issue 扫描（无 Agent · v0.1.2）
 
-依赖：`gh`（已登录）· `jq`
+依赖：`gh`（已登录）· `jq` · **任意** `OWNER/REPO`
 
 ```bash
 "$CYNING_HARNESS/wizard/scan-upstream-issues.sh" --help
 
-# 常用预设
+# 预设（示例仓 MoonshotAI/kimi-code）
 "$CYNING_HARNESS/wizard/scan-upstream-issues.sh" --preset kimi-c2-candidate
-"$CYNING_HARNESS/wizard/scan-upstream-issues.sh" --preset kimi-open-bug --limit 20
 
-# 落盘
+# 任意上游仓
+"$CYNING_HARNESS/wizard/scan-upstream-issues.sh" \
+  --repo OWNER/REPO --state open --label bug --check-pr --limit 20
+
+# 落盘 Markdown
 "$CYNING_HARNESS/wizard/scan-upstream-issues.sh" --preset kimi-c2-candidate \
-  --format markdown --output /tmp/kimi-issue-scan.md
+  --format markdown --output /tmp/issue-scan.md
 ```
 
 | 参数 | 说明 |
 |------|------|
-| `--preset` | `profiles/issue-scan-presets.json` 内预置组合 |
+| `--preset` | `profiles/issue-scan-presets.json` |
 | `--repo` | `OWNER/NAME` |
 | `--label` | 可重复 |
-| `--check-pr` / `--no-check-pr` | 是否查 PR 占坑（逐条 gh，较慢） |
-| `--only-no-pr` | 仅输出无 **open** PR 的 issue |
+| `--check-pr` / `--no-check-pr` | PR 占坑（逐条 gh，较慢） |
+| `--only-no-pr` | 仅无 **open** PR 的 issue |
 | `--exclude-issues` | `565,566` |
 | `--format` | `table` · `markdown` · `json` |
 
+自定义 preset：编辑 `wizard/profiles/issue-scan-presets.json`。
+
 ---
 
-## 4. 与 ECC install-manifest（B2）的关系
+## 5. 与 ECC install-manifest（B2）的关系
 
 | ECC | cyning-harness |
 |-----|----------------|
@@ -126,6 +138,6 @@ FORCE_TRACKS=1 "$CYNING_HARNESS/wizard/harness-sync.sh" apply --target /path/to/
 
 ---
 
-## 5. 文档问卷
+## 6. 文档问卷
 
 交互问卷仍见 [`ONBOARDING_wizard_v1_zh.md`](./ONBOARDING_wizard_v1_zh.md)；**推荐以本目录脚本为准**。

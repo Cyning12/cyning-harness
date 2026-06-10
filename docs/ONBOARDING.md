@@ -17,7 +17,9 @@
 | 语言栈 | 前端 TS · 后端 Python · 全栈 · 其他 |
 | IDE 入口 | Cursor rules · CLAUDE.md · AGENTS.md（可多选） |
 
-当前 **v0.1**：优先 [`wizard/ONBOARDING_wizard_v1_zh.md`](../wizard/ONBOARDING_wizard_v1_zh.md) 问卷；亦可 **手工** 按 §4 复制模板。
+当前 **v0.1.2**：优先 [`wizard/README.md`](../wizard/README.md) 脚本；问卷见 [`wizard/ONBOARDING_wizard_v1_zh.md`](../wizard/ONBOARDING_wizard_v1_zh.md)。亦可 **手工** 按 §4 复制模板。
+
+**OSS 个人 fork 向上游 PR**：[`wizard/bootstrap-oss-fork-meta.sh`](../wizard/bootstrap-oss-fork-meta.sh) + [`examples/oss-fork/README.md`](../examples/oss-fork/README.md)（双 worktree · 过程轨不进上游 PR）。选题：[`wizard/scan-upstream-issues.sh`](../wizard/scan-upstream-issues.sh)。
 
 ## 3. 存量档位与图谱首次要求（D1:A + D4-a）
 
