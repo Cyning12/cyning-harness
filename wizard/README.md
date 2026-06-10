@@ -85,6 +85,34 @@ FORCE_TRACKS=1 "$CYNING_HARNESS/wizard/harness-sync.sh" apply --target /path/to/
 
 ---
 
+## 6. 上游 Issue 扫描（无 Agent）
+
+依赖：`gh`（已登录）· `jq`
+
+```bash
+"$CYNING_HARNESS/wizard/scan-upstream-issues.sh" --help
+
+# 常用预设
+"$CYNING_HARNESS/wizard/scan-upstream-issues.sh" --preset kimi-c2-candidate
+"$CYNING_HARNESS/wizard/scan-upstream-issues.sh" --preset kimi-open-bug --limit 20
+
+# 落盘
+"$CYNING_HARNESS/wizard/scan-upstream-issues.sh" --preset kimi-c2-candidate \
+  --format markdown --output /tmp/kimi-issue-scan.md
+```
+
+| 参数 | 说明 |
+|------|------|
+| `--preset` | `profiles/issue-scan-presets.json` 内预置组合 |
+| `--repo` | `OWNER/NAME` |
+| `--label` | 可重复 |
+| `--check-pr` / `--no-check-pr` | 是否查 PR 占坑（逐条 gh，较慢） |
+| `--only-no-pr` | 仅输出无 **open** PR 的 issue |
+| `--exclude-issues` | `565,566` |
+| `--format` | `table` · `markdown` · `json` |
+
+---
+
 ## 4. 与 ECC install-manifest（B2）的关系
 
 | ECC | cyning-harness |

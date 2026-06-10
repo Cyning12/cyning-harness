@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "description": "scan-upstream-issues.sh 预设 · 参数可被 CLI 覆盖",
+  "presets": {
+    "kimi-open-bug": {
+      "repo": "MoonshotAI/kimi-code",
+      "state": "open",
+      "labels": ["bug"],
+      "limit": 30,
+      "check_pr": true,
+      "only_no_pr": false,
+      "exclude_issues": []
+    },
+    "kimi-c2-candidate": {
+      "repo": "MoonshotAI/kimi-code",
+      "state": "open",
+      "labels": [],
+      "limit": 40,
+      "check_pr": true,
+      "only_no_pr": true,
+      "exclude_issues": [565, 566]
+    },
+    "kimi-open-all": {
+      "repo": "MoonshotAI/kimi-code",
+      "state": "open",
+      "labels": [],
+      "limit": 40,
+      "check_pr": true,
+      "only_no_pr": false,
+      "exclude_issues": []
+    },
+    "kimi-open-enhancement": {
+      "repo": "MoonshotAI/kimi-code",
+      "state": "open",
+      "labels": ["enhancement"],
+      "limit": 30,
+      "check_pr": true,
+      "only_no_pr": false,
+      "exclude_issues": []
+    }
+  }
+}
