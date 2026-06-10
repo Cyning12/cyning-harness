@@ -26,14 +26,17 @@ cd some-oss-fork
 git remote add upstream git@github.com:ORG/original.git  # 若无
 
 CYNING_HARNESS=/path/to/cyning-harness \
-  "$CYNING_HARNESS/wizard/bootstrap-oss-fork-meta.sh" \
-  --archetype generic    # 或 kimi-code（预填 Moonshot kimi-code 模块表）
+  "$CYNING_HARNESS/wizard/bootstrap-oss-fork-meta.sh"
+
+# 可选：复用某次试点快照（见 examples/oss-fork/README.md）
+# --stub-dir "$CYNING_HARNESS/examples/oss-fork/kimi-code"
 
 git add -A && git commit -m "chore(harness): cyning/meta bootstrap"
 git push -u origin cyning/meta
 ```
 
-**脚本不做**：`01_struct` 核对（generic）、`HG-GRAPH-MODULES` 人签、向上游 PR harness 文件。
+**默认**：仅通用 `graph/templates` + 删 `10_flow_MAIN*`；**不**内置任何上游项目图谱。  
+**脚本不做**：`01_struct` 核对、`HG-GRAPH-MODULES` 人签、向上游 PR harness 文件。
 
 生成：
 
