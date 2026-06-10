@@ -16,6 +16,24 @@ cd /path/to/your-project
 | `harness-only` | 仅 prompts + Cursor 规则（最小） |
 | `ios-cursor` | iOS S2 五轨 · 无 Node CI |
 | `fullstack-node-py` | 全栈 + quality + pytest |
+| `oss-fork-meta` | OSS 个人 fork · `cyning/meta`：harness + 图谱骨架 |
+
+### 1.1 OSS 个人 fork 一键初始化（阶段 A+B 骨架）
+
+```bash
+git clone git@github.com:YOU/some-oss-fork.git
+cd some-oss-fork
+git remote add upstream git@github.com:ORG/original.git  # 若无
+
+CYNING_HARNESS=/path/to/cyning-harness \
+  "$CYNING_HARNESS/wizard/bootstrap-oss-fork-meta.sh" \
+  --archetype generic    # 或 kimi-code（预填 Moonshot kimi-code 模块表）
+
+git add -A && git commit -m "chore(harness): cyning/meta bootstrap"
+git push -u origin cyning/meta
+```
+
+**脚本不做**：`01_struct` 核对（generic）、`HG-GRAPH-MODULES` 人签、向上游 PR harness 文件。
 
 生成：
 
