@@ -112,13 +112,13 @@ cp docs/tasks/TASK_TEMPLATE_upstream_pr_v1.md \
 
 填 Harness 元信息 · `graph_delta` · `human_gate` 表。
 
-### 6.2 思考轮 + 强制回填
+### 6.2 思考轮 + 强制回填（默认 R0 + R1–R5）
 
 invoke 内嵌 `docs/harness/FRAGMENT_rethink_backfill_task_v1_zh.md`：
 
-- Agent **必须**将 R0～Rn 结论写入 task **§4 回填区**
-- 禁止仅在聊天输出 `## Rk 结论` 即视为完成
-- 未回填 → `HG-AUDIT-R1` 不得签 · 30 拒开工
+- 10 帽 task 草稿 **预置五槽思考轮** + **思考轮控制** 表（C1–C3 实证：≥4 轮实质思考后方案才稳）
+- Agent **必须**将结论写入 task **§4 回填区**；**可提前停**（填 reason + residual_risks）或 **增 R6+**
+- 未闭合 §4 → **22 退回 10** · `HG-AUDIT-R1` 不得签 · 30 拒开工
 
 ### 6.3 图谱闸（触模块时）
 

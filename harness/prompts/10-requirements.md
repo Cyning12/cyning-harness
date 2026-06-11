@@ -28,8 +28,14 @@
 
 ## 交接物
 
-- 可粘贴进 `docs/tasks/active/task_*.md`
-- 有下一棒 → [`TEMPLATE-execute-invoke.md`](./TEMPLATE-execute-invoke.md) 或工作区完整模板
+- 可粘贴进 `docs/tasks/active/task_*.md` 的正文块；并注明建议 `test_strategy`。
+- 承接 **22 审查**：按 `docs/harness/reviews/*_audit_*.md` 回填 task。
+
+## OSS 阶段 C · 思考轮（Starter 摘要）
+
+- 10 帽草稿 **须预置 R0 + R1–R5** 五槽 + **思考轮控制** 表（见 `wizard/templates/TASK_TEMPLATE_upstream_pr_v1.md`）。  
+- **可提前停 / 可增 R6+**；须填 reason · residual_risks（无则 `none`）。  
+- **22 审思考是否充分**；不通过 → **退回 10** 补轮后再 22 R+1。完整版：`Projects/docs/harness/prompts/10-requirements.md` § OSS fork。
 
 ## 给 Cursor
 

@@ -9,7 +9,8 @@
 ### Added
 
 - **上游 PR task 模板**：`wizard/templates/TASK_TEMPLATE_upstream_pr_v1.md` — Harness 元信息 · 思考轮 §4 · 图谱闸 · 验收清单
-- **思考回填 FRAGMENT**：`wizard/templates/FRAGMENT_rethink_backfill_task_v1_zh.md` — Agent 须写回 task §4，禁止仅聊天输出
+- **思考回填 FRAGMENT**：`wizard/templates/FRAGMENT_rethink_backfill_task_v1_zh.md` — Agent 须写回 task §4 + **思考轮控制**；22 可退回 10 补思考
+- **10/22 帽**：阶段 C task 预置 **R0+R1–R5** 五槽；可提前停/增轮须留 reason 与 residual_risks
 - **扫描 preset**：`kimi-c3-candidate`（排除 #565/#566/#583 · 无 open PR）
 
 ### Changed
