@@ -12,6 +12,8 @@
     "harness_prompts": true,
     "harness_invoke_template": true,
     "ide_cursor": true,
+    "ide_claude": false,
+    "ide_agents": false,
     "ci": "none"
   }
 }

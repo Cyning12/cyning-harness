@@ -1,6 +1,6 @@
 # wizard · 安装与同步
 
-> **v0.1.3+**：脚本化接入 · OSS fork worktree · 上游 issue 扫描 · C3 task 模板
+> **v0.2.0+**：脚本化接入 · `--ide cursor,claude,agents` · OSS fork worktree · 上游 issue 扫描
 
 ---
 
@@ -9,6 +9,9 @@
 ```bash
 cd /path/to/your-project
 /path/to/cyning-harness/wizard/install.sh --preset ios-cursor
+
+# D3 IDE 勾选（v0.2+）
+/path/to/cyning-harness/wizard/install.sh --preset harness-only --ide cursor,claude,agents
 ```
 
 | preset | 用途 |
@@ -70,6 +73,7 @@ CYNING_HARNESS=/path/to/cyning-harness \
 - `docs/harness/prompts/*.md`
 - `docs/harness/invokes/TEMPLATE_invoke.md`
 - `.cursor/rules/06-harness-pointer.mdc`（路径见 profile）
+- `CLAUDE.md` / `AGENTS.md`（`ide_claude` / `ide_agents` 启用时 · marker merge）
 
 **不覆盖**：`docs/tasks/`、`docs/harness/reviews/`、`invokes/by-task/*`、已填 `01_struct.md`。
 

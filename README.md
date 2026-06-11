@@ -67,8 +67,8 @@ cyning-harness/
 
 | 项 | 值 |
 |----|-----|
-| 当前 | **v0.1.2** — OSS fork worktree 文档 · `scan-upstream-issues.sh` |
-| 上一档 | **v0.1.1** — 人工闸修补 + wizard 同步脚本 |
+| 当前 | **v0.2.0** — D3 IDE 适配（CLAUDE/AGENTS fragment + install `--ide`） |
+| 上一档 | **v0.1.3** — OSS fork 思考轮模板 · C3 task 模板 |
 | 许可 | 私有；公开策略待定 |
 
 ---

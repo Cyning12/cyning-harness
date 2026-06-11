@@ -4,6 +4,26 @@
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-06-11
+
+### Added
+
+- **D3 IDE 适配**：`ide/adapters/CLAUDE.md.fragment.example` · `AGENTS.md.fragment.example`（单源 POINTER）
+- **`install.sh --ide`**：逗号列表 `cursor,claude,agents` → 写入 profile `tracks.ide_*`
+- **`harness-sync.sh` marker merge**：`<!-- cyning-harness:begin/end -->` 合并至仓根 `CLAUDE.md` / `AGENTS.md`
+
+### Changed
+
+- `wizard/profiles/harness-only.json` · `fullstack-node-py.json`：增 `ide_claude` / `ide_agents`（默认 `false`）
+- `ide/adapters/README.md` · `wizard/ONBOARDING_wizard_v1_zh.md` §3 · `docs/ONBOARDING.md`：v0.2 可执行勾选
+- `wizard/README.md`：§1 增 `--ide` 示例
+- `README.md` 当前版本 → **v0.2.0**
+
+### Notes
+
+- **backward-compat**：profile 无 `ide_claude`/`ide_agents` 时等同 v0.1.3（仅 `ide_cursor`）
+- **freeze_id**：`freeze_cyning_harness_v0_2_d3`（tag 由 CLOSE 棒独立打）
+
 ## [0.1.3] - 2026-06-11
 
 ### Added

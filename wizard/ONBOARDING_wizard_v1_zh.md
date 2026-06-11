@@ -60,13 +60,17 @@ cp "$CYNING_HARNESS/harness/templates/TASK_graph_bootstrap.md" docs/tasks/active
 
 ## 步骤 3 · IDE 入口（按实际 IDE 勾选 · 默认不全选）
 
-| 勾选 | 复制 | 写入位置 |
-|------|------|----------|
-| ☑ **Cursor**（推荐） | `ide/adapters/cursor-harness-starter.mdc.example` | `.cursor/rules/05-harness-starter.mdc` |
-| ☐ Claude Code | （v0.2 规划 `CLAUDE.md.fragment`） | 仓根 `CLAUDE.md` |
-| ☐ 通用 Agent | 合并 `AGENTS.md` 摘要 | 仓根 `AGENTS.md` |
+| 勾选 | 脚本 / 复制 | 写入位置 |
+|------|-------------|----------|
+| ☑ **Cursor**（推荐） | `install.sh --ide cursor` 或 sync | `.cursor/rules/05-harness-starter.mdc` |
+| ☐ Claude Code | `install.sh --ide claude` | 仓根 `CLAUDE.md`（marker merge） |
+| ☐ 通用 Agent | `install.sh --ide agents` | 仓根 `AGENTS.md`（marker merge） |
 
 ```bash
+# 推荐：脚本勾选（v0.2+）
+/path/to/cyning-harness/wizard/install.sh --preset harness-only --ide cursor,claude,agents
+
+# 手工备查
 mkdir -p .cursor/rules
 cp "$CYNING_HARNESS/ide/adapters/cursor-harness-starter.mdc.example" .cursor/rules/05-harness-starter.mdc
 ```

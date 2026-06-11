@@ -7,6 +7,9 @@ TARGET="${TARGET:-$(pwd)}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 HARNESS_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
+MARKER_BEGIN='<!-- cyning-harness:begin -->'
+MARKER_END='<!-- cyning-harness:end -->'
+
 usage() {
   cat <<'EOF'
 用法（从业务仓根，或指定 TARGET）：
@@ -51,6 +54,16 @@ fi
 
 # 简易 JSON 布尔/字符串读取（无 jq 依赖）
 json_bool() { grep -q "\"$1\"[[:space:]]*:[[:space:]]*true" "$PROFILE_FILE"; }
+
+track_enabled() {
+  local k="$1" default="${2:-false}"
+  if ! grep -q "\"$k\"" "$PROFILE_FILE"; then
+    [[ "$default" == "true" ]]
+    return
+  fi
+  json_bool "$k"
+}
+
 json_str() {
   local k="$1" def="$2"
   local line
@@ -59,7 +72,10 @@ json_str() {
   sed -E 's/.*:[[:space:]]*"([^"]*)".*/\1/' <<<"$line" | head -1
 }
 
-IDE_REL="$(grep '"ide_cursor"' "$PROFILE_FILE" | head -1 | sed -E 's/.*:[[:space:]]*"([^"]+)".*/\1/')"
+IDE_REL=""
+if grep -q '"paths"' "$PROFILE_FILE"; then
+  IDE_REL="$(sed -n '/"paths"/,/^  \}/p' "$PROFILE_FILE" | grep '"ide_cursor"' | head -1 | sed -E 's/.*:[[:space:]]*"([^"]+)".*/\1/')"
+fi
 [[ -z "$IDE_REL" ]] && IDE_REL=".cursor/rules/06-harness-pointer.mdc"
 CI_TRACK="$(json_str ci none)"
 
@@ -67,24 +83,98 @@ OPS=()
 
 add_cp() {
   local src="$1" dst="$2" note="${3:-}"
-  OPS+=("$src|$dst|$note")
+  OPS+=("cp|$src|$dst|$note")
 }
 
-if json_bool harness_prompts || grep -q '"harness_prompts"[[:space:]]*:[[:space:]]*true' "$PROFILE_FILE"; then
+merge_action_label() {
+  local dst="$1"
+  if [[ ! -f "$dst" ]]; then
+    echo "merge(create)"
+  elif grep -qF "$MARKER_BEGIN" "$dst"; then
+    echo "merge(replace marker)"
+  else
+    echo "merge(append marker)"
+  fi
+}
+
+add_merge() {
+  local src="$1" dst="$2" note="${3:-}"
+  local action
+  action="$(merge_action_label "$dst")"
+  OPS+=("merge|$src|$dst|$note|$action")
+}
+
+merge_fragment_apply() {
+  local src="$1" dst="$2"
+  local tmp_block tmp_out
+
+  tmp_block="$(mktemp)"
+  {
+    printf '%s\n' "$MARKER_BEGIN"
+    cat "$src"
+    printf '%s\n' "$MARKER_END"
+  } > "$tmp_block"
+
+  if [[ ! -f "$dst" ]]; then
+    cp "$tmp_block" "$dst"
+    rm -f "$tmp_block"
+    return
+  fi
+
+  if grep -qF "$MARKER_BEGIN" "$dst"; then
+    tmp_out="$(mktemp)"
+    awk -v begin="$MARKER_BEGIN" -v end="$MARKER_END" -v blockfile="$tmp_block" '
+      BEGIN {
+        while ((getline line < blockfile) > 0) block = block line "\n"
+        close(blockfile)
+        inblock = 0
+        replaced = 0
+      }
+      index($0, begin) && !replaced {
+        printf "%s", block
+        inblock = 1
+        replaced = 1
+        next
+      }
+      inblock {
+        if (index($0, end)) inblock = 0
+        next
+      }
+      { print }
+    ' "$dst" > "$tmp_out"
+    mv "$tmp_out" "$dst"
+  else
+    printf '\n' >> "$dst"
+    cat "$tmp_block" >> "$dst"
+  fi
+  rm -f "$tmp_block"
+}
+
+if track_enabled harness_prompts false; then
   for f in "$CYNING_HARNESS/harness/prompts/"*.md; do
     [[ -f "$f" ]] || continue
     add_cp "$f" "$TARGET/docs/harness/prompts/$(basename "$f")" "harness prompts"
   done
 fi
 
-if json_bool harness_invoke_template || grep -q '"harness_invoke_template"[[:space:]]*:[[:space:]]*true' "$PROFILE_FILE"; then
+if track_enabled harness_invoke_template false; then
   add_cp "$CYNING_HARNESS/harness/invokes/TEMPLATE_invoke.md" \
     "$TARGET/docs/harness/invokes/TEMPLATE_invoke.md" "invoke 模板"
 fi
 
-if json_bool ide_cursor || grep -q '"ide_cursor"[[:space:]]*:[[:space:]]*true' "$PROFILE_FILE"; then
+if track_enabled ide_cursor true; then
   add_cp "$CYNING_HARNESS/ide/adapters/cursor-harness-starter.mdc.example" \
     "$TARGET/$IDE_REL" "Cursor 规则"
+fi
+
+if track_enabled ide_claude false; then
+  add_merge "$CYNING_HARNESS/ide/adapters/CLAUDE.md.fragment.example" \
+    "$TARGET/CLAUDE.md" "Claude IDE"
+fi
+
+if track_enabled ide_agents false; then
+  add_merge "$CYNING_HARNESS/ide/adapters/AGENTS.md.fragment.example" \
+    "$TARGET/AGENTS.md" "Agents IDE"
 fi
 
 # 图谱/wiki/standards：默认 sync 不覆盖（避免洗掉 01_struct）；install 时写入
@@ -116,11 +206,18 @@ echo "profile: $PROFILE_FILE"
 echo ""
 
 for op in "${OPS[@]}"; do
-  IFS='|' read -r src dst note <<<"$op"
-  echo "[$note] $src -> $dst"
-  if [[ "$MODE" == "apply" ]]; then
-    mkdir -p "$(dirname "$dst")"
-    cp "$src" "$dst"
+  IFS='|' read -r kind src dst note extra <<<"$op"
+  if [[ "$kind" == "merge" ]]; then
+    echo "[$note · $extra] $src -> $dst"
+    if [[ "$MODE" == "apply" ]]; then
+      merge_fragment_apply "$src" "$dst"
+    fi
+  else
+    echo "[$note] $src -> $dst"
+    if [[ "$MODE" == "apply" ]]; then
+      mkdir -p "$(dirname "$dst")"
+      cp "$src" "$dst"
+    fi
   fi
 done
 

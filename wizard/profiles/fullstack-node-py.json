@@ -14,6 +14,8 @@
     "harness_invoke_template": true,
     "harness_task_bootstrap": true,
     "ide_cursor": true,
+    "ide_claude": false,
+    "ide_agents": false,
     "ci": "both"
   }
 }
