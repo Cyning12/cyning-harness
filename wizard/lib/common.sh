@@ -9,13 +9,19 @@ abs_path() {
   cd "$1" && pwd
 }
 
+# 判断目标路径是否为产品包根目录
+is_product_root_path() {
+  local target="$1" harness_root="$2"
+  [[ "$(abs_path "$target")" == "$(abs_path "$harness_root")" ]]
+}
+
 # 禁止对产品包自身执行 install/sync（误在 cyning-harness 根目录 apply 时拦截）
 refuse_if_product_root() {
   local target="$1" harness_root="$2"
   local target_abs harness_abs
   target_abs="$(abs_path "$target")"
   harness_abs="$(abs_path "$harness_root")"
-  if [[ "$target_abs" == "$harness_abs" ]]; then
+  if is_product_root_path "$target" "$harness_root"; then
     echo "错误: 目标路径不能是 cyning-harness 产品包自身: ${harness_abs}" >&2
     echo "提示: 在业务仓升级；或在产品包目录运行 wizard/upgrade.sh 按提示输入业务仓路径。" >&2
     exit 1

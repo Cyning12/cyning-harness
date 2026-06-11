@@ -6,21 +6,29 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=lib/common.sh
 source "$SCRIPT_DIR/lib/common.sh"
 HARNESS_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-TARGET="$(pwd)"
+TARGET=""
 PRESET="harness-only"
 DRY_RUN=0
 IDE_LIST=""
+TARGET_PROVIDED=0
+PRESET_PROVIDED=0
+IDE_PROVIDED=0
 
 usage() {
   cat <<'EOF'
 用法:
 
+  # 在产品包目录 · 交互引导（推荐）
+  cd /path/to/cyning-harness
+  ./wizard/install.sh
+
+  # 在业务仓目录 · 默认 target 为当前目录
   cd /path/to/your-project
-  /path/to/cyning-harness/wizard/install.sh --preset ios-cursor
+  /path/to/cyning-harness/wizard/install.sh --preset harness-only
 
-  /path/to/cyning-harness/wizard/install.sh --target /path/to/project --preset harness-only
-
-  /path/to/cyning-harness/wizard/install.sh --preset harness-only --ide cursor,claude,agents
+  # 全参数非交互
+  /path/to/cyning-harness/wizard/install.sh \
+    --target /path/to/project --preset harness-only --ide cursor,claude,agents
 
 preset:
   harness-only       — 仅 harness prompts + Cursor 规则（升级常用）
@@ -28,7 +36,7 @@ preset:
   fullstack-node-py  — 全栈 + quality + pytest
 
 选项:
-  --target PATH   业务仓根（默认当前目录）
+  --target PATH   业务仓根（未指定时进入引导；在业务仓内可默认当前目录）
   --preset NAME   见 wizard/profiles/
   --ide LIST      逗号分隔：cursor,claude,agents（写入 profile tracks）
   --dry-run       只打印，不写入（profile 仍会写入供 sync plan）
@@ -37,9 +45,9 @@ EOF
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --target) TARGET="$2"; shift 2 ;;
-    --preset) PRESET="$2"; shift 2 ;;
-    --ide) IDE_LIST="$2"; shift 2 ;;
+    --target) TARGET="$2"; TARGET_PROVIDED=1; shift 2 ;;
+    --preset) PRESET="$2"; PRESET_PROVIDED=1; shift 2 ;;
+    --ide) IDE_LIST="$2"; IDE_PROVIDED=1; shift 2 ;;
     --dry-run) DRY_RUN=1; shift ;;
     -h|--help) usage; exit 0 ;;
     *) echo "未知参数: $1" >&2; usage; exit 1 ;;
@@ -47,15 +55,57 @@ while [[ $# -gt 0 ]]; do
 done
 
 CYNING_HARNESS="${CYNING_HARNESS:-$HARNESS_ROOT}"
-PRESET_FILE="$SCRIPT_DIR/profiles/${PRESET}.json"
+VERSION="$(git -C "$HARNESS_ROOT" describe --tags --always 2>/dev/null || echo unknown)"
 
-[[ -f "$PRESET_FILE" ]] || { echo "未知 preset: $PRESET" >&2; exit 1; }
+# --- 交互：仅补全命令行未提供的项 ---
+if [[ "$TARGET_PROVIDED" -eq 0 ]]; then
+  echo "=== cyning-harness 安装向导 ==="
+  echo "产品包: $HARNESS_ROOT"
+  echo "版本:   $VERSION"
+  echo ""
+  cwd="$(pwd)"
+  default_target=""
+  if ! is_product_root_path "$cwd" "$HARNESS_ROOT"; then
+    default_target="$cwd"
+  fi
+  if [[ -n "$default_target" ]]; then
+    read -r -p "业务仓路径 [$default_target]: " TARGET_INPUT
+    TARGET="${TARGET_INPUT:-$default_target}"
+  else
+    echo "请输入要接入 Harness 的业务仓路径"
+    read -r -p "业务仓路径: " TARGET_INPUT
+    [[ -n "$TARGET_INPUT" ]] || { echo "未输入路径，已取消。" >&2; exit 1; }
+    TARGET="$TARGET_INPUT"
+  fi
+fi
+
+if [[ "$PRESET_PROVIDED" -eq 0 ]]; then
+  if [[ "$TARGET_PROVIDED" -eq 1 ]]; then
+    echo "=== cyning-harness install（补全参数）==="
+  fi
+  read -r -p "preset [harness-only]: " PRESET_INPUT
+  [[ -n "$PRESET_INPUT" ]] && PRESET="$PRESET_INPUT"
+fi
+
+if [[ "$IDE_PROVIDED" -eq 0 ]]; then
+  if prompt_yes_no "是否配置 IDE 勾选（cursor / claude / agents）？" "y"; then
+    read -r -p "IDE 列表 [cursor,claude,agents]: " IDE_INPUT
+    IDE_LIST="${IDE_INPUT:-cursor,claude,agents}"
+  fi
+fi
+
+[[ -d "$TARGET" ]] || { echo "错误: 目录不存在: $TARGET" >&2; exit 1; }
+TARGET="$(abs_path "$TARGET")"
 refuse_if_product_root "$TARGET" "$HARNESS_ROOT"
+
+PRESET_FILE="$SCRIPT_DIR/profiles/${PRESET}.json"
+[[ -f "$PRESET_FILE" ]] || { echo "未知 preset: $PRESET" >&2; exit 1; }
 
 run() {
   if [[ "$DRY_RUN" == "1" ]]; then echo "[dry-run] $*"; else eval "$@"; fi
 }
 
+echo ""
 echo "=== cyning-harness install ==="
 echo "目标: $TARGET"
 echo "preset: $PRESET"
@@ -127,3 +177,4 @@ fi
 echo ""
 echo "安装完成。profile: $PROFILE_DST"
 echo "日后升级: cd $CYNING_HARNESS && $CYNING_HARNESS/wizard/upgrade.sh --target $TARGET"
+echo "清空重装: $CYNING_HARNESS/wizard/uninstall.sh --target $TARGET"
