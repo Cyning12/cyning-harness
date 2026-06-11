@@ -72,10 +72,12 @@ if [[ ! -f "$PROFILE_FILE" ]]; then
   if prompt_yes_no "是否改为首次安装（install.sh）？" "y"; then
     PRESET="harness-only"
     if [[ -z "$IDE_LIST" ]]; then
-      read -r -p "preset [harness-only]: " PRESET_INPUT
-      [[ -n "$PRESET_INPUT" ]] && PRESET="$PRESET_INPUT"
-      read -r -p "IDE 勾选 cursor,claude,agents [cursor]: " IDE_INPUT
-      IDE_LIST="${IDE_INPUT:-cursor}"
+      print_preset_menu
+      read -r -p "preset [1]: " PRESET_INPUT
+      PRESET="$(resolve_preset_choice "$PRESET_INPUT" "$SCRIPT_DIR/profiles")"
+      print_ide_menu
+      read -r -p "IDE [1]: " IDE_INPUT
+      IDE_LIST="$(resolve_ide_choice "${IDE_INPUT:-1}")"
     fi
     INSTALL_ARGS=(--target "$TARGET" --preset "$PRESET")
     [[ -n "$IDE_LIST" ]] && INSTALL_ARGS+=(--ide "$IDE_LIST")

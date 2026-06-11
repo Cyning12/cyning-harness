@@ -16,10 +16,10 @@ cd /path/to/your-project
 
 | preset | 用途 |
 |--------|------|
-| `harness-only` | 仅 prompts + Cursor 规则（最小） |
-| `ios-cursor` | iOS S2 五轨 · 无 Node CI |
-| `fullstack-node-py` | 全栈 + quality + pytest |
-| `oss-fork-meta` | OSS 个人 fork · `cyning/meta`：harness + 图谱骨架 |
+| `harness-only` | **交互默认 1** · 仅过程轨 + IDE（kimi-code-meta 等） |
+| `fullstack-node-py` | **交互 2** · Ink 类全栈五轨 + quality + pytest |
+| `ios-cursor` | 遗留 · ios_buy；**不在 install 交互菜单** |
+| `oss-fork-meta` | OSS fork `cyning/meta`；用 `bootstrap-oss-fork-meta.sh` 或 `--preset` |
 
 ### 1.1 OSS 个人 fork 一键初始化（阶段 A+B 骨架）
 

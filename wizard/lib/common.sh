@@ -94,6 +94,87 @@ prompt_yes_no() {
   [[ "$ans" =~ ^[yY] ]]
 }
 
+# 安装向导 · preset 代号菜单（交互仅 1/2；CLI --preset 仍可用 profiles 下任意 json）
+print_preset_menu() {
+  cat <<'EOF'
+preset 代号（回车=1）:
+
+  1  harness-only
+     · 仅 Harness 过程轨：prompts、invoke 模板、IDE 入口（Cursor / Claude / Agents）
+     · 不写入图谱 / wiki / standards / CI；不覆盖已有业务 task / reviews / by-task invoke
+     · 适合：kimi-code-meta、任意仓只要 SDD 帽子链与 invoke 纪律
+
+  2  fullstack-node-py
+     · Ink 类全栈五轨：图谱模板 + coding_wiki + L1/L2 规范 + Harness 过程轨 + Cursor
+     · 附带 .github/workflows/quality.yml + pytest.yml（Next 前端 + Python API 后端 CI 样例）
+     · 适合：ai-ink-brain + api-python 同类前后端分仓或 monorepo
+
+  亦可输入全称：harness-only / fullstack-node-py
+EOF
+}
+
+# 将代号或全称解析为 preset 文件名（不含 .json）
+resolve_preset_choice() {
+  local input="$1"
+  local profiles_dir="${2:-}"
+  case "${input:-1}" in
+    1|h|harness|harness-only) echo "harness-only"; return ;;
+    2|fs|full|fullstack|fullstack-node-py) echo "fullstack-node-py"; return ;;
+  esac
+  if [[ -n "$profiles_dir" && -f "$profiles_dir/${input}.json" ]]; then
+    echo "$input"
+    return
+  fi
+  echo "未知 preset 代号: $input（交互可用 1 或 2，或输入全称）" >&2
+  exit 1
+}
+
+# 安装向导 · IDE 代号菜单
+print_ide_menu() {
+  cat <<'EOF'
+IDE 代号（回车=1 全部）:
+  1  全部（cursor + claude + agents）
+  2  仅 cursor
+  3  仅 claude
+  4  仅 agents
+  可组合: 2,3 或 c,cl,a
+EOF
+}
+
+# 将代号解析为 install --ide 逗号列表
+resolve_ide_choice() {
+  local input="${1:-1}"
+  local want_cursor=false want_claude=false want_agents=false
+
+  if [[ -z "$input" || "$input" == "1" || "$input" == "all" ]]; then
+    echo "cursor,claude,agents"
+    return
+  fi
+
+  IFS=',' read -ra parts <<< "$input"
+  for raw in "${parts[@]}"; do
+    local p="${raw// /}"
+    case "$p" in
+      1|all) want_cursor=true; want_claude=true; want_agents=true ;;
+      2|c|cursor) want_cursor=true ;;
+      3|cl|claude) want_claude=true ;;
+      4|a|agents) want_agents=true ;;
+      *) echo "未知 IDE 代号: $p（可用 1–4 或 c/cl/a）" >&2; exit 1 ;;
+    esac
+  done
+
+  local out=()
+  [[ "$want_cursor" == true ]] && out+=("cursor")
+  [[ "$want_claude" == true ]] && out+=("claude")
+  [[ "$want_agents" == true ]] && out+=("agents")
+  if [[ ${#out[@]} -eq 0 ]]; then
+    echo "未选择任何 IDE" >&2
+    exit 1
+  fi
+  local IFS=,
+  echo "${out[*]}"
+}
+
 profile_json_bool() {
   local file="$1" key="$2"
   grep -q "\"$key\"[[:space:]]*:[[:space:]]*true" "$file"

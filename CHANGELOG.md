@@ -9,7 +9,7 @@
 - **`wizard/upgrade.sh`**：在产品包目录交互升级；引导输入业务仓路径 · plan 预览 · 确认后 apply
 - **`wizard/uninstall.sh`**：清空纪律层（prompts · IDE · marker · `.cyning-harness`）；保留业务 task/reviews/by-task；便于重装
 - **`wizard/lib/common.sh`**：共享 `refuse_if_product_root`（禁止对产品包自身 install/sync）· marker 剥离
-- **`wizard/install.sh`**：无参数或缺参时交互引导；仅补全未传的 `--target` / `--preset` / `--ide`
+- **`wizard/install.sh`**：无参数或缺参时交互引导；preset 菜单仅 1/2（harness-only / fullstack-node-py）含详细说明
 
 ## [0.2.0] - 2026-06-11
 

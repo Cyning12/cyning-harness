@@ -30,10 +30,10 @@ usage() {
   /path/to/cyning-harness/wizard/install.sh \
     --target /path/to/project --preset harness-only --ide cursor,claude,agents
 
-preset:
-  harness-only       — 仅 harness prompts + Cursor 规则（升级常用）
-  ios-cursor         — iOS 存量 S2 五轨（无 CI yaml）
-  fullstack-node-py  — 全栈 + quality + pytest
+preset（交互向导：1 或 2）:
+  harness-only       — 仅过程轨 + IDE（常用 · kimi-code-meta 等）
+  fullstack-node-py  — 全栈五轨 + quality + pytest（Ink 类）
+  其他 preset 仍可通过 --preset <name> 使用（如 ios-cursor、oss-fork-meta）
 
 选项:
   --target PATH   业务仓根（未指定时进入引导；在业务仓内可默认当前目录）
@@ -83,14 +83,16 @@ if [[ "$PRESET_PROVIDED" -eq 0 ]]; then
   if [[ "$TARGET_PROVIDED" -eq 1 ]]; then
     echo "=== cyning-harness install（补全参数）==="
   fi
-  read -r -p "preset [harness-only]: " PRESET_INPUT
-  [[ -n "$PRESET_INPUT" ]] && PRESET="$PRESET_INPUT"
+  print_preset_menu
+  read -r -p "preset [1]: " PRESET_INPUT
+  PRESET="$(resolve_preset_choice "$PRESET_INPUT" "$SCRIPT_DIR/profiles")"
 fi
 
 if [[ "$IDE_PROVIDED" -eq 0 ]]; then
-  if prompt_yes_no "是否配置 IDE 勾选（cursor / claude / agents）？" "y"; then
-    read -r -p "IDE 列表 [cursor,claude,agents]: " IDE_INPUT
-    IDE_LIST="${IDE_INPUT:-cursor,claude,agents}"
+  if prompt_yes_no "是否配置 IDE 勾选？" "y"; then
+    print_ide_menu
+    read -r -p "IDE [1]: " IDE_INPUT
+    IDE_LIST="$(resolve_ide_choice "${IDE_INPUT:-1}")"
   fi
 fi
 
