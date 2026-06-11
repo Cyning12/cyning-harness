@@ -20,6 +20,15 @@
       "only_no_pr": true,
       "exclude_issues": [565, 566]
     },
+    "kimi-c3-candidate": {
+      "repo": "MoonshotAI/kimi-code",
+      "state": "open",
+      "labels": [],
+      "limit": 40,
+      "check_pr": true,
+      "only_no_pr": true,
+      "exclude_issues": [565, 566, 583]
+    },
     "kimi-open-all": {
       "repo": "MoonshotAI/kimi-code",
       "state": "open",
