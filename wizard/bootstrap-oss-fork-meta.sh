@@ -115,12 +115,21 @@ if [[ "$DRY_RUN" != "1" ]]; then
 # docs/harness（个人 fork · 过程轨）
 
 勿 PR 上游。由 `bootstrap-oss-fork-meta.sh` 初始化。
+
+- `FRAGMENT_rethink_backfill_task_v1_zh.md` — 思考轮结论须写回 task §4
+- `invokes/by-task/<slug>/` — 按 task 落盘 invoke
 EOF
   cat >"$TARGET/docs/tasks/README.md" <<'EOF'
 # docs/tasks
 
 Harness task · `active/` 进行中 · `done/` 关账。
+
+上游 PR 选题后复制：`TASK_TEMPLATE_upstream_pr_v1.md`（产品包 `wizard/templates/`）→ `active/task_<slug>_v1.md`。
 EOF
+  cp "$SCRIPT_DIR/templates/FRAGMENT_rethink_backfill_task_v1_zh.md" \
+    "$TARGET/docs/harness/FRAGMENT_rethink_backfill_task_v1_zh.md"
+  cp "$SCRIPT_DIR/templates/TASK_TEMPLATE_upstream_pr_v1.md" \
+    "$TARGET/docs/tasks/TASK_TEMPLATE_upstream_pr_v1.md"
 fi
 
 # bootstrap task
@@ -164,4 +173,5 @@ echo "3. 检查: $CYNING_HARNESS/wizard/gate-check.sh --target $TARGET"
 echo "4. git add + commit + git push -u origin $BRANCH  # 仅你的 fork"
 echo "5. 推荐 worktree: git worktree add ../$(basename "$TARGET")-meta $BRANCH"
 echo "6. 选题: $CYNING_HARNESS/wizard/scan-upstream-issues.sh --repo <upstream> ..."
+echo "   复制 docs/tasks/TASK_TEMPLATE_upstream_pr_v1.md → active/task_<slug>_v1.md"
 echo "7. 上游 PR：仅从 main 拉 feature/*，不含 docs/harness（见 examples/oss-fork/README.md）"

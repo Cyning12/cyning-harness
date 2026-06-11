@@ -43,7 +43,7 @@ usage() {
   --no-check-pr           不查 PR（更快）
   --only-no-pr            仅输出「无 open PR」的 issue
   --search QUERY          追加 gh issue list 搜索词
-  --format table|markdown|json
+  --format table|markdown|json|text
   --output PATH           写入文件（markdown/json 推荐）
   --presets-file PATH     自定义预设 JSON
 
@@ -273,9 +273,10 @@ EOF
 OUTPUT_BODY=""
 case "$FORMAT" in
   table) OUTPUT_BODY="$(emit_table)" ;;
+  text) OUTPUT_BODY="$(emit_table)" ;;
   json) OUTPUT_BODY="$(emit_json)" ;;
   markdown) OUTPUT_BODY="$(emit_markdown)" ;;
-  *) echo "错误: 未知 format $FORMAT" >&2; exit 1 ;;
+  *) echo "错误: 未知 format $FORMAT（可用 table|text|markdown|json）" >&2; exit 1 ;;
 esac
 
 if [[ -n "$OUTPUT" ]]; then

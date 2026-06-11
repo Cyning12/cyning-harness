@@ -75,7 +75,7 @@ git checkout -B cyning/meta   # 或已有 meta
   --repo OWNER/REPO --state open --label bug --check-pr --limit 20
 ```
 
-预设定义：`wizard/profiles/issue-scan-presets.json`（可自行追加 preset）。
+预设定义：`wizard/profiles/issue-scan-presets.json`（`kimi-c2-candidate` · **`kimi-c3-candidate`** 等；可自行追加 preset）。
 
 ---
 
@@ -96,3 +96,44 @@ git checkout -B cyning/meta   # 或已有 meta
 工作区维护者扫描分级示例：  
 `Projects/docs/harness/guides/ISSUE_SCAN_kimi_code_open_c2_v1_zh.md` ·  
 `PILOT_kimi_code_fork_adoption_v1_zh.md`
+
+---
+
+## 6. 阶段 C3 工作流（v0.1.3 · 改码前纪律）
+
+选题 → task → 思考轮 → 图谱闸 → 30 改码 → 关账。与 PILOT §5.2 对齐。
+
+### 6.1 开 task
+
+```bash
+cp docs/tasks/TASK_TEMPLATE_upstream_pr_v1.md \
+  docs/tasks/active/task_fix_<issue>_<short>_v1.md
+```
+
+填 Harness 元信息 · `graph_delta` · `human_gate` 表。
+
+### 6.2 思考轮 + 强制回填
+
+invoke 内嵌 `docs/harness/FRAGMENT_rethink_backfill_task_v1_zh.md`：
+
+- Agent **必须**将 R0～Rn 结论写入 task **§4 回填区**
+- 禁止仅在聊天输出 `## Rk 结论` 即视为完成
+- 未回填 → `HG-AUDIT-R1` 不得签 · 30 拒开工
+
+### 6.3 图谱闸（触模块时）
+
+| 时点 | 动作 |
+|------|------|
+| **30 前** | `10_flow_*.md` skeleton commit（`graph_gate: skeleton_before_30`） |
+| **关账** | partial/final flow + `02_version` 增量 |
+
+`graph_delta=none` 须在 task 注明理由。
+
+### 6.4 PR 策略（可选 · 试点 C3 #580）
+
+| 模式 | 何时 |
+|------|------|
+| 常规 | 验证通过 → 开 upstream PR · `Fixes #issue` |
+| **暂缓 PR** | 等 maintainer / 撞车窗口 → 先 issue comment + 本地 `local_done`；到期再开 PR |
+
+过程轨（task / invoke / 图谱）**永不**进 upstream PR diff。

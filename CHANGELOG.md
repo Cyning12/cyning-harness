@@ -4,6 +4,26 @@
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-06-11
+
+### Added
+
+- **上游 PR task 模板**：`wizard/templates/TASK_TEMPLATE_upstream_pr_v1.md` — Harness 元信息 · 思考轮 §4 · 图谱闸 · 验收清单
+- **思考回填 FRAGMENT**：`wizard/templates/FRAGMENT_rethink_backfill_task_v1_zh.md` — Agent 须写回 task §4，禁止仅聊天输出
+- **扫描 preset**：`kimi-c3-candidate`（排除 #565/#566/#583 · 无 open PR）
+
+### Changed
+
+- `wizard/bootstrap-oss-fork-meta.sh`：初始化时复制 task 模板 + FRAGMENT 至 `docs/tasks/` · `docs/harness/`
+- `examples/oss-fork/README.md`：§6 阶段 C3 工作流（思考回填 · 图谱闸 · PR 暂缓策略）
+- `wizard/README.md` · `docs/ONBOARDING.md`：v0.1.3 · `kimi-c3-candidate` 交叉引用
+- `wizard/scan-upstream-issues.sh`：`--format text` 作为 `table` 别名（修复 CLI 报错）
+
+### Notes
+
+- **试点证据**：MoonshotAI/kimi-code · C1 #622 merged · C2 #583 · C3 #580 local_done（PR 暂缓至 2026-06-13）
+- **不含**：D3 `CLAUDE.md` / `AGENTS.md.fragment`（规划 v0.2）
+
 ## [0.1.2] - 2026-06-10
 
 ### Added

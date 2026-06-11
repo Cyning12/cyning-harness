@@ -1,6 +1,6 @@
 # wizard · 安装与同步
 
-> **v0.1.2+**：脚本化接入 · OSS fork worktree · 上游 issue 扫描（`gh`）
+> **v0.1.3+**：脚本化接入 · OSS fork worktree · 上游 issue 扫描 · C3 task 模板
 
 ---
 
@@ -47,7 +47,8 @@ git worktree add ../some-oss-fork-meta cyning/meta
 
 - `.cyning-harness/profile.json` — 同步轨道配置
 - `.cyning-harness/local.json` — 产品包路径
-- `docs/tasks/active/` + `docs/tasks/done/`
+- `docs/tasks/active/` + `docs/tasks/done/` + **`TASK_TEMPLATE_upstream_pr_v1.md`**
+- `docs/harness/FRAGMENT_rethink_backfill_task_v1_zh.md`
 
 ---
 
@@ -92,22 +93,25 @@ FORCE_TRACKS=1 "$CYNING_HARNESS/wizard/harness-sync.sh" apply --target /path/to/
 
 ---
 
-## 4. 上游 Issue 扫描（无 Agent · v0.1.2）
+## 4. 上游 Issue 扫描（无 Agent · v0.1.2+）
 
 依赖：`gh`（已登录）· `jq` · **任意** `OWNER/REPO`
 
 ```bash
 "$CYNING_HARNESS/wizard/scan-upstream-issues.sh" --help
 
-# 预设（示例仓 MoonshotAI/kimi-code）
+# C2 候选（排除已占坑 #565/#566）
 "$CYNING_HARNESS/wizard/scan-upstream-issues.sh" --preset kimi-c2-candidate
+
+# C3 候选（再排除 #583 · v0.1.3）
+"$CYNING_HARNESS/wizard/scan-upstream-issues.sh" --preset kimi-c3-candidate
 
 # 任意上游仓
 "$CYNING_HARNESS/wizard/scan-upstream-issues.sh" \
   --repo OWNER/REPO --state open --label bug --check-pr --limit 20
 
 # 落盘 Markdown
-"$CYNING_HARNESS/wizard/scan-upstream-issues.sh" --preset kimi-c2-candidate \
+"$CYNING_HARNESS/wizard/scan-upstream-issues.sh" --preset kimi-c3-candidate \
   --format markdown --output /tmp/issue-scan.md
 ```
 
@@ -119,7 +123,7 @@ FORCE_TRACKS=1 "$CYNING_HARNESS/wizard/harness-sync.sh" apply --target /path/to/
 | `--check-pr` / `--no-check-pr` | PR 占坑（逐条 gh，较慢） |
 | `--only-no-pr` | 仅无 **open** PR 的 issue |
 | `--exclude-issues` | `565,566` |
-| `--format` | `table` · `markdown` · `json` |
+| `--format` | `table` · **`text`**（同 table）· `markdown` · `json` |
 
 自定义 preset：编辑 `wizard/profiles/issue-scan-presets.json`。
 
