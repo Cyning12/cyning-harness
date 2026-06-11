@@ -57,6 +57,47 @@ git worktree add ../some-oss-fork-meta cyning/meta
 
 ## 2. 拉取产品包后 · 升级到已用项目（常用）
 
+**推荐 · 交互向导**（在产品包目录运行，按提示输入业务仓路径）：
+
+```bash
+cd /path/to/cyning-harness && git pull
+./wizard/upgrade.sh
+```
+
+非交互：
+
+```bash
+./wizard/upgrade.sh --target /path/to/kimi-code-meta --yes
+./wizard/upgrade.sh --target /path/to/ios_buy --ide cursor,claude,agents --yes --gate-check
+```
+
+**禁止**对产品包自身 `apply`（误操作会被 `refuse_if_product_root` 拦截）。
+
+### 2.1 清空纪律层 · 重新安装
+
+交互清空（保留业务 `docs/tasks` · `reviews` · `invokes/by-task`）：
+
+```bash
+cd /path/to/cyning-harness
+./wizard/uninstall.sh
+```
+
+非交互：
+
+```bash
+./wizard/uninstall.sh --target /path/to/kimi-code-meta --yes
+./wizard/uninstall.sh --target /path/to/project --yes --with-ci --with-install-artifacts
+./wizard/uninstall.sh --target /path/to/project --dry-run   # 仅预览
+```
+
+清空后：
+
+```bash
+./wizard/install.sh --target /path/to/project --preset harness-only --ide cursor,claude,agents
+```
+
+手动分步（与向导等价）：
+
 ```bash
 cd /path/to/cyning-harness && git pull
 

@@ -3,6 +3,8 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=lib/common.sh
+source "$SCRIPT_DIR/lib/common.sh"
 HARNESS_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 TARGET="$(pwd)"
 PRESET="harness-only"
@@ -33,41 +35,6 @@ preset:
 EOF
 }
 
-# 更新 profile.json tracks 布尔（无 jq）
-set_json_track_bool() {
-  local file="$1" key="$2" val="$3"
-  local tmp
-  tmp="$(mktemp)"
-  if grep -q "\"$key\"" "$file"; then
-    sed -E "s/\"$key\"[[:space:]]*:[[:space:]]*(true|false)/\"$key\": $val/" "$file" > "$tmp"
-  else
-    sed "/\"ci\"/i\\
-    \"$key\": $val,
-" "$file" > "$tmp"
-  fi
-  mv "$tmp" "$file"
-}
-
-patch_profile_ide() {
-  local profile="$1" ide_list="$2"
-  local want_cursor=false want_claude=false want_agents=false
-
-  IFS=',' read -ra parts <<< "$ide_list"
-  for raw in "${parts[@]}"; do
-    local p="${raw// /}"
-    case "$p" in
-      cursor) want_cursor=true ;;
-      claude) want_claude=true ;;
-      agents) want_agents=true ;;
-      *) echo "未知 IDE: $p（允许: cursor, claude, agents）" >&2; exit 1 ;;
-    esac
-  done
-
-  set_json_track_bool "$profile" ide_cursor "$want_cursor"
-  set_json_track_bool "$profile" ide_claude "$want_claude"
-  set_json_track_bool "$profile" ide_agents "$want_agents"
-}
-
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --target) TARGET="$2"; shift 2 ;;
@@ -83,6 +50,7 @@ CYNING_HARNESS="${CYNING_HARNESS:-$HARNESS_ROOT}"
 PRESET_FILE="$SCRIPT_DIR/profiles/${PRESET}.json"
 
 [[ -f "$PRESET_FILE" ]] || { echo "未知 preset: $PRESET" >&2; exit 1; }
+refuse_if_product_root "$TARGET" "$HARNESS_ROOT"
 
 run() {
   if [[ "$DRY_RUN" == "1" ]]; then echo "[dry-run] $*"; else eval "$@"; fi
@@ -158,4 +126,4 @@ fi
 
 echo ""
 echo "安装完成。profile: $PROFILE_DST"
-echo "日后升级: CYNING_HARNESS=$CYNING_HARNESS $CYNING_HARNESS/wizard/harness-sync.sh apply --target $TARGET"
+echo "日后升级: cd $CYNING_HARNESS && $CYNING_HARNESS/wizard/upgrade.sh --target $TARGET"

@@ -3,6 +3,8 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=lib/common.sh
+source "$SCRIPT_DIR/lib/common.sh"
 HARNESS_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 TARGET="$(pwd)"
 PRESET="ios-cursor"
@@ -22,6 +24,7 @@ done
 CYNING_HARNESS="${CYNING_HARNESS:-$HARNESS_ROOT}"
 PRESET_FILE="$SCRIPT_DIR/profiles/${PRESET}.json"
 [[ -f "$PRESET_FILE" ]] || { echo "未知 preset: $PRESET" >&2; exit 1; }
+refuse_if_product_root "$TARGET" "$HARNESS_ROOT"
 
 mkdir -p "$TARGET/.cyning-harness"
 cp "$PRESET_FILE" "$TARGET/.cyning-harness/profile.json"

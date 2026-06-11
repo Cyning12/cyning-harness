@@ -31,7 +31,7 @@ cd cyning-harness
 
 1. 阅读 [`docs/ONBOARDING.md`](docs/ONBOARDING.md)  
 2. **推荐** [`wizard/install.sh`](wizard/install.sh) 或存量 [`wizard/adopt-existing.sh`](wizard/adopt-existing.sh)  
-3. 产品包 `git pull` 后：[`wizard/harness-sync.sh`](wizard/harness-sync.sh) `apply` 升级到业务仓  
+3. 产品包 `git pull` 后：[`wizard/upgrade.sh`](wizard/upgrade.sh) 交互升级（或 [`harness-sync.sh`](wizard/harness-sync.sh) `apply`）  
 4. 用自选 IDE `@` task + prompts；30 前可跑 [`wizard/gate-check.sh`](wizard/gate-check.sh)  
 
 ---

@@ -5,6 +5,8 @@ set -euo pipefail
 MODE="${1:-}"
 TARGET="${TARGET:-$(pwd)}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=lib/common.sh
+source "$SCRIPT_DIR/lib/common.sh"
 HARNESS_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 MARKER_BEGIN='<!-- cyning-harness:begin -->'
@@ -44,6 +46,7 @@ done
 [[ "$MODE" == "plan" || "$MODE" == "apply" ]] || { usage; exit 1; }
 
 CYNING_HARNESS="${CYNING_HARNESS:-$HARNESS_ROOT}"
+refuse_if_product_root "$TARGET" "$HARNESS_ROOT"
 PROFILE_FILE="$TARGET/.cyning-harness/profile.json"
 
 if [[ ! -f "$PROFILE_FILE" ]]; then
