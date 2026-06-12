@@ -8,7 +8,7 @@ PRESETS_FILE="${PRESETS_FILE:-$SCRIPT_DIR/profiles/issue-scan-presets.json}"
 
 REPO=""
 STATE="open"
-LIMIT=30
+LIMIT=120
 LABELS=()
 EXCLUDE_ISSUES=()
 CHECK_PR=1
@@ -37,7 +37,7 @@ usage() {
   --preset NAME           读取 profiles/issue-scan-presets.json
   --state open|closed|all 默认 open
   --label NAME            可重复；与 gh label 过滤一致
-  --limit N               默认 30
+  --limit N               默认 120（gh 自动分页；2026-06 kimi-code open 约 118）
   --exclude-issues N,N    跳过已知 issue 号（如 565,566）
   --check-pr              为每条 issue 查关联 PR（默认开启）
   --no-check-pr           不查 PR（更快）

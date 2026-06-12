@@ -6,7 +6,7 @@
       "repo": "MoonshotAI/kimi-code",
       "state": "open",
       "labels": ["bug"],
-      "limit": 30,
+      "limit": 120,
       "check_pr": true,
       "only_no_pr": false,
       "exclude_issues": []
@@ -15,7 +15,7 @@
       "repo": "MoonshotAI/kimi-code",
       "state": "open",
       "labels": [],
-      "limit": 40,
+      "limit": 120,
       "check_pr": true,
       "only_no_pr": true,
       "exclude_issues": [565, 566]
@@ -24,7 +24,7 @@
       "repo": "MoonshotAI/kimi-code",
       "state": "open",
       "labels": [],
-      "limit": 40,
+      "limit": 120,
       "check_pr": true,
       "only_no_pr": true,
       "exclude_issues": [565, 566, 583]
@@ -33,7 +33,7 @@
       "repo": "MoonshotAI/kimi-code",
       "state": "open",
       "labels": [],
-      "limit": 40,
+      "limit": 120,
       "check_pr": true,
       "only_no_pr": false,
       "exclude_issues": []
@@ -42,7 +42,7 @@
       "repo": "MoonshotAI/kimi-code",
       "state": "open",
       "labels": ["enhancement"],
-      "limit": 30,
+      "limit": 120,
       "check_pr": true,
       "only_no_pr": false,
       "exclude_issues": []
