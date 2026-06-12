@@ -10,9 +10,10 @@
 ## 开工前（强制 · 先于任何改码）
 
 1. 读 `docs/tasks/active/task_*.md` **人工闸**表与 `failure_paths`
-2. **首输出**「人工闸扫描」表（见 [`TEMPLATE_30_gate_stop.md`](./TEMPLATE_30_gate_stop.md)）
+2. **首输出** GATE_VERIFY 闸扫描（见 [`FRAGMENT_30_gate_verify_v1_zh.md`](./FRAGMENT_30_gate_verify_v1_zh.md) · [`TEMPLATE_30_gate_stop.md`](./TEMPLATE_30_gate_stop.md)）
 3. 任一 **blocks 30** 的闸为 `pending` → **拒开工**（仅 STOP + 签闸指引）；**禁止**改业务码、禁止落 30 invoke
-4. **真值在 task 表**；维护者聊天 Prompt **不能**替代 `HG-AUDIT-R1` = `approved`
+4. **真值在 task 表**；维护者 / invoke 聊天 **不能**替代 `HG-AUDIT-R1` = `approved`
+5. **声称 vs 表冲突**（用户或 invoke 写 approved 但 task 表 pending）→ **STOP** · 输出冲突表 · **以 task 表为准**
 
 ## 只做什么
 

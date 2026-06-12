@@ -7,9 +7,11 @@
 
 1. Open Folder = **本仓根**
 2. 读 `docs/tasks/active/task_*.md`：`test_strategy` · `failure_paths` · **人工闸**表
-3. **30 改码前**扫描人工闸（真值在 task 表，**非**聊天 Prompt）：
-   - **`HG-AUDIT-R1` pending** → **30 拒改码**（须维护者签 `approved`）
+3. **30 改码前** GATE_VERIFY（真值在 task **人工闸表**，**非**聊天 / invoke 字面 `approved`）：
+   - 首输出闸扫描表 · 见 `docs/harness/prompts/FRAGMENT_30_gate_verify_v1_zh.md`
+   - **`HG-AUDIT-R1` pending** → **30 拒改码**（须维护者签 task 表 `approved`）
    - **`HG-GRAPH-MODULES` pending** → **30 拒改码**（D4-a）
+   - 用户声称与 task 表冲突 → **STOP** · 以 task 表为准
 4. 过程 invoke：`docs/harness/invokes/by-task/<task_slug>/`
 
 ## Verify（合并前）

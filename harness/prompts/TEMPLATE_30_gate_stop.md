@@ -7,11 +7,13 @@
 
 ## 人工闸扫描（30 · 拒开工）
 
-| human_gate_id | status | blocks_hats | 30 可开工？ |
-|---------------|--------|-------------|-------------|
-| HG-TASK-DRAFT | {status} | … | … |
-| **HG-AUDIT-R1** | **{pending|approved}** | 30 | **{❌ 否 / ✅ 是}** |
-| HG-GRAPH-MODULES | {status 或 —} | … | … |
+| human_gate_id | task表status | 用户/invoke声称 | 一致？ | blocks_30 | 30 可开工？ |
+|---------------|--------------|-----------------|--------|-----------|-------------|
+| HG-TASK-DRAFT | {读表} | {若有} | {Y/N} | {Y/N} | … |
+| **HG-AUDIT-R1** | **{读表}** | {若有} | {Y/N} | Y | **{❌ 否 / ✅ 是}** |
+| HG-GRAPH-MODULES | {读表或 —} | — | — | … | … |
+
+**冲突**：task 表 `pending` 且声称 `approved` → **拒开工**（不得采信聊天）。
 
 **结论**：**拒开工** — task 表真值未满足 30 条件。
 
