@@ -4,23 +4,17 @@
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-06-13
+
 ### Added
 
-- **`FRAGMENT_30_gate_verify_v1_zh.md`** · **`FRAGMENT_30_invoke_block_v1_zh.md`**：30 首输出 GATE_VERIFY · 禁止 invoke 预写 `approved`
-- **`gate-check.sh --task`**：指定 task 路径 · 检查 `HG-TASK-DRAFT` blocks 30
+- **done 分层索引模板**：`TASK_done_README.md` · `VIEW_done_by_domain.md` · `VIEW_done_thin_pointer.md` · `FRAGMENT_task_domain_infer_v1_zh.md`
+- **`install.sh`**：创建 `done/<domain>/` 子目录 · 首次嵌入 Hub 与 `_views` 薄指针（文件不存在时）
 
 ### Changed
 
-- **`30-execute-code.md`**：声称 vs task 闸表冲突 → STOP
-- **`TEMPLATE_30_gate_stop.md`**：冲突列 · 读表非采信聊天
-- **IDE 片段**（Cursor / AGENTS）：GATE_VERIFY · 跨仓须读 meta task 表
-
-### Added (prior)
-
-- **`wizard/upgrade.sh`**：在产品包目录交互升级；引导输入业务仓路径 · plan 预览 · 确认后 apply
-- **`wizard/uninstall.sh`**：清空纪律层（prompts · IDE · marker · `.cyning-harness`）；保留业务 task/reviews/by-task；便于重装
-- **`wizard/lib/common.sh`**：共享 `refuse_if_product_root`（禁止对产品包自身 install/sync）· marker 剥离
-- **`wizard/install.sh`**：无参数或缺参时交互引导；preset 菜单仅 1/2（harness-only / fullstack-node-py）含详细说明
+- `harness/templates/README.md`：关账纪律与嵌入步骤
+- `docs/ONBOARDING.md` §6：task 关账与 done 分层索引
 
 ## [0.2.0] - 2026-06-11
 

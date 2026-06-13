@@ -67,8 +67,8 @@ cyning-harness/
 
 | 项 | 值 |
 |----|-----|
-| 当前 | **v0.2.0** — D3 IDE 适配（CLAUDE/AGENTS fragment + install `--ide`） |
-| 上一档 | **v0.1.3** — OSS fork 思考轮模板 · C3 task 模板 |
+| 当前 | **v0.2.1** — done 分层索引（Hub · 薄 `_views` · 域推断 FRAGMENT · install 嵌入） |
+| 上一档 | **v0.2.0** — D3 IDE 适配（CLAUDE/AGENTS fragment + install `--ide`） |
 | 许可 | 私有；公开策略待定 |
 
 ---

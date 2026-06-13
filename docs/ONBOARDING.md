@@ -62,7 +62,25 @@ cp -R cyning-harness/coding_wiki/templates/* docs/coding_wiki/
 - [ ] CI 样例已适配
 - [ ] IDE 入口已生成
 
-## 6. 常见问题
+## 6. task 关账与 done 分层索引（v0.2.1）
+
+关账时 **勿** 将全文 task 平铺于 `done/` 根目录并拉长 `_views/done.md`。
+
+| 步骤 | 动作 |
+|------|------|
+| 1 | `git mv docs/tasks/active/<file>.md docs/tasks/done/<domain>/` |
+| 2 | 头部 `done（YYYY-MM-DD 验收通过）` |
+| 3 | `done/README.md` 对应域表 **追加一行** |
+| 4 | 可选同步 `_views/done_by_domain.md` |
+| 5 | `_views/done.md` 保持薄指针 |
+
+**域推断**：[`harness/templates/FRAGMENT_task_domain_infer_v1_zh.md`](../harness/templates/FRAGMENT_task_domain_infer_v1_zh.md)  
+**模板**：`TASK_done_README.md` · `VIEW_done_by_domain.md` · `VIEW_done_thin_pointer.md`  
+**install** 自动创建 `done/<domain>/` 与 Hub（文件不存在时）。
+
+工作区 Harness 路径为 `docs/harness/tasks/`（结构相同）。
+
+## 7. 常见问题
 
 **Q：本产品会调 LLM 吗？**  
 A：不会。LLM 在你使用的 IDE 中运行。

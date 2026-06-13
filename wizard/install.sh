@@ -115,7 +115,12 @@ echo "preset: $PRESET"
 echo ""
 
 run mkdir -p "$TARGET/.cyning-harness"
-run mkdir -p "$TARGET/docs/tasks/active" "$TARGET/docs/tasks/done"
+run mkdir -p "$TARGET/docs/tasks/active" "$TARGET/docs/tasks/done" \
+  "$TARGET/docs/tasks/_views" \
+  "$TARGET/docs/tasks/done/harness" "$TARGET/docs/tasks/done/cyning-harness" \
+  "$TARGET/docs/tasks/done/engineering" "$TARGET/docs/tasks/done/governance" \
+  "$TARGET/docs/tasks/done/chatbi" "$TARGET/docs/tasks/done/standards" \
+  "$TARGET/docs/tasks/done/epics"
 run mkdir -p "$TARGET/docs/harness/prompts" "$TARGET/docs/harness/reviews" "$TARGET/docs/harness/invokes/by-task"
 run mkdir -p "$TARGET/docs/_tech_graph" "$TARGET/docs/coding_wiki" "$TARGET/docs/standards"
 
@@ -166,6 +171,20 @@ if grep -q '"standards_l2"[[:space:]]*:[[:space:]]*true' "$PRESET_FILE"; then
     [[ -f "$f" ]] || continue
     run cp "$f" "$TARGET/docs/standards/"
   done
+fi
+
+# done Hub + _views（仅不存在时）
+if [[ ! -f "$TARGET/docs/tasks/done/README.md" ]]; then
+  run cp "$CYNING_HARNESS/harness/templates/TASK_done_README.md" \
+    "$TARGET/docs/tasks/done/README.md"
+fi
+if [[ ! -f "$TARGET/docs/tasks/_views/done.md" ]]; then
+  run cp "$CYNING_HARNESS/harness/templates/VIEW_done_thin_pointer.md" \
+    "$TARGET/docs/tasks/_views/done.md"
+fi
+if [[ ! -f "$TARGET/docs/tasks/_views/done_by_domain.md" ]]; then
+  run cp "$CYNING_HARNESS/harness/templates/VIEW_done_by_domain.md" \
+    "$TARGET/docs/tasks/_views/done_by_domain.md"
 fi
 
 # bootstrap task（仅不存在时）

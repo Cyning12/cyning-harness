@@ -50,7 +50,7 @@ git worktree add ../some-oss-fork-meta cyning/meta
 
 - `.cyning-harness/profile.json` — 同步轨道配置
 - `.cyning-harness/local.json` — 产品包路径
-- `docs/tasks/active/` + `docs/tasks/done/` + **`TASK_TEMPLATE_upstream_pr_v1.md`**
+- `docs/tasks/active/` + `docs/tasks/done/`（**v0.2.1+** 含 `done/<domain>/` · Hub · `_views` 薄指针，见 `install.sh`）
 - `docs/harness/FRAGMENT_rethink_backfill_task_v1_zh.md`
 
 ---
