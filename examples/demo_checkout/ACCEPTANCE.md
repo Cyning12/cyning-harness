@@ -56,7 +56,9 @@ CYNING_HARNESS=/path/to/cyning-harness \
 
 ---
 
-## 阶段 E · 22 CLOSE（可选 · P0 完整闭环）
+## 阶段 E · 22 CLOSE（可选 · **defer A3**）
+
+> **A2 关账不阻塞**。完整 SDD 链 `10→22→30→40→22(CLOSE)` 的 **最后一棒 22 终轮** 在 **A3 对外金样** 时执行。
 
 - [ ] 22 终轮 · 产出 `*_audit_CLOSE_*.md` 或 R2
 - [ ] task status → `done`
@@ -64,11 +66,22 @@ CYNING_HARNESS=/path/to/cyning-harness \
 
 ---
 
+## 阶段 F · 40 自检帽（A2 · 2026-06-15 ✅）
+
+> **已在 `_sandbox` 阶段 2 完成** · commits `769964c` + `7d5b375` · **无需再开 Agent**，仅需本清单勾选留档。
+
+- [x] sync 后存在 `docs/harness/prompts/40-self-check.md`
+- [x] `@` task + 40-self-check.md · 跑验证命令
+- [x] task 回填 `### 自检结论（执行者）`
+- [x] sidecar `task check` schema OK（产品仓路径 · 阶段 1）
+- [x] gate-check 输出 manifest.version（upgrade 后 · `7d5b375`）
+
+---
+
 ## P0 通过标准（最小）
 
 满足 **A + B + C（签后）+ D** 即 P0 通过。  
-**2026-06-15**：`_sandbox` **最小通过 ✅**  
-**E** 为完整 SDD 闭环，可与 A2（40 帽）一并补全。
+**2026-06-15**：`_sandbox` **A–D 最小通过 ✅** · **F（40 帽）✅** · **E defer A3**
 
 ---
 
