@@ -1,6 +1,6 @@
 # demo_checkout · P0 金样路径
 
-> **目标**：在空业务仓复现 **harness-only · 10→22→30** 最小 SDD 闭环（见 [`docs/P0_V0.2_GAP.md`](../../docs/P0_V0.2_GAP.md)）。
+> **目标**：在空业务仓复现 **harness-only · 10→22→30** 最小 SDD 闭环（见 [`../../docs/methodology/execution/P0_V0.2_GAP.md`](../../docs/methodology/execution/P0_V0.2_GAP.md)）。
 
 ---
 

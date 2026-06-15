@@ -65,5 +65,7 @@ CLI/Worker 与模板 **同一仓库** 演进，避免多仓割裂。
 
 ## 7. 产品设计本体
 
-Track / Hat / Sync / SDD 公理与扩展规则见 [`DESIGN_ONTOLOGY_v1_zh.md`](./DESIGN_ONTOLOGY_v1_zh.md)（**v1.2**）。  
+Track / Hat / Sync / SDD 公理与扩展规则见 [`methodology/product/DESIGN_ONTOLOGY_v1_zh.md`](./methodology/product/DESIGN_ONTOLOGY_v1_zh.md)（**v1.2**）。  
+**方法论总指引**：[`methodology/README.md`](./methodology/README.md) · 关系图 [`methodology/DOCUMENT_MAP_v1_zh.md`](./methodology/DOCUMENT_MAP_v1_zh.md)  
+远期 **过程实例图 + 事件历史** 见 [`methodology/graph/HARNESS_GRAPH_MODEL_design_v0_zh.md`](./methodology/graph/HARNESS_GRAPH_MODEL_design_v0_zh.md)（HGM · v0.5+ 提案）。  
 与 **战略本体**（工作区 `docs/harness/guides/STRATEGY_ONTOLOGY_*`）分层：本文件描述 **产品如何实现**，战略文档描述 **对外演进**。

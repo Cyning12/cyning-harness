@@ -1,5 +1,7 @@
 # 接入指南
 
+> **方法论**：产品语义与文档关系见 [`methodology/README.md`](./methodology/README.md) · 本体 [`methodology/product/DESIGN_ONTOLOGY_v1_zh.md`](./methodology/product/DESIGN_ONTOLOGY_v1_zh.md)
+
 ## 1. 前置
 
 - Git

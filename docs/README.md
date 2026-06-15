@@ -1,0 +1,41 @@
+# cyning-harness · 文档索引
+
+| 项 | 内容 |
+| --- | --- |
+| **入口** | 本页 → **[方法论总指引](./methodology/README.md)** |
+| **接入** | [`ONBOARDING.md`](./ONBOARDING.md) · [`../wizard/README.md`](../wizard/README.md) |
+| **架构** | [`ARCHITECTURE.md`](./ARCHITECTURE.md) |
+
+---
+
+## 快速导航
+
+| 读者 | 先读 |
+| --- | --- |
+| **新接入** | ONBOARDING → wizard/install → [`methodology/execution/P0_V0.2_GAP.md`](./methodology/execution/P0_V0.2_GAP.md) |
+| **实现 / 扩展** | [`methodology/product/DESIGN_ONTOLOGY_v1_zh.md`](./methodology/product/DESIGN_ONTOLOGY_v1_zh.md) |
+| **战略 / 开源** | [`methodology/pointers/`](./methodology/pointers/README.md) → 工作区 STRATEGY_* |
+| **HGM 远期** | [`methodology/graph/`](./methodology/graph/README.md) |
+
+---
+
+## 目录结构
+
+```text
+docs/
+├── README.md                 # 本页
+├── ARCHITECTURE.md           # 五轨 · 与业务仓关系
+├── ONBOARDING.md             # 接入指南
+├── DESIGN_ONTOLOGY_v1_zh.md  # POINTER → methodology/product/
+├── P0_V0.2_GAP.md            # POINTER → methodology/execution/
+├── HARNESS_GRAPH_MODEL_*.md  # POINTER → methodology/graph/
+└── methodology/              # ★ 方法论与本体 · 总指引
+    ├── README.md
+    ├── DOCUMENT_MAP_v1_zh.md
+    ├── product/              # 产品设计本体
+    ├── graph/                # Harness Graph Model
+    ├── execution/            # P0 差距 · 落地清单
+    └── pointers/             # 工作区 / 治理仓 POINTER
+```
+
+**修订**：2026-06-15 · 方法论归集至 `methodology/`
