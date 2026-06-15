@@ -11,3 +11,5 @@ __pycache__/
 .venv/
 dist/
 build/
+# P0 金样本地演示仓（install 产物 · 勿提交）
+examples/demo_checkout/_sandbox/

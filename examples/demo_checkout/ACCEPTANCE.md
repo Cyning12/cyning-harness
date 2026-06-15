@@ -2,33 +2,35 @@
 
 > 配合 [`task_demo_p0_golden_v1.md`](./task_demo_p0_golden_v1.md) · 在 **空 git 仓** 或 `examples/demo_checkout/_sandbox/` 执行。
 
+**最近一次跑通**：`_sandbox/` · 2026-06-15 · commit `8cd64ed`（签闸前）+ 30 交付 commit
+
 ---
 
 ## 前置
 
-- [ ] 已 `install.sh --preset harness-only`
-- [ ] 已 `harness-sync.sh apply`
-- [ ] 金样 task 在 `docs/tasks/active/task_demo_p0_golden_v1.md`
-- [ ] IDE Open **业务仓根**（非 cyning-harness 产品仓）
+- [x] 已 `install.sh --preset harness-only` · 2026-06-15
+- [x] 已 `harness-sync.sh apply` · 2026-06-15
+- [x] 金样 task 在 `docs/tasks/active/task_demo_p0_golden_v1.md`
+- [x] IDE Open **业务仓根**（`_sandbox`）
 
 ---
 
 ## 阶段 A · 10 需求帽
 
-- [ ] `@` 金样 task + `docs/harness/prompts/10-requirements.md`
-- [ ] task「背景与目标」「范围」已填（金样预填可微调）
-- [ ] `HG-TASK-DRAFT` → `approved`（维护者改 task 表）
-- [ ] commit task 变更
+- [x] `@` 金样 task + `docs/harness/prompts/10-requirements.md`
+- [x] task「背景与目标」「范围」已填（金样预填可微调）
+- [x] `HG-TASK-DRAFT` → `approved`（维护者 · 2026-06-15）
+- [x] commit task 变更
 
 ---
 
 ## 阶段 B · 22 审核帽（R1）
 
-- [ ] `@` task + `docs/harness/prompts/22-task-audit.md`
-- [ ] 产出 `docs/harness/reviews/task_demo_p0_golden_audit_R1_*.md`（零阻塞也须落盘）
-- [ ] 22 **未** 附 30 Prompt（`HG-AUDIT-R1` 仍为 pending 时 · D2）
-- [ ] `HG-AUDIT-R1` → `approved`（维护者人签）
-- [ ] commit review + task 表
+- [x] `@` task + `docs/harness/prompts/22-task-audit.md`
+- [x] 产出 `docs/harness/reviews/task_demo_p0_golden_audit_R1_20260615.md`
+- [x] 22 **未** 附 30 Prompt（签前 · D2）
+- [x] `HG-AUDIT-R1` → `approved`（维护者 · 2026-06-15）
+- [x] commit review + task 表
 
 ---
 
@@ -40,17 +42,17 @@ CYNING_HARNESS=/path/to/cyning-harness \
   --task docs/tasks/active/task_demo_p0_golden_v1.md
 ```
 
-- [ ] **签前** exit 码 ≠ 0（或输出「30 不可开工」）
-- [ ] **签后** exit 码 0 · 输出「✅ 可 30」
+- [x] **签前** exit 码 ≠ 0（exit 2 · HG pending）
+- [x] **签后** exit 码 0 · 输出「✅ 可 30」· 2026-06-15
 
 ---
 
 ## 阶段 D · 30 执行帽
 
-- [ ] `@` task + `docs/harness/prompts/30-execute-code.md`
-- [ ] 首输出含闸表扫描（或引用 `TEMPLATE_30_gate_stop` 语义 · D3）
-- [ ] 实现范围：在业务仓创建 `src/p0-demo/hello.txt` 内容为 `harness-p0-ok`
-- [ ] task「实现备忘」回填 · status → `in_progress` 或保持至 CLOSE
+- [x] `@` task + `docs/harness/prompts/30-execute-code.md`
+- [x] gate-check 签后验证（D3 机械辅助）
+- [x] 创建 `src/p0-demo/hello.txt` 内容为 `harness-p0-ok`
+- [x] task「实现备忘」回填 · status → `in_progress`
 
 ---
 
@@ -65,6 +67,7 @@ CYNING_HARNESS=/path/to/cyning-harness \
 ## P0 通过标准（最小）
 
 满足 **A + B + C（签后）+ D** 即 P0 通过。  
+**2026-06-15**：`_sandbox` **最小通过 ✅**  
 **E** 为完整 SDD 闭环，可与 A2（40 帽）一并补全。
 
 ---
