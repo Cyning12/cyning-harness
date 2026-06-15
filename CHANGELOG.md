@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-06-15
+
+### Fixed
+
+- **npm publish**：`bin` 路径格式（`bin/harness.js`）· 排除 `examples/demo_checkout/_sandbox` · 修复 `npx` 报 `harness: command not found`
+
 ## [0.3.0] - 2026-06-15
 
 ### Added
