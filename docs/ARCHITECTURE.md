@@ -62,3 +62,8 @@ CLI/Worker 与模板 **同一仓库** 演进，避免多仓割裂。
 ## 6. 目录真值
 
 以仓库根目录实际树为准；各子目录 `README.md` 说明该轨职责与待补模板清单。
+
+## 7. 产品设计本体
+
+Track / Hat / Sync / SDD 公理与扩展规则见 [`DESIGN_ONTOLOGY_v1_zh.md`](./DESIGN_ONTOLOGY_v1_zh.md)（**v1.2**）。  
+与 **战略本体**（工作区 `docs/harness/guides/STRATEGY_ONTOLOGY_*`）分层：本文件描述 **产品如何实现**，战略文档描述 **对外演进**。

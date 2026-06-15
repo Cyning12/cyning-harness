@@ -1,6 +1,8 @@
 # cyning-harness
 
-可 clone、可嵌入业务仓库的 **Harness 产品包**（无业务代码，无内置 LLM）。
+可 clone、可嵌入业务仓库的 **Harness 纪律包**（无业务代码，无内置 LLM）。
+
+> **设计哲学**：用 **本体论** 定义「Track / Hat / Gate / Artifact」与 **ICVO 四支柱**（Inform · Constrain · Verify · Orchestrate），把 AI Coding 的上下文、规则与验收变成 **可同步、可审计、不覆盖用户 task** 的仓库真值。详见 [`docs/DESIGN_ONTOLOGY_v1_zh.md`](docs/DESIGN_ONTOLOGY_v1_zh.md)。
 
 ---
 
@@ -18,21 +20,50 @@
 | IDE | `ide/` | Cursor / Claude Code / AGENTS 入口片段 |
 | 向导 | `wizard/` | 安装与勾选式初始化 |
 
-**不提供：** 业务实现代码、LLM API、自研 Chat Runtime（后续版本在同仓扩展 CLI/Worker，见 `CHANGELOG.md`）。
+**不提供：** 业务实现代码、LLM API、Agent 编排 SDK（与 LangChain 等互补 · 见本体 §7.5）。
+
+**边界（S2）：** sync **不覆盖** `docs/tasks/`、`reviews/`、`invokes/by-task/` — 纪律层与业务数据分离。
 
 ---
 
-## 快速开始
+## Quick Start（三行 + 金样）
 
 ```bash
-git clone git@github.com:Cyning12/cyning-harness.git
-cd cyning-harness
+git clone git@github.com:Cyning12/cyning-harness.git && cd cyning-harness
+/path/to/cyning-harness/wizard/install.sh --target /path/to/your-repo --preset harness-only --ide cursor,agents
+/path/to/cyning-harness/wizard/harness-sync.sh apply --target /path/to/your-repo
+```
+
+**P0 金样（10→22→30）：** [`examples/demo_checkout/README.md`](examples/demo_checkout/README.md) · 差距清单 [`docs/P0_V0.2_GAP.md`](docs/P0_V0.2_GAP.md)
+
+**Kimi Code fork：** `--preset oss-fork-meta` 或 [`wizard/bootstrap-oss-fork-meta.sh`](wizard/bootstrap-oss-fork-meta.sh) · 过程轨不进上游 PR。
+
+---
+
+## 典型工作流
+
+```text
+install / adopt  →  harness-sync plan/apply  →  @ task + prompts（10→22→30）
+                      ↑ 产品包 git pull 后 upgrade.sh
+30 前：gate-check.sh  ·  HG-AUDIT-R1 = approved
 ```
 
 1. 阅读 [`docs/ONBOARDING.md`](docs/ONBOARDING.md)  
-2. **推荐** [`wizard/install.sh`](wizard/install.sh) 或存量 [`wizard/adopt-existing.sh`](wizard/adopt-existing.sh)  
-3. 产品包 `git pull` 后：[`wizard/upgrade.sh`](wizard/upgrade.sh) 交互升级（或 [`harness-sync.sh`](wizard/harness-sync.sh) `apply`）  
-4. 用自选 IDE `@` task + prompts；30 前可跑 [`wizard/gate-check.sh`](wizard/gate-check.sh)  
+2. [`wizard/install.sh`](wizard/install.sh) 或 [`adopt-existing.sh`](wizard/adopt-existing.sh)  
+3. 产品包更新：[`wizard/upgrade.sh`](wizard/upgrade.sh) 或 [`harness-sync.sh`](wizard/harness-sync.sh) `apply`  
+4. IDE `@` task + `docs/harness/prompts/`；30 前 [`gate-check.sh`](wizard/gate-check.sh)  
+
+---
+
+## 与通用 Agent 框架的差异（摘要）
+
+| 维度 | cyning-harness | LangChain / Semantic Kernel 等 |
+| --- | --- | --- |
+| 定位 | **纪律包** · SDD 过程审计 | Agent 编排 / 工具链 SDK |
+| 过程落盘 | AuditReview · InvokeSnapshot · HumanGate | 通常无一等过程制品 |
+| 同步边界 | S2 · 不覆盖用户 Task | 不适用 |
+
+完整对比：[`DESIGN_ONTOLOGY_v1_zh.md` §7.5](docs/DESIGN_ONTOLOGY_v1_zh.md)。
 
 ---
 
@@ -41,25 +72,17 @@ cd cyning-harness
 ```text
 cyning-harness/
 ├── README.md
-├── AGENTS.md
-├── CHANGELOG.md
 ├── docs/
+│   ├── DESIGN_ONTOLOGY_v1_zh.md   # 产品设计本体 v1.2
+│   ├── P0_V0.2_GAP.md             # P0 差距与演示命令
 │   ├── ARCHITECTURE.md
 │   └── ONBOARDING.md
+├── examples/demo_checkout/        # P0 金样 10→22→30
 ├── wizard/
-├── graph/templates/
-├── coding_wiki/templates/
-├── standards/
-├── harness/
-│   ├── templates/
-│   ├── prompts/
-│   └── invokes/
-├── ci/samples/
-├── ide/adapters/
-└── golden/              # 外部金样 pointer（仅链接说明，无业务代码）
+├── harness/                       # prompts · templates · invokes
+├── graph/ · coding_wiki/ · standards/ · ci/ · ide/
+└── golden/                        # 外部金样 pointer
 ```
-
-详见 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)。
 
 ---
 
@@ -67,14 +90,17 @@ cyning-harness/
 
 | 项 | 值 |
 |----|-----|
-| 当前 | **v0.2.1** — done 分层索引（Hub · 薄 `_views` · 域推断 FRAGMENT · install 嵌入） |
-| 上一档 | **v0.2.0** — D3 IDE 适配（CLAUDE/AGENTS fragment + install `--ide`） |
-| 许可 | 私有；公开策略待定 |
+| 当前 | **v0.2.1** — P0 金样与本体 v1.2 文档 |
+| 下一档 | **v0.3** — npx CLI · manifest · S5 git-clean |
+| 许可 | 私有；MIT public push 规划见工作区 STRATEGY_ONTOLOGY |
 
 ---
 
 ## 文档索引
 
+- [产品设计本体 v1.2](docs/DESIGN_ONTOLOGY_v1_zh.md)
+- [P0 差距清单](docs/P0_V0.2_GAP.md)
+- [P0 金样验收](examples/demo_checkout/ACCEPTANCE.md)
 - [架构说明](docs/ARCHITECTURE.md)
 - [接入指南](docs/ONBOARDING.md)
 - [变更记录](CHANGELOG.md)
