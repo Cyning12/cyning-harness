@@ -38,7 +38,7 @@
 | 版本 | 代号 | 须交付（实现） | 文档 / 方法论 |
 | --- | --- | --- | --- |
 | **v0.2.x** | **P0 闭环** | harness-only · sync plan/apply · gate-check · 金样 10→22→30 | methodology/ 归集 · P0 gap |
-| **v0.3.0** | **A1 分发** | manifest · npx init/upgrade/check（**proposal → 实现**）· S5 git-clean | FailureReport 模板 · rejected→draft gate-check |
+| **v0.3.0** | **A1 分发** | manifest · npx init/upgrade/check · S5 git-clean · **✅ 2026-06-15**（Release/npm 留维护者） | FailureReport 模板 · rejected→draft gate-check |
 | **v0.3.x** | **A2 Starter** | 40-self-check 帽 · `task.harness.v1.json` · depends_on 禁环 CLI | ONBOARDING npx 优先 |
 | **v0.4.0** | **A3 + push** | ontology.yaml · D7 HG-RELEASE · demo_checkout 脱敏 · MIT public | ETCLOVG 映射页 · README 叙事 |
 | **v1.0.0** | **A4 stable** | ICVO audit CLI · invoke_index · gate-check --graph（Inform） | CHANGELOG 冻结 · B2 量化进 README |
@@ -58,7 +58,7 @@
 
 | 轨 | STRATEGY 名 | 本路线重点 | 当前 |
 | --- | --- | --- | --- |
-| **A** | 产品包 | §2 表 · v0.2→v1.0 | P0 进行中 |
+| **A** | 产品包 | §2 表 · v0.2→v1.0 | **A1 done** · A2 next |
 | **B** | kimi-code-meta 试点 | oss-fork-meta / kimi-code-meta preset · 上游 PR 证据 · **#8 B2+micro-bench（1+3 主链）** · **#9 Agent-shell（2 并行）** | B0 · 证据方案待审 |
 | **C** | Runtime | harness ctx · Worker · **HGM 不替代 C** | 后置 |
 | **D** | 对外叙事 | ICVO · §7.5 对比 · 理论文章（见 prompts/） | 待 P0 绿 |
@@ -84,7 +84,7 @@
 
 | 从 → 到 | 闸门 |
 | --- | --- |
-| v0.2 → v0.3 | P0 金样 ACCEPTANCE 通过 · A1 三条验收可勾选 |
+| v0.2 → v0.3 | P0 金样 ACCEPTANCE ✅ · A1 实现 ✅（Release/npm 可后补） |
 | v0.3 → v0.4 | npx upgrade dogfood（kimi-code-meta）· ontology.yaml 草案 |
 | v0.4 → v1.0 | public push 审计 · **#8 B2 + SDD-Compliance micro-bench** · ICVO audit 子集绿 |
 | v1.0 → v0.5 HGM | 维护者确认事件 schema 冻结 · ingest 不破坏 S2 |
@@ -99,8 +99,8 @@ Epic 与子 task 真值：`Projects/docs/harness/tasks/active/`
 | --- | --- |
 | [`TASK_epic_cyning_harness_roadmap_v0_2_to_v1_v1.md`](../../../../docs/harness/tasks/active/TASK_epic_cyning_harness_roadmap_v0_2_to_v1_v1.md) | 全文 |
 | #1 P0 golden close | v0.2.x · **done** 2026-06-15 |
-| #2 A1 npx | v0.3.0 · **next** |
-| #3 A2 Starter | v0.3.x |
+| #2 A1 npx | v0.3.0 · **done** 2026-06-15 |
+| #3 A2 Starter | v0.3.x · **next** |
 | #4 B kimi dogfood | Track B |
 | #5 D 续篇 | Track D · 篇 1 已 draft |
 | #6 A3 public push | v0.4.0 |
@@ -133,3 +133,4 @@ Epic 与子 task 真值：`Projects/docs/harness/tasks/active/`
 | v1.3 | 2026-06-15 | Track B 证据三线 · #8/#9 · 审核稿索引 |
 | v1.3.1 | 2026-06-15 | B8/B9 审核结论回写 · S1–S4 · 3×2 · D6 字段 |
 | v1.3.2 | 2026-06-15 | P0 金样关账 · v0.2→v0.3 首闸满足 · A1 next |
+| v1.3.3 | 2026-06-15 | A1 实现关账 · A2 next · v0.3.0 表标注 |
