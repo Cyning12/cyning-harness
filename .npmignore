@@ -1,0 +1,7 @@
+# 不进入 npm 包
+test/
+examples/demo_checkout/_sandbox/
+.git/
+.github/
+*.log
+.DS_Store

@@ -5,8 +5,8 @@
   "license": "MIT",
   "type": "module",
   "bin": {
-    "harness": "./bin/harness.js",
-    "cyning-harness": "./bin/harness.js"
+    "harness": "bin/harness.js",
+    "cyning-harness": "bin/harness.js"
   },
   "files": [
     "bin/",
@@ -21,6 +21,8 @@
     "ide/",
     "golden/",
     "examples/",
+    "!examples/demo_checkout/_sandbox",
+    "!examples/demo_checkout/_sandbox/**",
     "docs/",
     "README.md",
     "CHANGELOG.md",
