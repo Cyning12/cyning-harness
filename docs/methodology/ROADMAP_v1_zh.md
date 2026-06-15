@@ -3,7 +3,7 @@
 | 项 | 内容 |
 | --- | --- |
 | **状态** | `active` |
-| **版本** | v1.1 |
+| **版本** | v1.3 |
 | **日期** | 2026-06-15 |
 | **性质** | **L2 产品路线真值** · 吸收本体 v1.2 + HGM + P0 后修订 |
 | **L1 对齐** | 工作区 [`STRATEGY_MASTER`](./pointers/STRATEGY_MASTER_v1_zh.md) Track A/B/C/D · **冲突时本文件管产品 semver 与能力边界** |
@@ -59,7 +59,7 @@
 | 轨 | STRATEGY 名 | 本路线重点 | 当前 |
 | --- | --- | --- | --- |
 | **A** | 产品包 | §2 表 · v0.2→v1.0 | P0 进行中 |
-| **B** | kimi-code-meta 试点 | oss-fork-meta / kimi-code-meta preset · 上游 PR 证据 | B0 |
+| **B** | kimi-code-meta 试点 | oss-fork-meta / kimi-code-meta preset · 上游 PR 证据 · **#8 B2+micro-bench（1+3 主链）** · **#9 Agent-shell（2 并行）** | B0 · 证据方案待审 |
 | **C** | Runtime | harness ctx · Worker · **HGM 不替代 C** | 后置 |
 | **D** | 对外叙事 | ICVO · §7.5 对比 · 理论文章（见 prompts/） | 待 P0 绿 |
 | **G** | **（新增）HGM** | §2 v0.5+ · 依赖 v1.0 公理稳定 | proposal |
@@ -86,14 +86,49 @@
 | --- | --- |
 | v0.2 → v0.3 | P0 金样 ACCEPTANCE 通过 · A1 三条验收可勾选 |
 | v0.3 → v0.4 | npx upgrade dogfood（kimi-code-meta）· ontology.yaml 草案 |
-| v0.4 → v1.0 | public push 审计 · B2 量化 · ICVO audit 子集绿 |
+| v0.4 → v1.0 | public push 审计 · **#8 B2 + SDD-Compliance micro-bench** · ICVO audit 子集绿 |
 | v1.0 → v0.5 HGM | 维护者确认事件 schema 冻结 · ingest 不破坏 S2 |
 
 ---
 
-## 6. 修订记录
+## 6. 工作区任务编排
+
+Epic 与子 task 真值：`Projects/docs/harness/tasks/active/`
+
+| Epic / 子 task | 对应 ROADMAP |
+| --- | --- |
+| [`TASK_epic_cyning_harness_roadmap_v0_2_to_v1_v1.md`](../../../../docs/harness/tasks/active/TASK_epic_cyning_harness_roadmap_v0_2_to_v1_v1.md) | 全文 |
+| #1 P0 golden close | v0.2.x · **当前** |
+| #2 A1 npx | v0.3.0 |
+| #3 A2 Starter | v0.3.x |
+| #4 B kimi dogfood | Track B |
+| #5 D 续篇 | Track D · 篇 1 已 draft |
+| #6 A3 public push | v0.4.0 |
+| #7 A4 v1.0 | v1.0.0 · 引用 #8 |
+| **#8 B2 + bench** | Track B · **1+3 主证据** · P0 绿后优先 |
+| **#9 Agent-shell** | Track B · **2 并行** · 核实期 · 不挡 A3 |
+
+**证据策略（2026-06-15 锁定）**：
+
+| 线 | 内容 | 优先级 |
+| --- | --- | --- |
+| **1+3** | B2 真实试点量化 + SDD-Compliance micro-bench（5 scenario） | **主链** · #8 |
+| **2** | Agent-shell（Kimi agent 规则层 SDD） | **并行** · #9 · Epic 不强制 |
+
+审核稿：`methodology/reviews/REVIEW_B3_*` · `REVIEW_B9_*` · Prompt：`prompts/PROMPT_feasibility_review_b_evidence_v1_zh.md`
+
+**审核结论（2026-06-15）**：B8 **4/5** · B9 **3/5** · 均 **APPROVE_WITH_CHANGES** · #8 **P0 绿后主投入** · #9 **≤4h/周** · #8 scenario 冻结后再开 #9
+
+**理论参考**：[`ARTICLE_纪律包工程续篇_篇1`](../../../../ai_coding_governance/narrative/discipline_package_series/ARTICLE_纪律包工程续篇_篇1_从OOP到本体_v1_zh.md)
+
+---
+
+## 7. 修订记录
 
 | 版本 | 日期 | 说明 |
 | --- | --- | --- |
 | v1.0 | 2026-06-15 | 本体+HGM 融合后首版统一路线 · 新增 Track G |
 | v1.1 | 2026-06-15 | §2 主轨/Track G 分表 · 对外表述脚注 · 一致性审计落盘 |
+| v1.2 | 2026-06-15 | §6 链工作区 Epic 任务 · 篇 1 理论参考 |
+| v1.3 | 2026-06-15 | Track B 证据三线 · #8/#9 · 审核稿索引 |
+| v1.3.1 | 2026-06-15 | B8/B9 审核结论回写 · S1–S4 · 3×2 · D6 字段 |

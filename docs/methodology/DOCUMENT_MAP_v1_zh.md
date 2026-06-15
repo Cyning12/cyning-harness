@@ -72,7 +72,10 @@ flowchart TB
 | HARNESS_V2_PLAN | L1 | `docs/harness/` | Ink 工作区 Harness 规划 | AGENTS.md §8 |
 | PILOT_kimi_code_fork | L1 | `docs/harness/guides/` | kimi-code-meta 试点 | ONBOARDING · wizard |
 | GUIDANCE_distribution | L1 | 同上 | npx / ctx / MCP | STRATEGY_MASTER |
-| **ROADMAP v1.1** | L2 | `methodology/` | **产品 semver · Track G** | STRATEGY_MASTER · ONTOLOGY |
+| **ROADMAP v1.3** | L2 | `methodology/` | **产品 semver · Track G · B 证据** | STRATEGY_MASTER · ONTOLOGY |
+| **REVIEW B3 bench** | L2 | `methodology/reviews/` | B8 方案审核稿 · 1+3 | ROADMAP §6 · task #8 |
+| **REVIEW B9 shell** | L2 | `methodology/reviews/` | B9 方案审核稿 · 并行 | ROADMAP §6 · task #9 |
+| **PROMPT feasibility B** | L2 | `methodology/prompts/` | B8+B9 联合审核 Invoke | REVIEW_B3 · REVIEW_B9 |
 | **AUDIT doc consistency** | L2 | `methodology/` | 一致性审计归档 | PROMPT_doc_consistency_audit |
 | **methodology/README** | L2 | `cyning-harness/docs/methodology/` | **总指引** | 本文件 |
 | **DESIGN_ONTOLOGY v1.2** | L2 | `methodology/product/` | **产品语义真值** | ARCHITECTURE · templates |
@@ -101,11 +104,11 @@ flowchart TB
 | 文档 | 版本 |
 | --- | --- |
 | DESIGN_ONTOLOGY | v1.2 · draft |
-| ROADMAP | v1.1 · active |
+| ROADMAP | v1.3 · active |
 | HGM design | v0.1 · proposal |
 | STRATEGY_ONTOLOGY | v1.1 · active（L1 · 工作区） |
 | P0 gap | active |
-| methodology README | v1.1 |
+| methodology README | v1.2 |
 | 一致性审计 | [`AUDIT_doc_consistency_2026-06-15_zh.md`](./AUDIT_doc_consistency_2026-06-15_zh.md) |
 
 ---
@@ -116,3 +119,4 @@ flowchart TB
 | --- | --- |
 | 2026-06-15 | 初版关系图 · 归集 methodology/ 后 |
 | 2026-06-15 | §4 版本锚点同步 v1.1 · 补 ROADMAP · 审计报告链 |
+| 2026-06-15 | B8/B9 审核稿 · ROADMAP v1.3 |
