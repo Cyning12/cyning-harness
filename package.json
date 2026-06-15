@@ -29,7 +29,8 @@
     "AGENTS.md"
   ],
   "scripts": {
-    "test": "node --test test/*.test.js"
+    "test": "node --test test/*.test.js",
+    "harness": "node bin/harness.js"
   },
   "engines": {
     "node": ">=18"

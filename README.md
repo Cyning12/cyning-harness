@@ -31,12 +31,20 @@
 ## Quick Start（npx · v0.3+）
 
 ```bash
-# 新业务仓根
+# 新业务仓根（须在目标业务仓执行，勿在本产品仓根目录跑 npx）
 npx @cyning/harness@latest init --preset harness-only --ide cursor,agents
 
 # 日常升级
 npx @cyning/harness upgrade
 npx @cyning/harness check
+```
+
+**维护者 · 在本仓库根验证 CLI**（npm 不会为「当前包」链接 `bin`，`npx` 会报 `harness: command not found`）：
+
+```bash
+npm run harness -- check --target /tmp/foo
+# 或
+node bin/harness.js check --target /tmp/foo
 ```
 
 **维护者 / 离线（clone 路径）：**

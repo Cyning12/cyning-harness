@@ -10,7 +10,7 @@
 
 ## 2. 安装（v0.3+ · npx 优先）
 
-**推荐 · 新业务仓根目录：**
+**推荐 · 目标业务仓根目录**（不要在 **cyning-harness 产品仓根** 跑 `npx @cyning/harness`，否则会 `harness: command not found`；维护者用 `npm run harness -- …` 或 `node bin/harness.js`）：
 
 ```bash
 npx @cyning/harness@latest init --preset harness-only --ide cursor,agents
