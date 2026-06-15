@@ -84,6 +84,22 @@ check_one_task() {
 
 echo "=== Harness gate-check ==="
 echo "目标: $TARGET"
+
+MANIFEST_FILE="$TARGET/.cyning-harness/manifest.json"
+if [[ -f "$MANIFEST_FILE" ]]; then
+  mf_version="$(grep -o '"version"[[:space:]]*:[[:space:]]*"[^"]*"' "$MANIFEST_FILE" | head -1 | sed -E 's/.*"([^"]+)"$/\1/')"
+  mf_preset="$(grep -o '"preset"[[:space:]]*:[[:space:]]*"[^"]*"' "$MANIFEST_FILE" | head -1 | sed -E 's/.*"([^"]+)"$/\1/')"
+  echo "manifest.version: ${mf_version:-?}"
+  echo "manifest.preset: ${mf_preset:-?}"
+  if [[ -n "${CYNING_HARNESS:-}" && -f "$CYNING_HARNESS/package.json" ]]; then
+    pkg_version="$(grep '"version"' "$CYNING_HARNESS/package.json" | head -1 | sed -E 's/.*:[[:space:]]*"([^"]+)".*/\1/')"
+    if [[ -n "$pkg_version" && -n "$mf_version" && "$mf_version" != "$pkg_version" ]]; then
+      echo "提示: manifest 版本 ($mf_version) 与产品包 ($pkg_version) 不一致 · 可运行 upgrade"
+    fi
+  fi
+else
+  echo "manifest: (未接入 · 无 $MANIFEST_FILE)"
+fi
 echo ""
 
 BLOCKED=0

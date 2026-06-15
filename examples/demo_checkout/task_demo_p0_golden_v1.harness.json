@@ -1,0 +1,12 @@
+{
+  "schema_version": "1",
+  "task_slug": "demo_p0_golden",
+  "test_strategy": "not_applicable",
+  "test_strategy_note": "金样仅验证 SDD 链与 gate-check · 无产品代码测试",
+  "depends_on": [],
+  "parallel_group": null,
+  "git_branch": "task/demo-p0-golden",
+  "worktree_root": "examples/demo_checkout/_sandbox",
+  "status": "draft",
+  "task_markdown": "examples/demo_checkout/task_demo_p0_golden_v1.md"
+}

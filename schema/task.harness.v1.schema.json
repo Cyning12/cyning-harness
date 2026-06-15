@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cyning.dev/schemas/cyning-harness/task.harness.v1.json",
+  "title": "cyning-harness Task Sidecar",
+  "description": "WorkItem 机器可读元数据 sidecar · 与 task_*.md 配对（本体 WorkItem · STRATEGY A2）",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "task_slug", "test_strategy"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1",
+      "description": "Sidecar schema 主版本"
+    },
+    "task_slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]*$",
+      "description": "与 task 元信息 task_slug 一致"
+    },
+    "test_strategy": {
+      "type": "string",
+      "enum": ["required", "recommended", "not_applicable"],
+      "description": "Harness V2 test_strategy 字段"
+    },
+    "test_strategy_note": {
+      "type": "string",
+      "minLength": 1,
+      "description": "test_strategy=not_applicable 时必填"
+    },
+    "depends_on": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9-]*$"
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "Epic 编排依赖 · 须无环（harness task check --no-circular）"
+    },
+    "parallel_group": {
+      "type": ["string", "null"],
+      "description": "Epic parallel_group · 无则 null 或省略"
+    },
+    "git_branch": {
+      "type": "string",
+      "description": "建议分支名 task/<slug>"
+    },
+    "worktree_root": {
+      "type": "string",
+      "description": "Open Folder / 验证 cwd"
+    },
+    "epic_slug": {
+      "type": "string",
+      "description": "所属 Epic slug"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "pending", "in_progress", "done"]
+    },
+    "task_markdown": {
+      "type": "string",
+      "description": "配对 task Markdown 相对路径（可选 · 便于 CLI 定位）"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "test_strategy": { "const": "not_applicable" } },
+        "required": ["test_strategy"]
+      },
+      "then": {
+        "required": ["test_strategy_note"]
+      }
+    }
+  ]
+}

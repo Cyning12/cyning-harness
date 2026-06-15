@@ -4,6 +4,22 @@
 
 ## [Unreleased]
 
+## [0.3.2] - 2026-06-15
+
+### Added
+
+- **Starter 40-self-check 帽**：[`harness/prompts/40-self-check.md`](harness/prompts/40-self-check.md) · Starter 闭包 **10/22/30/40**
+- **`task.harness.v1.json` schema**：[`schema/task.harness.v1.schema.json`](schema/task.harness.v1.schema.json)
+- **CLI `task check`**：`harness task check --file PATH [--no-circular] [--registry DIR]` · depends_on 环检测
+- **gate-check manifest 版本**：输出 `manifest.version` / preset · 与产品包版本不一致时提示 upgrade
+- **金样 sidecar**：[`examples/demo_checkout/task_demo_p0_golden_v1.harness.json`](examples/demo_checkout/task_demo_p0_golden_v1.harness.json)
+- **测试**：`test/task.check.test.js` · `npm test` 扩展
+
+### Changed
+
+- `harness/prompts/README.md`：标注 Starter 四帽闭包
+- 维护者本地验证：`npm run harness -- task check --file …`
+
 ## [0.3.1] - 2026-06-15
 
 ### Fixed

@@ -9,7 +9,10 @@
 | [`10-requirements.md`](./10-requirements.md) | ✅ | 需求 / 任务分析 · 精简 + POINTER |
 | [`22-task-audit.md`](./22-task-audit.md) | ✅ | 任务审核 · 落盘 reviews · HG-AUDIT-R1 |
 | [`30-execute-code.md`](./30-execute-code.md) | ✅ v0.1.1 | 执行编码 · 强制闸扫描 · AUDIT approved |
+| [`40-self-check.md`](./40-self-check.md) | ✅ v0.3.2 | 自检 · 命令证据 · 回填 task |
 | [`TEMPLATE_30_gate_stop.md`](./TEMPLATE_30_gate_stop.md) | ✅ v0.1.1 | 30 拒开工输出模板 |
+
+**Starter 闭包**：10 / 22 / 30 / **40**（A2 · v0.3.x）
 
 ## 完整库（POINTER · 不复制全文）
 
