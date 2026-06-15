@@ -98,8 +98,8 @@ Epic 与子 task 真值：`Projects/docs/harness/tasks/active/`
 | Epic / 子 task | 对应 ROADMAP |
 | --- | --- |
 | [`TASK_epic_cyning_harness_roadmap_v0_2_to_v1_v1.md`](../../../../docs/harness/tasks/active/TASK_epic_cyning_harness_roadmap_v0_2_to_v1_v1.md) | 全文 |
-| #1 P0 golden close | v0.2.x · **当前** |
-| #2 A1 npx | v0.3.0 |
+| #1 P0 golden close | v0.2.x · **done** 2026-06-15 |
+| #2 A1 npx | v0.3.0 · **next** |
 | #3 A2 Starter | v0.3.x |
 | #4 B kimi dogfood | Track B |
 | #5 D 续篇 | Track D · 篇 1 已 draft |
@@ -132,3 +132,4 @@ Epic 与子 task 真值：`Projects/docs/harness/tasks/active/`
 | v1.2 | 2026-06-15 | §6 链工作区 Epic 任务 · 篇 1 理论参考 |
 | v1.3 | 2026-06-15 | Track B 证据三线 · #8/#9 · 审核稿索引 |
 | v1.3.1 | 2026-06-15 | B8/B9 审核结论回写 · S1–S4 · 3×2 · D6 字段 |
+| v1.3.2 | 2026-06-15 | P0 金样关账 · v0.2→v0.3 首闸满足 · A1 next |

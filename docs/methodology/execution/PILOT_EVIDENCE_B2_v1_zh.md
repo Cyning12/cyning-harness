@@ -10,7 +10,9 @@
 | **ROADMAP** | v0.4→v1.0 闸门 · [`ROADMAP_v1_zh.md`](../ROADMAP_v1_zh.md) §5 |
 
 > **读者说明**：本文档为 **双证据** 同页真值。**Part A** = 真实试点 retro（小样本 · 机制叙事）；**Part B** = 可复现 SDD-Compliance bench（不测 LLM 解题）。  
-> **禁止**在未冻结前将下表数字复制进 README / 公众稿（续篇篇 1 §8）。
+> **读者说明**：本文档为 **双证据** 同页真值。**Part A** = 真实试点 retro（小样本 · 机制叙事）；**Part B** = 可复现 SDD-Compliance bench（不测 LLM 解题）。  
+> **禁止**在未冻结前将下表数字复制进 README / 公众稿（续篇篇 1 §8）。  
+> **执行委派**：工作区 Epic §00 · 下一档 A1 — [`PROMPT_START_a1_npx_v1.md`](../../../../docs/harness/invokes/by-task/cyning-harness-a1-npx/PROMPT_START_a1_npx_v1.md)
 
 ---
 
