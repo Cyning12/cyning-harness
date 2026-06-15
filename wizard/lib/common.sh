@@ -199,6 +199,25 @@ profile_ide_cursor_rel() {
 }
 
 # 从 CLAUDE.md / AGENTS.md 剥离 Harness marker 块；若仅剩空文件则删除
+# S5 · sync/apply 前检测 Git 工作区干净（v0.3+）
+# 非 git 仓跳过；--force 或 HARNESS_SYNC_FORCE=1 跳过
+check_git_clean() {
+  local target="$1" force="${2:-0}"
+  if [[ "$force" == "1" || "${HARNESS_SYNC_FORCE:-0}" == "1" ]]; then
+    return 0
+  fi
+  if ! git -C "$target" rev-parse --git-dir >/dev/null 2>&1; then
+    return 0
+  fi
+  if git -C "$target" diff --quiet 2>/dev/null && git -C "$target" diff --cached --quiet 2>/dev/null; then
+    return 0
+  fi
+  echo "错误(S5): Git 工作区不干净，sync apply 已中止。" >&2
+  echo "请先 commit/stash，或使用 --force / HARNESS_SYNC_FORCE=1" >&2
+  git -C "$target" status --short >&2 || true
+  exit 1
+}
+
 remove_harness_marker_file() {
   local dst="$1"
   if [[ ! -f "$dst" ]]; then

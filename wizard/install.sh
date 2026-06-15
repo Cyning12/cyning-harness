@@ -5,6 +5,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=lib/common.sh
 source "$SCRIPT_DIR/lib/common.sh"
+# shellcheck source=lib/manifest.sh
+source "$SCRIPT_DIR/lib/manifest.sh"
 HARNESS_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 TARGET=""
 PRESET="harness-only"
@@ -55,7 +57,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 CYNING_HARNESS="${CYNING_HARNESS:-$HARNESS_ROOT}"
-VERSION="$(git -C "$HARNESS_ROOT" describe --tags --always 2>/dev/null || echo unknown)"
+VERSION="${HARNESS_VERSION:-$(git -C "$HARNESS_ROOT" describe --tags --always 2>/dev/null || echo unknown)}"
 
 # --- 交互：仅补全命令行未提供的项 ---
 if [[ "$TARGET_PROVIDED" -eq 0 ]]; then
@@ -145,6 +147,7 @@ if [[ "$DRY_RUN" == "1" ]]; then
   "$SCRIPT_DIR/harness-sync.sh" plan --target "$TARGET"
 else
   "$SCRIPT_DIR/harness-sync.sh" apply --target "$TARGET"
+  write_manifest_init "$TARGET" "$VERSION" "$PRESET" "$IDE_LIST" "$PROFILE_DST"
 fi
 
 # CI
@@ -197,5 +200,7 @@ fi
 
 echo ""
 echo "安装完成。profile: $PROFILE_DST"
-echo "日后升级: cd $CYNING_HARNESS && $CYNING_HARNESS/wizard/upgrade.sh --target $TARGET"
+echo "manifest: $(manifest_file_path "$TARGET")"
+echo "日后升级: npx @cyning/harness upgrade --target $TARGET"
+echo "或维护者: cd $CYNING_HARNESS && ./wizard/upgrade.sh --target $TARGET"
 echo "清空重装: $CYNING_HARNESS/wizard/uninstall.sh --target $TARGET"

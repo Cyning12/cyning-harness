@@ -4,6 +4,20 @@
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-06-15
+
+### Added
+
+- **`@cyning/harness` npm CLI**：`init` · `upgrade` · `check`（薄封装 · 内部复用 `wizard/*.sh`）
+- **`.cyning-harness/manifest.json`**：install/upgrade 写入 · schema [`schema/manifest.v1.schema.json`](schema/manifest.v1.schema.json)
+- **S5 git-clean**：`harness-sync.sh apply` 前检测已跟踪文件变更 · `--force` / `HARNESS_SYNC_FORCE=1` 跳过
+- **集成测试**：`npm test`（空目录 init · upgrade 等价 upgrade.sh · S5）
+
+### Changed
+
+- `docs/ONBOARDING.md` · `README.md` · `wizard/README.md`：**npx 优先**，clone 路径为维护者/离线
+- `wizard/install.sh` · `wizard/upgrade.sh`：写入/更新 manifest · 支持 `HARNESS_VERSION`
+
 ## [0.2.1] - 2026-06-13
 
 ### Added

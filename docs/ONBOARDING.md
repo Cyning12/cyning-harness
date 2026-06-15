@@ -8,7 +8,39 @@
 - 自选 IDE（推荐带 Agent 能力的编辑器）
 - 业务仓已具备或计划具备：lint / test / build 之一（`ci/` 可对齐）
 
-## 2. 安装向导（wizard）
+## 2. 安装（v0.3+ · npx 优先）
+
+**推荐 · 新业务仓根目录：**
+
+```bash
+npx @cyning/harness@latest init --preset harness-only --ide cursor,agents
+```
+
+日常升级：
+
+```bash
+npx @cyning/harness upgrade
+npx @cyning/harness check    # 仅检查是否有新版本
+```
+
+写入 `.cyning-harness/manifest.json`（钉版本 · preset · ide）与 `profile.json`。  
+Schema：[`schema/manifest.v1.schema.json`](../schema/manifest.v1.schema.json)
+
+**维护者 / 离线 · clone 路径：**
+
+```bash
+git clone git@github.com:Cyning12/cyning-harness.git
+cd your-project
+/path/to/cyning-harness/wizard/install.sh --preset harness-only --ide cursor,agents
+```
+
+`wizard/` 交互问卷与 `--ide cursor,claude,agents` 仍可用；详见 [`wizard/README.md`](../wizard/README.md) · [`wizard/ONBOARDING_wizard_v1_zh.md`](../wizard/ONBOARDING_wizard_v1_zh.md)。
+
+**OSS 个人 fork 向上游 PR**：[`wizard/bootstrap-oss-fork-meta.sh`](../wizard/bootstrap-oss-fork-meta.sh) + [`examples/oss-fork/README.md`](../examples/oss-fork/README.md)（双 worktree · C3 思考回填 · 过程轨不进上游 PR）。选题：[`wizard/scan-upstream-issues.sh`](../wizard/scan-upstream-issues.sh)（`kimi-c3-candidate` 等 preset）。
+
+---
+
+## 2.1 安装向导（wizard · 存量/离线）
 
 `wizard/` 将提供勾选问卷（规划 **v0.1**）：
 
@@ -19,7 +51,7 @@
 | 语言栈 | 前端 TS · 后端 Python · 全栈 · 其他 |
 | IDE 入口 | Cursor rules · CLAUDE.md · AGENTS.md（可多选 · `--ide`） |
 
-当前 **v0.2.0**：优先 [`wizard/README.md`](../wizard/README.md) 脚本 + `--ide cursor,claude,agents`；问卷见 [`wizard/ONBOARDING_wizard_v1_zh.md`](../wizard/ONBOARDING_wizard_v1_zh.md)。亦可 **手工** 按 §4 复制模板。
+当前 **v0.3.0**：**npx 优先**（§2）；离线或维护者用 [`wizard/README.md`](../wizard/README.md) 脚本 + `--ide cursor,claude,agents`。亦可 **手工** 按 §4 复制模板。
 
 **OSS 个人 fork 向上游 PR**：[`wizard/bootstrap-oss-fork-meta.sh`](../wizard/bootstrap-oss-fork-meta.sh) + [`examples/oss-fork/README.md`](../examples/oss-fork/README.md)（双 worktree · C3 思考回填 · 过程轨不进上游 PR）。选题：[`wizard/scan-upstream-issues.sh`](../wizard/scan-upstream-issues.sh)（`kimi-c3-candidate` 等 preset）。
 

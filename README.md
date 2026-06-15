@@ -28,7 +28,18 @@
 
 ---
 
-## Quick Start（三行 + 金样）
+## Quick Start（npx · v0.3+）
+
+```bash
+# 新业务仓根
+npx @cyning/harness@latest init --preset harness-only --ide cursor,agents
+
+# 日常升级
+npx @cyning/harness upgrade
+npx @cyning/harness check
+```
+
+**维护者 / 离线（clone 路径）：**
 
 ```bash
 git clone git@github.com:Cyning12/cyning-harness.git && cd cyning-harness

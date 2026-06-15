@@ -1,0 +1,35 @@
+{
+  "name": "@cyning/harness",
+  "version": "0.3.0",
+  "description": "cyning-harness discipline package · init / upgrade / check CLI",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "harness": "./bin/harness.js",
+    "cyning-harness": "./bin/harness.js"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "schema/",
+    "wizard/",
+    "harness/",
+    "graph/",
+    "coding_wiki/",
+    "standards/",
+    "ci/",
+    "ide/",
+    "golden/",
+    "examples/",
+    "docs/",
+    "README.md",
+    "CHANGELOG.md",
+    "AGENTS.md"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

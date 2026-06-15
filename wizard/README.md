@@ -1,6 +1,27 @@
 # wizard · 安装与同步
 
+> **v0.3.0+**：**npx 优先** · `npx @cyning/harness init|upgrade|check` · manifest.json  
 > **v0.2.0+**：脚本化接入 · `--ide cursor,claude,agents` · OSS fork worktree · 上游 issue 扫描
+
+---
+
+## 0. npx CLI（v0.3+ · 推荐）
+
+```bash
+# 首次（业务仓根）
+npx @cyning/harness@latest init --preset harness-only --ide cursor,agents
+
+# 升级（等价 ./wizard/upgrade.sh --yes）
+npx @cyning/harness upgrade
+npx @cyning/harness upgrade --target /path/to/project --yes --force
+
+# 仅检查版本
+npx @cyning/harness check
+```
+
+- 内部单源：`wizard/install.sh` → `harness-sync.sh apply`（S2 写路径不变）
+- manifest schema：[`schema/manifest.v1.schema.json`](../schema/manifest.v1.schema.json)
+- 本地开发：`node bin/harness.js init --target /path/to/project --preset harness-only --ide cursor,agents --yes`
 
 ---
 

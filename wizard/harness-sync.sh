@@ -4,6 +4,7 @@ set -euo pipefail
 
 MODE="${1:-}"
 TARGET="${TARGET:-$(pwd)}"
+SYNC_FORCE=0
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=lib/common.sh
 source "$SCRIPT_DIR/lib/common.sh"
@@ -26,11 +27,12 @@ usage() {
 
   "$CYNING_HARNESS/wizard/harness-sync.sh" plan --target /path/to/project
   "$CYNING_HARNESS/wizard/harness-sync.sh" apply --target /path/to/project
+  "$CYNING_HARNESS/wizard/harness-sync.sh" apply --target /path/to/project --force   # 跳过 S5 git-clean
 
 依赖：业务仓已有 .cyning-harness/profile.json（由 install.sh 生成）
 
 plan  — 仅打印将复制的文件
-apply — 执行复制（harness prompts / invoke 模板 / IDE 规则；图谱/wiki 仅 install 时或 --force-tracks）
+apply — 执行复制（S5：git 仓须工作区干净，或 --force）
 EOF
 }
 
@@ -38,6 +40,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     plan|apply) MODE="$1"; shift ;;
     --target) TARGET="$2"; shift 2 ;;
+    --force) SYNC_FORCE=1; shift ;;
     -h|--help) usage; exit 0 ;;
     *) echo "未知参数: $1" >&2; usage; exit 1 ;;
   esac
@@ -200,6 +203,10 @@ fi
 if [[ ${#OPS[@]} -eq 0 ]]; then
   echo "无同步项（检查 profile tracks）" >&2
   exit 1
+fi
+
+if [[ "$MODE" == "apply" ]]; then
+  check_git_clean "$TARGET" "$SYNC_FORCE"
 fi
 
 echo "=== cyning-harness sync ($MODE) ==="
