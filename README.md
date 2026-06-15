@@ -3,6 +3,7 @@
 可 clone、可嵌入业务仓库的 **Harness 纪律包**（无业务代码，无内置 LLM）。
 
 > **设计哲学**：用 **本体论** 定义「Track / Hat / Gate / Artifact」与 **ICVO 四支柱**（Inform · Constrain · Verify · Orchestrate），把 AI Coding 的上下文、规则与验收变成 **可同步、可审计、不覆盖用户 task** 的仓库真值。  
+> **公众连载** 使用 **ICV 三支柱**（SDD 层）；**Orchestrate** 是对卷三过程编排的 **产品化命名**，见 [`docs/methodology/product/README.md`](docs/methodology/product/README.md) · [`docs/methodology/AUDIT_doc_consistency_2026-06-15_zh.md`](docs/methodology/AUDIT_doc_consistency_2026-06-15_zh.md)。  
 > **方法论总指引**：[`docs/methodology/README.md`](docs/methodology/README.md) · 本体 [`docs/methodology/product/DESIGN_ONTOLOGY_v1_zh.md`](docs/methodology/product/DESIGN_ONTOLOGY_v1_zh.md)
 
 ---
@@ -105,7 +106,7 @@ cyning-harness/
 
 | 优先级 | 文档 |
 | --- | --- |
-| **总指引** | [methodology/README.md](docs/methodology/README.md) · [关系图](docs/methodology/DOCUMENT_MAP_v1_zh.md) |
+| **总指引** | [`methodology/README.md`](docs/methodology/README.md) · [关系图](docs/methodology/DOCUMENT_MAP_v1_zh.md) · [路线 ROADMAP](docs/methodology/ROADMAP_v1_zh.md) |
 | **本体** | [DESIGN_ONTOLOGY v1.2](docs/methodology/product/DESIGN_ONTOLOGY_v1_zh.md) |
 | **落地** | [P0 差距](docs/methodology/execution/P0_V0.2_GAP.md) · [金样验收](examples/demo_checkout/ACCEPTANCE.md) |
 | **远期** | [HGM 草案](docs/methodology/graph/HARNESS_GRAPH_MODEL_design_v0_zh.md) |

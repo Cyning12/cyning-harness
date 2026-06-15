@@ -543,7 +543,7 @@ AGENTS.md / CLAUDE.md 内 cyning-harness marker 区段（整文件若仅含 mark
 | ProcessTrack · Task 模板 | `harness/templates/` · `track.yaml`  | `docs/tasks/`                            |
 | ProcessTrack · Hat     | `harness/prompts/`                   | `docs/harness/prompts/`                  |
 | InvokeSnapshot 模板      | `harness/invokes/TEMPLATE_invoke.md` | `docs/harness/invokes/`                  |
-| InvokeSnapshot 索引      | —                                    | `.cyning-harness/invoke_index.json`（sync --index · v0.4+） |
+| InvokeSnapshot 索引      | —                                    | `.cyning-harness/invoke_index.json`（sync --index · v1.0） |
 | VerifyTrack            | `ci/samples/` · `track.yaml`         | `.github/workflows/`                     |
 | IDETrack               | `ide/adapters/` · `track.yaml`       | `.cursor/rules/`、`CLAUDE.md`、`AGENTS.md` |
 | AdoptedProfile         | —                                    | `.cyning-harness/profile.json`           |

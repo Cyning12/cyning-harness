@@ -30,12 +30,9 @@ docs/
 ├── P0_V0.2_GAP.md            # POINTER → methodology/execution/
 ├── HARNESS_GRAPH_MODEL_*.md  # POINTER → methodology/graph/
 └── methodology/              # ★ 方法论与本体 · 总指引
-    ├── README.md
-    ├── DOCUMENT_MAP_v1_zh.md
-    ├── product/              # 产品设计本体
-    ├── graph/                # Harness Graph Model
-    ├── execution/            # P0 差距 · 落地清单
-    └── pointers/             # 工作区 / 治理仓 POINTER
+    ├── README.md · ROADMAP_v1_zh.md · DOCUMENT_MAP_v1_zh.md
+    ├── product/ · graph/ · execution/ · pointers/
+    └── prompts/              # Agent 写作 / 讨论 Prompt
 ```
 
 **修订**：2026-06-15 · 方法论归集至 `methodology/`

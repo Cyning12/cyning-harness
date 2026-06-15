@@ -1,5 +1,7 @@
 # graph · Harness Graph Model (HGM)
 
+> **Track G · G1 / v0.5+**：HGM 为 **v1.0 公理稳定后的可选增强**（proposal · 未实现）· 详见 [`../ROADMAP_v1_zh.md`](../ROADMAP_v1_zh.md) §2.2。
+
 | 文档 | 状态 | 说明 |
 | --- | --- | --- |
 | **[`HARNESS_GRAPH_MODEL_design_v0_zh.md`](./HARNESS_GRAPH_MODEL_design_v0_zh.md)** | proposal · v0.5+ | **真值稿** · 节点/边/事件 · CLI 路线 |

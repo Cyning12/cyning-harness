@@ -8,7 +8,7 @@
 | **日期**   | 2026-06-15                                                                                                                       |
 | **范围**   | 过程轨 **实例** 的显式图 + 事件历史 + 公理可查询                                                                                                   |
 | **非范围**  | 替代 Git/Markdown 真值 · 替代 LLM Runtime · `**GraphTrack` 架构图**（见 §0.3）                                                               |
-| **依赖**   | [`../product/DESIGN_ONTOLOGY_v1_zh.md`](../product/DESIGN_ONTOLOGY_v1_zh.md) v1.2 · P0 闭环 · v0.3 `ontology.yaml` · v0.4 `gate-check --graph`（Inform） |
+| **依赖**   | [`../product/DESIGN_ONTOLOGY_v1_zh.md`](../product/DESIGN_ONTOLOGY_v1_zh.md) v1.2 · P0 金样路径已建（ACCEPTANCE 待绿）· v0.3 `ontology.yaml`（未实现）· v1.0 `gate-check --graph`（Inform · 未实现） |
 | **思想来源** | [`HARNESS_GRAPH_MODEL_dialogue_archive_v1_zh.md`](./HARNESS_GRAPH_MODEL_dialogue_archive_v1_zh.md) |
 
 
@@ -209,12 +209,12 @@ RETURN t, e
 ## 5. 与路线图对齐（修正对话稿）
 
 ```text
-v0.2  ✅ P0 文件闭环（进行中）
-v0.3  manifest · npx · FailureReport · gate-check rejected
-v0.4  ontology.yaml · gate-check --graph（Inform）
-v1.0  ICVO 审计 · invoke_index
-v0.5  HGM 起步：ingest + snapshot + 基础 axioms check  ← 本文件
-v0.6–v0.8  timeline · patterns · 可选外置图库
+v0.2  P0 金样路径（ACCEPTANCE 进行中）
+v0.3  manifest · npx · FailureReport · gate-check rejected（多数未实现）
+v0.4  ontology.yaml · D7 HG-RELEASE · public push
+v1.0  ICVO 审计 · invoke_index · gate-check --graph（Inform）
+v0.5+ Track G / G1：HGM ingest + snapshot + 基础 axioms check（proposal · 本文件 · v1.0 后启动）
+v0.6–v0.8  timeline · patterns · 可选外置图库（proposal）
 ```
 
 **后置**：GrowingReasoningAgent / 自动 Recommendation 节点 — **未在本仓立项** · 依赖 HGM 事件量积累后再评。
@@ -253,5 +253,6 @@ v0.6–v0.8  timeline · patterns · 可选外置图库
 | 版本   | 日期         | 说明                                   |
 | ---- | ---------- | ------------------------------------ |
 | v0.1 | 2026-06-15 | 初稿 · 对齐本体 v1.2 · 校正对话稿偏差 · v0.5 轻量存储 |
+| v0.1.1 | 2026-06-15 | §5 路线图与 ROADMAP 对齐 · gate-check --graph → v1.0 · proposal 标注 |
 
 

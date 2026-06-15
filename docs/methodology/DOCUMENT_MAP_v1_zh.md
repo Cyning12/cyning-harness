@@ -72,6 +72,8 @@ flowchart TB
 | HARNESS_V2_PLAN | L1 | `docs/harness/` | Ink 工作区 Harness 规划 | AGENTS.md §8 |
 | PILOT_kimi_code_fork | L1 | `docs/harness/guides/` | kimi-code-meta 试点 | ONBOARDING · wizard |
 | GUIDANCE_distribution | L1 | 同上 | npx / ctx / MCP | STRATEGY_MASTER |
+| **ROADMAP v1.1** | L2 | `methodology/` | **产品 semver · Track G** | STRATEGY_MASTER · ONTOLOGY |
+| **AUDIT doc consistency** | L2 | `methodology/` | 一致性审计归档 | PROMPT_doc_consistency_audit |
 | **methodology/README** | L2 | `cyning-harness/docs/methodology/` | **总指引** | 本文件 |
 | **DESIGN_ONTOLOGY v1.2** | L2 | `methodology/product/` | **产品语义真值** | ARCHITECTURE · templates |
 | **P0_V0.2_GAP** | L2 | `methodology/execution/` | 实现差距 · 演示命令 | ONTOLOGY §0.2 |
@@ -99,10 +101,12 @@ flowchart TB
 | 文档 | 版本 |
 | --- | --- |
 | DESIGN_ONTOLOGY | v1.2 · draft |
+| ROADMAP | v1.1 · active |
 | HGM design | v0.1 · proposal |
-| STRATEGY_ONTOLOGY | v1.1 · active |
+| STRATEGY_ONTOLOGY | v1.1 · active（L1 · 工作区） |
 | P0 gap | active |
-| methodology README | v1.0 |
+| methodology README | v1.1 |
+| 一致性审计 | [`AUDIT_doc_consistency_2026-06-15_zh.md`](./AUDIT_doc_consistency_2026-06-15_zh.md) |
 
 ---
 
@@ -111,3 +115,4 @@ flowchart TB
 | 日期 | 说明 |
 | --- | --- |
 | 2026-06-15 | 初版关系图 · 归集 methodology/ 后 |
+| 2026-06-15 | §4 版本锚点同步 v1.1 · 补 ROADMAP · 审计报告链 |
