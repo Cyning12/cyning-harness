@@ -4,6 +4,27 @@
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-06-15
+
+### Added
+
+- **MIT [`LICENSE`](LICENSE)** · 根目录开源许可
+- **[`ontology.yaml`](ontology.yaml)** · 产品设计本体机器可读草案（对齐 DESIGN_ONTOLOGY v1.2）
+- **[`docs/PUSH_AUDIT_a3_v1.md`](docs/PUSH_AUDIT_a3_v1.md)** · STRATEGY §5.1 push 前审计表
+- **[`docs/ETCLOVG_MAPPING_v1_zh.md`](docs/ETCLOVG_MAPPING_v1_zh.md)** · 行业坐标摘要
+- **D7 [`TEMPLATE_HG_RELEASE_v1_zh.md`](docs/methodology/execution/TEMPLATE_HG_RELEASE_v1_zh.md)** · 维护者 CLOSE 人闸 checklist
+
+### Changed
+
+- **`golden/`** · POINTER 化 · 移除内部 invoke 路径枚举
+- **`examples/oss-fork/README.md`** · 脱敏工作区硬链
+- **README** · 顶部 Quick Start 三行 · MIT public 叙事 · v0.4.0 状态
+
+### Notes
+
+- **GitHub public / npm publish** · 留维护者 **HG-RELEASE** CLOSE（OTP）
+- demo 阶段 E（22 CLOSE 终轮）· 仍可选 · 不阻塞 A3 产品树
+
 ## [0.3.2] - 2026-06-15
 
 ### Added

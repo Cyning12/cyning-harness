@@ -91,11 +91,10 @@ git checkout -B cyning/meta   # 或已有 meta
 
 ---
 
-## 5. 试点文档（工作区）
+## 5. 试点文档（维护者 · 可选）
 
-工作区维护者扫描分级示例：  
-`Projects/docs/harness/guides/ISSUE_SCAN_kimi_code_open_c2_v1_zh.md` ·  
-`PILOT_kimi_code_fork_adoption_v1_zh.md`
+上游 Issue 扫描与 fork 采纳指南见 **Cyning12 治理文档**（公开叙事仓 / 维护者私有工作区 POINTER）。  
+本产品仅提供通用 `scan-upstream-issues.sh` 与 [`wizard/profiles/issue-scan-presets.json`](../../wizard/profiles/issue-scan-presets.json)。
 
 ---
 

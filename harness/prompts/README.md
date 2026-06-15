@@ -16,16 +16,16 @@
 
 ## 完整库（POINTER · 不复制全文）
 
-Ink 工作区维护完整帽子链：`docs/harness/prompts/`（00/20/40/50、TEMPLATE-*-invoke、PROMPT_*_chain_*）。
+Extended 帽（00/20/40/50、链式 PROMPT）由维护者在 **私有工作区或签约伙伴仓** 维护 · **不**默认复制进用户仓。
 
-嵌入用户仓后可在 README 追加：
+嵌入用户仓后可在 README 追加（示例）：
 
 ```markdown
 ## 完整 Harness 库
-- 上游：Cyning12/cyning-ink-workspace `docs/harness/prompts/`（只读对照）
+- 上游：你的组织/monorepo `docs/harness/prompts/`（只读对照 · 非 Starter 默认）
 ```
 
 ## 链式执行
 
-- 串行 Task 链：工作区 `PROMPT_cursor_task_chain_serial_v1.md`（M3 `harness ctx` 前手工 `@` 引用）
+- 串行 Task 链：维护者工作区链式 PROMPT（M3 `harness ctx` 前手工 `@` 引用）
 - 每帽 invoke：[`../invokes/TEMPLATE_invoke.md`](../invokes/TEMPLATE_invoke.md)

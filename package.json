@@ -1,6 +1,6 @@
 {
   "name": "@cyning/harness",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "cyning-harness discipline package · init / upgrade / check CLI",
   "license": "MIT",
   "type": "module",
@@ -26,6 +26,8 @@
     "docs/",
     "README.md",
     "CHANGELOG.md",
+    "LICENSE",
+    "ontology.yaml",
     "AGENTS.md"
   ],
   "scripts": {

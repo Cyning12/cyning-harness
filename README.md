@@ -1,6 +1,11 @@
 # cyning-harness
 
-可 clone、可嵌入业务仓库的 **Harness 纪律包**（无业务代码，无内置 LLM）。
+```bash
+npx @cyning/harness@latest init --preset harness-only --ide cursor,agents
+npx @cyning/harness upgrade && npx @cyning/harness check
+```
+
+可 clone、可嵌入业务仓库的 **Harness 纪律包**（无业务代码，无内置 LLM）· **MIT 开源**。
 
 > **设计哲学**：用 **本体论** 定义「Track / Hat / Gate / Artifact」与 **ICVO 四支柱**（Inform · Constrain · Verify · Orchestrate），把 AI Coding 的上下文、规则与验收变成 **可同步、可审计、不覆盖用户 task** 的仓库真值。  
 > **公众连载** 使用 **ICV 三支柱**（SDD 层）；**Orchestrate** 是对卷三过程编排的 **产品化命名**，见 [`docs/methodology/product/README.md`](docs/methodology/product/README.md) · [`docs/methodology/AUDIT_doc_consistency_2026-06-15_zh.md`](docs/methodology/AUDIT_doc_consistency_2026-06-15_zh.md)。  
@@ -30,14 +35,7 @@
 
 ## Quick Start（npx · v0.3+）
 
-```bash
-# 新业务仓根（须在目标业务仓执行，勿在本产品仓根目录跑 npx）
-npx @cyning/harness@latest init --preset harness-only --ide cursor,agents
-
-# 日常升级
-npx @cyning/harness upgrade
-npx @cyning/harness check
-```
+> 顶部三行即最小接入。须在 **目标业务仓根** 执行（勿在本产品仓根跑 `npx`，会报 `harness: command not found`）。
 
 **维护者 · 在本仓库根验证 CLI**（npm 不会为「当前包」链接 `bin`，`npx` 会报 `harness: command not found`）：
 
@@ -115,9 +113,9 @@ cyning-harness/
 
 | 项 | 值 |
 |----|-----|
-| 当前 | **v0.2.1** — P0 金样 · 方法论归集 · 本体 v1.2 |
-| 下一档 | **v0.3** — npx CLI · manifest · S5 git-clean |
-| 许可 | 私有；战略见 [`methodology/pointers/STRATEGY_ONTOLOGY_v1_zh.md`](docs/methodology/pointers/STRATEGY_ONTOLOGY_v1_zh.md) |
+| 当前 | **v0.4.0** — A3 public push 准备 · ontology.yaml · MIT · 脱敏金样 |
+| 上一档 | v0.3.x — npx CLI · Starter 四帽 · manifest · S5 |
+| 许可 | **MIT** · [`LICENSE`](LICENSE) · 战略 POINTER 见 [`methodology/pointers/STRATEGY_ONTOLOGY_v1_zh.md`](docs/methodology/pointers/STRATEGY_ONTOLOGY_v1_zh.md) |
 
 ---
 
@@ -127,7 +125,7 @@ cyning-harness/
 | --- | --- |
 | **总指引** | [`methodology/README.md`](docs/methodology/README.md) · [关系图](docs/methodology/DOCUMENT_MAP_v1_zh.md) · [路线 ROADMAP](docs/methodology/ROADMAP_v1_zh.md) |
 | **本体** | [DESIGN_ONTOLOGY v1.2](docs/methodology/product/DESIGN_ONTOLOGY_v1_zh.md) |
-| **落地** | [P0 差距](docs/methodology/execution/P0_V0.2_GAP.md) · [金样验收](examples/demo_checkout/ACCEPTANCE.md) |
+| **落地** | [P0 差距](docs/methodology/execution/P0_V0.2_GAP.md) · [金样验收](examples/demo_checkout/ACCEPTANCE.md) · [ETCLOVG 映射](docs/ETCLOVG_MAPPING_v1_zh.md) |
 | **远期** | [HGM 草案](docs/methodology/graph/HARNESS_GRAPH_MODEL_design_v0_zh.md) |
 | **接入** | [ONBOARDING](docs/ONBOARDING.md) · [ARCHITECTURE](docs/ARCHITECTURE.md) |
 
