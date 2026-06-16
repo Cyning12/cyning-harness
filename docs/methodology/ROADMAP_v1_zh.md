@@ -3,12 +3,13 @@
 | 项 | 内容 |
 | --- | --- |
 | **状态** | `active` |
-| **版本** | v1.3 |
+| **版本** | v1.4 |
 | **日期** | 2026-06-15 |
 | **性质** | **L2 产品路线真值** · 吸收本体 v1.2 + HGM + P0 后修订 |
 | **L1 对齐** | 工作区 [`STRATEGY_MASTER`](./pointers/STRATEGY_MASTER_v1_zh.md) Track A/B/C/D · **冲突时本文件管产品 semver 与能力边界** |
 
-> **2026-06-15 结论**：OOP / 本体 / 图论 / History 融合 **不推翻** v0.2→v1.0 主轨；新增 **Track G（HGM）** 为 v0.5+ 可选增强 · **不阻塞** A1 npx 与 Q3 push。
+> **2026-06-15 结论**：OOP / 本体 / 图论 / History 融合 **不推翻** v0.2→v1.0 主轨；**Track G（HGM）** 在 **v1.0 关账后** 以 **v2.x** semver 推进（G1→v2.0+ · G2→v2.1+）· **不阻塞** A1 npx 与 Q3 push。  
+> **SEM-02**：废止用 **v0.5/v0.6** 标注 HGM（易误读为 v0.4 与 v1.0 之间的主轨版本）。
 
 ---
 
@@ -18,8 +19,8 @@
 | --- | --- | --- |
 | **OOP** | wizard 脚本 · bash/TS 实现 · Task/Hat 作「类」的 runtime 投影 | 现在 |
 | **本体** | `product/DESIGN_ONTOLOGY` · P/S/D 公理 · ICVO 四支柱 | v1.2 已文档化 |
-| **图论（过程）** | HGM：显式边 · 遍历 · 模式查询 | **v0.5+** |
-| **History** | append-only 事件 · gate/task 状态变迁 | **v0.5+** |
+| **图论（过程）** | HGM：显式边 · 遍历 · 模式查询 | **v2.0+**（Track G · v1.0 后） |
+| **History** | append-only 事件 · gate/task 状态变迁 | **v2.0+**（Track G · v1.0 后） |
 | **图论（Inform）** | `docs/_tech_graph/` · `gate-check --graph` | v1.0 |
 
 ```text
@@ -31,7 +32,17 @@
 
 ## 2. 版本里程碑（产品 semver）
 
-> **对外表述（semver 纪律）**：主产品版本按 **v0.2 → v0.3 → v0.4 → v1.0** 推进。**Track G** 能力标签为 **G1 / v0.5+**（见下表），**启动闸门在 v1.0 之后**（§5）；**不是** semver 时间序上早于 v1.0 的产品版，也 **不阻塞** Q3 public push。对外请写 **「Track G 提案」**，避免单独宣传「即将发布产品 v0.5」。
+### 2.0 Semver 命名纪律（SEM-02 · 2026-06-15）
+
+| 轨道 | 版本序列 | 说明 |
+| --- | --- | --- |
+| **Track A · 主轨** | **v0.2 → v0.3 → v0.4 → v1.0** | `@cyning/harness` npm · A1–A4 · **当前已到 v0.4** |
+| **Track G · HGM** | **v2.0+（G1）→ v2.1+（G2）→ …** | **仅 v1.0 关账后** 启动 · 主版本 **2** 表示「公理稳定后的增强线」 |
+| **废止** | ~~v0.5 / v0.6~~ 作 HGM 号 | 数字像插在 v0.4 与 v1.0 之间 · 已全部改 **v2.x** |
+
+对外一句：**主轨到 v1.0 · HGM 从 v2.0 起 · 不写「产品 v0.5」指 HGM。**
+
+> **对外表述（semver 纪律）**：主产品按 **§2.0 主轨** 推进。**Track G** 能力标签 **G1 / v2.0+**（见 §2.2），**启动闸门在 v1.0 之后**（§5）；**不是**主轨下一档 semver，也 **不阻塞** public push。对外请写 **「Track G 提案 · v2.x」**，避免 **「即将发布 v0.5」** 或 **「v0.5 在 v1.0 前」**。
 
 ### 2.1 主轨（A · 产品包）
 
@@ -47,8 +58,8 @@
 
 | 能力标签 | 代号 | 须交付（实现） | 文档 |
 | --- | --- | --- | --- |
-| **G1 · v0.5+** | HGM 起步 | `events/*.jsonl` · graph ingest · snapshot · axioms check 子集（**均未实现**） | HGM design v0.1→v0.2 |
-| **G2 · v0.6+** | HGM 查询 | timeline · patterns · SQLite 投影 | 可选 Neo4j 导出 |
+| **G1 · v2.0+** | HGM 起步 | `events/*.jsonl` · graph ingest · snapshot · axioms check 子集（**均未实现**） | HGM design v0.1→v0.2 |
+| **G2 · v2.1+** | HGM 查询 | timeline · patterns · SQLite 投影 | 可选 Neo4j 导出 |
 
 **刻意不做（至 v1.0）**：GrowingReasoningAgent · OWL 推理机 · 热插拔 Track（Q5）· Neo4j 默认后端 · **Track G ingest（v1.0 前）**。
 
@@ -62,7 +73,7 @@
 | **B** | kimi-code-meta 试点 | oss-fork-meta / kimi-code-meta preset · 上游 PR 证据 · **#8 B2+micro-bench（1+3 主链）** · **#9 Agent-shell（2 并行）** | B0 · 证据方案待审 |
 | **C** | Runtime | harness ctx · Worker · **HGM 不替代 C** | 后置 |
 | **D** | 对外叙事 | ICVO · §7.5 对比 · 理论文章（见 prompts/） | 待 P0 绿 |
-| **G** | **（新增）HGM** | §2 v0.5+ · 依赖 v1.0 公理稳定 | proposal |
+| **G** | **（新增）HGM** | §2 **v2.x** · 依赖 v1.0 公理稳定 | proposal |
 
 ---
 
@@ -72,7 +83,7 @@
 | --- | --- |
 | **A3 与 P0 关系** | P0 金样已建 `examples/demo_checkout/` · A3 = 脱敏 + 补 40 帽完整链 |
 | **methodology/** | L2 文档真值集中 · 不改变 A1–A4 日期 |
-| **Track G** | 新增 · 不插入 A1/A2 人力 · v0.5 启动条件：v0.4 push 完成 + P0/A2 绿 |
+| **Track G** | 新增 · 不插入 A1/A2 人力 · **v2.0 启动条件**：v1.0 关账 + 事件 schema 冻结 |
 | **ICVO 叙事** | 纳入 D 轨与 v1.0 验收 · 非新 semver |
 | **三路合并 / rollback** | 仍 v0.3 设计 · v0.4 实现（本体 §4.3） |
 
@@ -87,7 +98,7 @@
 | v0.2 → v0.3 | P0 金样 ACCEPTANCE ✅ · A1 实现 ✅（Release/npm 可后补） |
 | v0.3 → v0.4 | npx upgrade dogfood（kimi-code-meta）· ontology.yaml 草案 |
 | v0.4 → v1.0 | public push 审计 · **#8 B2 + SDD-Compliance micro-bench** · ICVO audit 子集绿 |
-| v1.0 → v0.5 HGM | 维护者确认事件 schema 冻结 · ingest 不破坏 S2 |
+| v1.0 → v2.0 HGM | 维护者确认事件 schema 冻结 · ingest 不破坏 S2 · G1 立项 |
 
 ---
 
@@ -134,3 +145,4 @@ Epic 与子 task 真值：`Projects/docs/harness/tasks/active/`
 | v1.3.1 | 2026-06-15 | B8/B9 审核结论回写 · S1–S4 · 3×2 · D6 字段 |
 | v1.3.2 | 2026-06-15 | P0 金样关账 · v0.2→v0.3 首闸满足 · A1 next |
 | v1.3.3 | 2026-06-15 | A1 实现关账 · A2 next · v0.3.0 表标注 |
+| v1.4 | 2026-06-15 | **SEM-02**：HGM Track G **v0.5/v0.6 → v2.x** · 增 §2.0 命名纪律 |

@@ -109,7 +109,7 @@ Harness Graph Model (HGM)
 | 存储 | SQLite → Neo4j 渐进 |
 | CLI | `graph query` · `timeline` · `analyze` · `predict` |
 | 采集 | install · task · gate-check · 22/30 产出 |
-| 路线 | v0.5–v1.0 分阶段 |
+| 路线 | v2.0+ 分阶段（**v1.0 关账后**） |
 
 **已知偏差（相对本地 v1.2）**：
 
@@ -118,7 +118,7 @@ Harness Graph Model (HGM)
 | PRODUCT_ONTOLOGY v1.1 | **DESIGN_ONTOLOGY v1.2** |
 | FailureReport 已模板化 | **v0.3 backlog** |
 | ontology.yaml 已有 | **v0.4+ 抽取** |
-| Neo4j v0.6 默认 | **真值稿优先 JSONL + 可选 SQLite 投影** |
+| Neo4j v2.2 默认 | **真值稿优先 JSONL + 可选 SQLite 投影** |
 | GrowingReasoningAgent 衔接 | **未立项 · C 轨后置** |
 
 **完整工程化草案** → [`HARNESS_GRAPH_MODEL_design_v0_zh.md`](./HARNESS_GRAPH_MODEL_design_v0_zh.md)（同目录真值稿）。

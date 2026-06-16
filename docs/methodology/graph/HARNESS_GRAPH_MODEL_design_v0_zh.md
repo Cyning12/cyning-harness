@@ -3,7 +3,7 @@
 
 | 项        | 内容                                                                                                                               |
 | -------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| **状态**   | `proposal` · 远期架构（**v0.5+**）                                                                                                     |
+| **状态**   | `proposal` · 远期架构（**v2.0+**）                                                                                                     |
 | **版本**   | v0.1                                                                                                                             |
 | **日期**   | 2026-06-15                                                                                                                       |
 | **范围**   | 过程轨 **实例** 的显式图 + 事件历史 + 公理可查询                                                                                                   |
@@ -33,7 +33,7 @@ HGM 是 **本体论在工程中的可落地形态之一**：不引入 OWL 推理
 ```text
 语义层    DESIGN_ONTOLOGY v1.2 + ontology.yaml（类 · 关系 · 公理）
 文件层    docs/tasks · reviews · invokes · gate-check.log（当前真值 · S2 保护）
-图+事件层 HGM（可选增强 · v0.5+）— 从文件层 **推导** · 不反向覆盖文件层
+图+事件层 HGM（可选增强 · v2.0+）— 从文件层 **推导** · 不反向覆盖文件层
 ```
 
 ### 0.3 易混概念
@@ -55,7 +55,7 @@ HGM 是 **本体论在工程中的可落地形态之一**：不引入 OWL 推理
 | H2  | **文件优先**  | S2 保护域只追加事件，**不**用图 DB 覆盖 task/reviews     |
 | H3  | **事件不可变** | 修正 = 新事件 · 禁止删改历史                          |
 | H4  | **公理同源**  | 图约束与 `DESIGN_ONTOLOGY` §5 公理 ID 一一对应       |
-| H5  | **渐进存储**  | v0.5 JSONL → v0.6 SQLite 投影 → v0.8+ 可选外部图库 |
+| H5  | **渐进存储**  | v2.0 JSONL → v2.1 SQLite 投影 → v2.2+ 可选外部图库 |
 
 
 ---
@@ -75,7 +75,7 @@ HGM 是 **本体论在工程中的可落地形态之一**：不引入 OWL 推理
 | `InvokeSnapshot`     | InvokeSnapshot | `invoke:{path}`                    | `docs/harness/invokes/*`             |
 | `FailureReport`      | FailureReport  | `failure:{path}`                   | reviews 或 task 附录 · v0.3+            |
 | `GateCheckRun`       | GateCheckRun   | `gcr:{iso8601}:{task_slug}`        | `.cyning-harness/gate-check.log`     |
-| `SyncOperation`      | SyncOperation  | `sync:{iso8601}:plan|apply`        | wizard 日志 · v0.5+                    |
+| `SyncOperation`      | SyncOperation  | `sync:{iso8601}:plan|apply`        | wizard 日志 · v2.0+                    |
 | `InformArtifact`     | InformArtifact | `inform:{repo_rel_path}`           | `_tech_graph/*` 等                    |
 
 
@@ -101,7 +101,7 @@ HGM 是 **本体论在工程中的可落地形态之一**：不引入 OWL 推理
 
 ### 1.3 事件类型（Event · append-only）
 
-存储默认：`.cyning-harness/events/YYYY-MM.jsonl`（v0.5 提案）
+存储默认：`.cyning-harness/events/YYYY-MM.jsonl`（v2.0 提案）
 
 ```json
 {
@@ -139,7 +139,7 @@ HGM 是 **本体论在工程中的可落地形态之一**：不引入 OWL 推理
 ## 2. 公理 → 可执行检查（HGM 视角）
 
 
-| 公理              | 图/事件表述                                                           | 现有机械检查             | HGM v0.5             |
+| 公理              | 图/事件表述                                                           | 现有机械检查             | HGM v2.0             |
 | --------------- | ---------------------------------------------------------------- | ------------------ | -------------------- |
 | **D2**          | pending 的 `HG-AUDIT-R1` --BLOCKS--> 30 帽                         | gate-check exit 2  | 查询 + 事件告警            |
 | **D3**          | 30 首动作须关联 `GateCheckRun`                                         | 30 prompt 模板       | 缺 `CHECKED` 边 → 违规   |
@@ -148,7 +148,7 @@ HGM 是 **本体论在工程中的可落地形态之一**：不引入 OWL 推理
 | **rejected→10** | `GateStatusChanged(rejected)` → 下一事件须 `TaskStatusChanged(draft)` | v0.3 gate-check 警告 | 时序约束                 |
 
 
-示例查询（**Cypher 风格伪码** · 非 v0.5 承诺语法）：
+示例查询（**Cypher 风格伪码** · 非 v2.0 承诺语法）：
 
 ```cypher
 // 违反 D2：R1 pending 但存在 30 执行事件
@@ -174,19 +174,19 @@ RETURN t, e
 | task 表改 status / gate   | task md        | `TaskStatusChanged` / `GateStatusChanged` |
 
 
-**v0.5 最小实现**：`harness graph ingest --from-repo .` 扫描目录 + 解析 gate-check.log **回填**事件（幂等）。
+**v2.0 最小实现**：`harness graph ingest --from-repo .` 扫描目录 + 解析 gate-check.log **回填**事件（幂等）。
 
 ### 3.2 CLI 路线图
 
 
 | 命令                                     | 版本   | 说明                                 |
 | -------------------------------------- | ---- | ---------------------------------- |
-| `harness graph ingest`                 | v0.5 | 文件 → 事件 JSONL                      |
-| `harness graph snapshot`               | v0.5 | 事件 → snapshot.json                 |
-| `harness graph query`                  | v0.6 | 简单过滤器（非完整 Cypher）                  |
-| `harness graph timeline --task <slug>` | v0.6 | 单 Task 事件轴                         |
-| `harness graph axioms check`           | v0.7 | 跑 D2/D3/S2 图规则                     |
-| `harness graph patterns`               | v0.8 | 频繁路径统计（blocked / failed）           |
+| `harness graph ingest`                 | v2.0 | 文件 → 事件 JSONL                      |
+| `harness graph snapshot`               | v2.0 | 事件 → snapshot.json                 |
+| `harness graph query`                  | v2.1 | 简单过滤器（非完整 Cypher）                  |
+| `harness graph timeline --task <slug>` | v2.1 | 单 Task 事件轴                         |
+| `harness graph axioms check`           | v2.1 | 跑 D2/D3/S2 图规则                     |
+| `harness graph patterns`               | v2.2 | 频繁路径统计（blocked / failed）           |
 | `gate-check --graph`                   | v1.0 | **Inform** 模块图 · 与 HGM **并列** · Q3 |
 
 
@@ -197,12 +197,12 @@ RETURN t, e
 
 | 阶段       | 存储                                                       | 适用             |
 | -------- | -------------------------------------------------------- | -------------- |
-| **v0.5** | `.cyning-harness/events/*.jsonl` + `graph/snapshot.json` | 一人 · 单仓        |
-| **v0.6** | + SQLite（nodes/edges/events 表）                           | 本地查询加速         |
-| **v0.8** | 可选 Neo4j / 外部导出                                          | 多仓聚合 · **非默认** |
+| **v2.0** | `.cyning-harness/events/*.jsonl` + `graph/snapshot.json` | 一人 · 单仓        |
+| **v2.1** | + SQLite（nodes/edges/events 表）                           | 本地查询加速         |
+| **v2.2** | 可选 Neo4j / 外部导出                                          | 多仓聚合 · **非默认** |
 
 
-**不采用**「事件与图库强分离到 PostgreSQL+Neo4j」作为 v0.5 默认——与「纪律包轻嵌入」冲突。
+**不采用**「事件与图库强分离到 PostgreSQL+Neo4j」作为 v2.0 默认——与「纪律包轻嵌入」冲突。
 
 ---
 
@@ -213,8 +213,8 @@ v0.2  P0 金样路径（ACCEPTANCE 进行中）
 v0.3  manifest · npx · FailureReport · gate-check rejected（多数未实现）
 v0.4  ontology.yaml · D7 HG-RELEASE · public push
 v1.0  ICVO 审计 · invoke_index · gate-check --graph（Inform）
-v0.5+ Track G / G1：HGM ingest + snapshot + 基础 axioms check（proposal · 本文件 · v1.0 后启动）
-v0.6–v0.8  timeline · patterns · 可选外置图库（proposal）
+v2.0+ Track G / G1：HGM ingest + snapshot + 基础 axioms check（proposal · 本文件 · v1.0 后启动）
+v2.1–v2.2  timeline · patterns · 可选外置图库（proposal）
 ```
 
 **后置**：GrowingReasoningAgent / 自动 Recommendation 节点 — **未在本仓立项** · 依赖 HGM 事件量积累后再评。
@@ -226,8 +226,8 @@ v0.6–v0.8  timeline · patterns · 可选外置图库（proposal）
 
 | #   | 问题                          | 暂定                            |
 | --- | --------------------------- | ----------------------------- |
-| Q1  | ingest 由 git hook 还是手动 CLI？ | v0.5 **手动** + gate-check 钩子可选 |
-| Q2  | 是否「时光机」重建任意时点图？             | v0.7+ · 事件重放                  |
+| Q1  | ingest 由 git hook 还是手动 CLI？ | v2.0 **手动** + gate-check 钩子可选 |
+| Q2  | 是否「时光机」重建任意时点图？             | v2.2+ · 事件重放                  |
 | Q3  | HGM 与 Supabase/远端同步？        | **否** · v1.0 后单独评             |
 | Q4  | 用户能否删事件？                    | **否** · 仅追加 `CorrectionEvent` |
 | Q5  | Epic 升格后图模型变更？              | Epic 变 `Epic` 标签节点 · 随 Q1 本体  |
@@ -252,7 +252,8 @@ v0.6–v0.8  timeline · patterns · 可选外置图库（proposal）
 
 | 版本   | 日期         | 说明                                   |
 | ---- | ---------- | ------------------------------------ |
-| v0.1 | 2026-06-15 | 初稿 · 对齐本体 v1.2 · 校正对话稿偏差 · v0.5 轻量存储 |
+| v0.1 | 2026-06-15 | 初稿 · 对齐本体 v1.2 · 校正对话稿偏差 · v2.0 轻量存储 |
+| v0.2 | 2026-06-15 | **SEM-02**：HGM 产品阶段号 v0.5/v0.6 → **v2.x** |
 | v0.1.1 | 2026-06-15 | §5 路线图与 ROADMAP 对齐 · gate-check --graph → v1.0 · proposal 标注 |
 
 

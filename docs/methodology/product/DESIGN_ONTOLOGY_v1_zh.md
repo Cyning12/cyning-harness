@@ -583,7 +583,7 @@ AGENTS.md / CLAUDE.md 内 cyning-harness marker 区段（整文件若仅含 mark
 | **ontology.yaml**       | 未抽取           | v0.4 · `harness ontology-check`  |
 | **FailureReport**       | 未模板化           | v0.3 · 30 失败路径                 |
 | **kimi-code-meta** preset | examples v0.3 · profiles v0.4 | `examples/kimi-code-integration/` · `enhancement` |
-| **Harness Graph Model** | 未实现 · 对话已归档 | [`../graph/HARNESS_GRAPH_MODEL_design_v0_zh.md`](../graph/HARNESS_GRAPH_MODEL_design_v0_zh.md) · v0.5+ |
+| **Harness Graph Model** | 未实现 · 对话已归档 | [`../graph/HARNESS_GRAPH_MODEL_design_v0_zh.md`](../graph/HARNESS_GRAPH_MODEL_design_v0_zh.md) · **v2.0+** |
 
 
 ### 7.3 扩展规则（加新功能时）
@@ -645,7 +645,7 @@ npx CLI  ≡  WizardTool 新实例
 | Q2  | `invokes/by-task/<slug>/` 是否纳入本体索引？             | **是** · InvokeSnapshot 聚合容器 · `invoke_index.json` 由 sync --index 生成 |
 | Q3  | graph 模块表 `HG-GRAPH-MODULES` 是否产品化进 gate-check？ | **是** · `gate-check --graph` 输出依赖模块图 + 审核状态 |
 | Q4  | KPI（00）是否进 Starter？                             | **否** · 保持 Extended            |
-| Q5  | 是否支持热插拔 Track（动态启停轨而不 reinstall）？              | **v0.5+ 再议** · 须改 profile + 部分 sync · 复杂度高 |
+| Q5  | 是否支持热插拔 Track（动态启停轨而不 reinstall）？              | **v2.0+ 再议** · 须改 profile + 部分 sync · 复杂度高 |
 
 
 ---
