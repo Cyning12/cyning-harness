@@ -103,14 +103,16 @@ graph_for_task() {
   if [[ "$JSON_MODE" == "1" ]]; then
     printf '{"task":"%s","hg_graph_modules":"%s","tech_graph_dir":"%s","files":[' "$(basename "$tf")" "${graph_status:-unknown}" "$tech_graph_dir"
     local first=1
-    for f in "${files[@]}"; do
-      [[ "$first" == "1" ]] || printf ','
-      first=0
-      local name status
-      name="$(basename "$f")"
-      status="$(file_audit_status "$f")"
-      printf '{"name":"%s","status":"%s"}' "$name" "$status"
-    done
+    if [[ ${#files[@]} -gt 0 ]]; then
+      for f in "${files[@]}"; do
+        [[ "$first" == "1" ]] || printf ','
+        first=0
+        local name status
+        name="$(basename "$f")"
+        status="$(file_audit_status "$f")"
+        printf '{"name":"%s","status":"%s"}' "$name" "$status"
+      done
+    fi
     printf ']}'
     return 0
   fi
