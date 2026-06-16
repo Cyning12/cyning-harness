@@ -67,7 +67,7 @@ scenario_S2() {
   [[ -n "$(find "$dir/reviews" -type f -name '*_audit_R1_*' 2>/dev/null)" ]] && review_exists=1 || true
 
   if [[ "$review_exists" == "0" ]]; then
-    log "S2 PASS · review 文件缺失 → 非合规（gate-check exit=$gate_ok）"
+    log "S2 PASS · review 文件缺失 -> 非合规 (gate-check exit=$gate_ok)"
     PASS=$((PASS+1))
     RESULTS+=("S2|PASS")
   else
