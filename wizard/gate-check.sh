@@ -28,7 +28,7 @@ done
 gate_status() {
   local file="$1" gate="$2"
   awk -F'|' -v g="$gate" '
-    index($0, g) > 0 {
+    $0 ~ /^[[:space:]]*\|/ && index($0, g) > 0 {
       gsub(/^[[:space:]]+|[[:space:]]+$/, "", $3)
       gsub(/\*/, "", $3)
       print $3
@@ -40,7 +40,7 @@ gate_status() {
 gate_blocks() {
   local file="$1" gate="$2"
   awk -F'|' -v g="$gate" '
-    index($0, g) > 0 {
+    $0 ~ /^[[:space:]]*\|/ && index($0, g) > 0 {
       gsub(/^[[:space:]]+|[[:space:]]+$/, "", $4)
       gsub(/\*/, "", $4)
       print $4
