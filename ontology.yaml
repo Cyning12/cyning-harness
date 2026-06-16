@@ -1,9 +1,9 @@
-# cyning-harness 产品设计本体 · 机器可读抽取（草案 v0.4.0）
+# cyning-harness 产品设计本体 · 机器可读抽取（草案 v1.0.0）
 # 人类真值：docs/methodology/product/DESIGN_ONTOLOGY_v1_zh.md
 # 冲突时以 Markdown 为准 · 供未来 harness ontology-check 使用
 
 version: "1.2"
-product_semver: "0.4.0"
+product_semver: "1.0.0"
 license: MIT
 
 classes:

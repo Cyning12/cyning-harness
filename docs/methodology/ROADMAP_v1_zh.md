@@ -52,7 +52,7 @@
 | **v0.3.0** | **A1 分发** | manifest · npx init/upgrade/check · S5 git-clean · **✅ 2026-06-15**（Release/npm 留维护者） | FailureReport 模板 · rejected→draft gate-check |
 | **v0.3.x** | **A2 Starter** | 40-self-check 帽 · `task.harness.v1.json` · depends_on 禁环 CLI · **✅ 2026-06-15** | ONBOARDING npx 优先 |
 | **v0.4.0** | **A3 + push** | ontology.yaml · D7 HG-RELEASE · demo_checkout 脱敏 · MIT public | ETCLOVG 映射页 · README 叙事 |
-| **v1.0.0** | **A4 stable** | ICVO audit CLI · invoke_index · gate-check --graph（Inform） | CHANGELOG 冻结 · B2 量化进 README |
+| **v1.0.0** | **A4 stable** | ICVO audit CLI · invoke_index · gate-check --graph（Inform） | CHANGELOG 冻结 · B2 量化进 README · **✅ 2026-06-16**（HG-RELEASE 留维护者） |
 
 ### 2.2 Track G（HGM · v1.0 后 · proposal）
 

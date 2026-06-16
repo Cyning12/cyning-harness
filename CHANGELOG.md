@@ -4,6 +4,26 @@
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-06-16
+
+### Added
+
+- **ICVO 机械审计 CLI**：`harness audit [--target PATH] [--task FILE]` · D3/D5/S5 子集
+- **InvokeSnapshot 索引**：`schema/invoke_index.v1.schema.json` · `wizard/harness-sync.sh --index`
+- **Inform 图谱闸**：`wizard/gate-check.sh --graph [--json]` · 读 `HG-GRAPH-MODULES` + `docs/_tech_graph/`
+- **B2 试点证据**：README「试点证据（B2）」节 · 链 [`PILOT_EVIDENCE_B2_v1_zh.md`](docs/methodology/execution/PILOT_EVIDENCE_B2_v1_zh.md)
+- **SDD-Compliance micro-bench**：`examples/compliance_bench/` · `wizard/compliance-bench.sh` · S1–S4 4/4
+
+### Changed
+
+- **README** · **ONBOARDING** · 文档：v1.0 stable 叙事 · ICVO 审计 · B2 证据
+- **`ontology.yaml`**：`product_semver: "1.0.0"`
+
+### Notes
+
+- **HG-RELEASE**（tag v1.0.0 · npm publish · GitHub Release）仍留维护者人闸
+- **Track G HGM**：v1.0 关账后评估，v2.0+ 另开 Epic
+
 ## [0.4.0] - 2026-06-15
 
 ### Added
