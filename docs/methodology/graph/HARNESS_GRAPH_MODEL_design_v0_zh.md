@@ -9,6 +9,7 @@
 | **范围**   | 过程轨 **实例** 的显式图 + 事件历史 + 公理可查询                                                                                                   |
 | **非范围**  | 替代 Git/Markdown 真值 · 替代 LLM Runtime · `**GraphTrack` 架构图**（见 §0.3）                                                               |
 | **依赖**   | [`../product/DESIGN_ONTOLOGY_v1_zh.md`](../product/DESIGN_ONTOLOGY_v1_zh.md) v1.2 · P0 金样路径已建（ACCEPTANCE 待绿）· v0.3 `ontology.yaml`（未实现）· v1.0 `gate-check --graph`（Inform · 未实现） |
+| **升级大纲** | [`HGM_UPGRADE_OUTLINE_v1_zh.md`](./HGM_UPGRADE_OUTLINE_v1_zh.md) · G0 讨论入口（2026-06-16） |
 | **思想来源** | [`HARNESS_GRAPH_MODEL_dialogue_archive_v1_zh.md`](./HARNESS_GRAPH_MODEL_dialogue_archive_v1_zh.md) |
 
 
