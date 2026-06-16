@@ -94,6 +94,53 @@ test('verify 无 --task 时扫描 active tasks', () => {
   assert.match(result.stdout, /VERIFY: PASS/);
 });
 
+test('verify 无 --task · 多 task 有一阻塞：列出全部 · 摘要不含表格行', () => {
+  const target = fs.mkdtempSync(path.join(os.tmpdir(), 'cyning-harness-verify-'));
+  fs.mkdirSync(path.join(target, '.cyning-harness'), { recursive: true });
+  fs.writeFileSync(
+    path.join(target, '.cyning-harness/manifest.json'),
+    '{"version":"0.4.0","preset":"harness-only"}\n',
+  );
+
+  const activeDir = path.join(target, 'docs/tasks/active');
+  fs.mkdirSync(activeDir, { recursive: true });
+
+  fs.writeFileSync(
+    path.join(activeDir, 'task_ok.md'),
+    `# Task
+
+### 人工闸
+
+| human_gate_id | status | blocks | 说明 |
+| --- | --- | --- | --- |
+| HG-TASK-DRAFT | approved | 22, 30 | ok |
+| HG-AUDIT-R1 | approved | 30 | gate |
+`,
+  );
+
+  fs.writeFileSync(
+    path.join(activeDir, 'task_blocked.md'),
+    `# Task
+
+### 人工闸
+
+| human_gate_id | status | blocks | 说明 |
+| --- | --- | --- | --- |
+| HG-TASK-DRAFT | pending | 30 | draft |
+| HG-AUDIT-R1 | pending | 30 | gate |
+`,
+  );
+
+  const result = runNode(['verify', '--target', target]);
+  assert.equal(result.status, 2, result.stderr || result.stdout);
+  assert.match(result.stdout, /task: task_ok\.md/);
+  assert.match(result.stdout, /task: task_blocked\.md/);
+  assert.match(result.stdout, /VERIFY: BLOCKED/);
+  assert.match(result.stdout, /task_blocked\.md/);
+  assert.doesNotMatch(result.stdout, /VERIFY: BLOCKED · \| HG-TASK-DRAFT/);
+  assert.equal(result.stderr.trim(), '', 'BLOCKED 时不应打印 stack');
+});
+
 test('gate-check CLI 透传退出码', () => {
   const target = fs.mkdtempSync(path.join(os.tmpdir(), 'cyning-harness-verify-'));
   fs.mkdirSync(path.join(target, '.cyning-harness'), { recursive: true });

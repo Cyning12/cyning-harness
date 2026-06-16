@@ -4,6 +4,13 @@
 
 ## [Unreleased]
 
+## [1.0.2] - 2026-06-16
+
+### Fixed
+
+- **`verify` 无 `--task`**：摘要不再误匹配闸表行 `❌ 拒 30`；多 task 阻塞时摘要列出 blocked task 名
+- **`verify` BLOCKED**：exit 2 时不再打印空 `Error` stack trace
+
 ## [1.0.1] - 2026-06-16
 
 ### Added

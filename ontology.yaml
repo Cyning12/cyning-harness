@@ -3,7 +3,7 @@
 # 冲突时以 Markdown 为准 · 供未来 harness ontology-check 使用
 
 version: "1.2"
-product_semver: "1.0.1"
+product_semver: "1.0.2"
 license: MIT
 
 classes:
