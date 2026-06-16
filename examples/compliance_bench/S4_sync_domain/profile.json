@@ -1,0 +1,16 @@
+{
+  "preset": "harness-only",
+  "tracks": {
+    "harness_prompts": true,
+    "harness_invoke_template": true,
+    "ide_cursor": true,
+    "ide_claude": false,
+    "ide_agents": false,
+    "graph": false,
+    "wiki": false
+  },
+  "paths": {
+    "ide_cursor": ".cursor/rules/06-harness-pointer.mdc"
+  },
+  "ci": "none"
+}
