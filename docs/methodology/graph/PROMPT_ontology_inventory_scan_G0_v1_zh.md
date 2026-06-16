@@ -1,10 +1,10 @@
-# Prompt · 项目本体构成扫描 · HGM G0（v1.1）
+# Prompt · 项目本体构成扫描 · HGM G0（v1.2）
 
 | 项 | 内容 |
 | --- | --- |
 | **状态** | `active` · G0 讨论素材 · **须满足执行前提 P1–P5** |
 | **用途** | 扫描产品仓或试点仓 · 产出 **本体清单报告**（不修改 DESIGN_ONTOLOGY） |
-| **触发时机** | [`HGM_UPGRADE_OUTLINE_v1_zh.md`](./HGM_UPGRADE_OUTLINE_v1_zh.md) **G0** · YAML P2 全量迁移完成 · **HG-TASK-DRAFT** 签收 |
+| **触发时机** | 试点仓 **Graph YAML 全量迁移关账**（**全部 `.ai.md` 已删除**）+ **HG-TASK-DRAFT** 签收 · 见 [`HGM_UPGRADE_OUTLINE_v1_zh.md`](./HGM_UPGRADE_OUTLINE_v1_zh.md) G0 |
 | **关联 task** | `task_ontology_inventory_scan_v1`（扫描任务单 · 待建）· [`task_cyning_harness_g1_hgm_v2_v1.md`](../../../../docs/harness/tasks/active/task_cyning_harness_g1_hgm_v2_v1.md)（HGM G1） |
 | **语义真值（执行时必读）** | [`../product/DESIGN_ONTOLOGY_v1_zh.md`](../product/DESIGN_ONTOLOGY_v1_zh.md) · [`HARNESS_GRAPH_MODEL_design_v0_zh.md`](./HARNESS_GRAPH_MODEL_design_v0_zh.md) |
 | **预期产出** | [`inventory/ONTOLOGY_INVENTORY_cyning_harness_v1.yaml`](./inventory/ONTOLOGY_INVENTORY_cyning_harness_v1.yaml)（主）· `inventory/ONTOLOGY_INVENTORY_ai_ink_brain_v1.yaml`（试点参考） |
@@ -12,14 +12,18 @@
 
 ---
 
-## 执行 Prompt（v1.1 · 整合修正）
+## 执行 Prompt（v1.2 · 整合修正）
 
 ```text
 # 任务：扫描当前项目，生成“项目本体构成报告”
 
+> **硬门槛**：本任务 **不得** 在试点仓仍存在任意 `.ai.md` 时执行。须在 Graph YAML **全量迁移关账**（删除全部 `.ai.md` · 图源仅留 `*.graph.yaml` + 生成 `.md`）之后启动。
+
 ## ⚠️ 执行前提（硬性检查，不满足则终止）
 
 在开始扫描之前，**必须先确认以下条件全部满足**。任一条件不满足，输出提示信息并终止执行。
+
+**试点仓检查顺序**：先 **P3**（无 `.ai.md`）→ 再 **P2**（YAML 图源就绪）。P3 失败则不必继续 P2。
 
 ### 前置条件清单
 
@@ -29,17 +33,17 @@ preconditions:
     check: "当前所在目录是 cyning-harness/ 或 ai-ink-brain-api-python/"
     fail_msg: "请在产品仓（cyning-harness/）或试点仓（ai-ink-brain-api-python/）下执行此扫描。工作区根不执行全量扫描。"
 
-  # 2. YAML P0 试点已完成（试点仓专用）
-  - id: "P2"
-    check: "docs/_tech_graph/src/00_main.graph.yaml 存在且非空"
-    fail_msg: "后端 YAML P0 试点未完成，请先完成 00_main 迁移再执行本体扫描。"
-    note: "试点仓执行时检查；产品仓跳过 P2"
-
-  # 3. .ai.md 已全部迁移（P2 完成）
+  # 2. 全部 .ai.md 已删除（试点仓 · 全量迁移关账 · 硬门槛）
   - id: "P3"
-    check: "find . -name '*.ai.md' 2>/dev/null | wc -l | xargs test 0 -eq"
-    fail_msg: "项目中仍存在 .ai.md 文件，请先完成 YAML 全量迁移（P2）后再执行扫描。"
-    note: "试点仓执行时检查；产品仓跳过 P3"
+    check: "find docs/_tech_graph -name '*.ai.md' 2>/dev/null | wc -l | xargs test 0 -eq"
+    fail_msg: "docs/_tech_graph/ 下仍存在 .ai.md 文件。请先完成 Graph YAML 全量迁移并删除全部 .ai.md，再执行本体扫描。"
+    note: "试点仓执行时 **必检**；产品仓跳过 P3"
+
+  # 3. YAML 图源就绪（试点仓 · P3 通过后）
+  - id: "P2"
+    check: "test -s docs/_tech_graph/00_main.graph.yaml"
+    fail_msg: "docs/_tech_graph/00_main.graph.yaml 不存在或为空。请先完成 00_main YAML 迁移。"
+    note: "试点仓执行时检查；产品仓跳过 P2"
 
   # 4. 维护者审批
   - id: "P4"
@@ -137,10 +141,10 @@ product_manifest:
 #### 试点仓 ai-ink-brain-api-python/ 清单
 
 pilot_manifest:
-  - path: "docs/_tech_graph/src/00_main.graph.yaml"
-    role: "图源 YAML（P0 试点）"
-  - path: "docs/_tech_graph/src/*.graph.yaml"
-    role: "图源 YAML（其他流程）· 展开 glob 后逐文件扫描"
+  - path: "docs/_tech_graph/00_main.graph.yaml"
+    role: "图源 YAML（主流程 · 须 P3 通过后存在）"
+  - path: "docs/_tech_graph/*.graph.yaml"
+    role: "图源 YAML（全量 flow）· 展开 glob 后逐文件扫描 · 不含 .ai.md"
   - path: "docs/_tech_graph/_manifest.json"
     role: "端点/表/env 索引本体"
   - path: "docs/_tech_graph/_contract_manifest.json"
@@ -174,7 +178,7 @@ pilot_manifest:
 | 子本体 ID | 名称 | 职责 | 典型文件 |
 |---|---|---|---|
 | PROCESS_TRACK | 过程本体 | Task/Hat/Gate/Review | DESIGN_ONTOLOGY §1–§5 |
-| GRAPH_TRACK | 图源本体 | YAML 源 → graph.json | src/*.graph.yaml、graph.json |
+| GRAPH_TRACK | 图源本体 | YAML 源 → graph.json | docs/_tech_graph/*.graph.yaml、graph.json |
 | WIKI_TRACK | 知识库本体 | coding_wiki 叙事 | coding_wiki/syntheses/*.md |
 | STANDARDS_TRACK | 约束本体 | 编码规范、L2 | standards/、.cursor/rules/ |
 | VERIFY_TRACK | 验证本体 | CI、测试样本 | .github/workflows/、ci/samples/ |
@@ -259,7 +263,7 @@ YAML 结构（字段名须保留）：
 
 ## 整合执行流程
 
-1. 检查执行前提 P1–P5 → 任一失败则终止并输出 fail_msg
+1. 检查执行前提 **P1 → P3 → P2 → P4 → P5** → 任一失败则终止并输出 fail_msg
 2. 确定当前目录 → 产品仓 or 试点仓
 3. 读取固定文件清单 → 逐个解析
 4. 标注原语类型 T/K/H/B（仅 Lens）
@@ -290,3 +294,4 @@ YAML 结构（字段名须保留）：
 | --- | --- | --- |
 | v1.0 | 2026-06-16 | 初版落盘 |
 | v1.1 | 2026-06-16 | 整合修正：P1–P5 前提 · T/K/H/B Lens · 固定清单 · Track 分组 · epic_task_mapping · inventory 落盘 · ontology-check 关系 |
+| v1.2 | 2026-06-16 | P2 路径改为 `docs/_tech_graph/00_main.graph.yaml` · P3 前置为硬门槛（全删 `.ai.md` 后方可执行）· pilot_manifest 去 `src/` |

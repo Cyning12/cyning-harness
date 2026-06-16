@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | **[`HARNESS_GRAPH_MODEL_design_v0_zh.md`](./HARNESS_GRAPH_MODEL_design_v0_zh.md)** | proposal · **v2.0+** | **真值稿** · 节点/边/事件 · CLI 路线 |
 | [`HGM_UPGRADE_OUTLINE_v1_zh.md`](./HGM_UPGRADE_OUTLINE_v1_zh.md) | outline | G0 讨论入口 · 依赖链 |
-| [`PROMPT_ontology_inventory_scan_G0_v1_zh.md`](./PROMPT_ontology_inventory_scan_G0_v1_zh.md) | active · v1.1 | G0 本体扫描 · P1–P5 前提 · inventory/ 落盘 |
+| [`PROMPT_ontology_inventory_scan_G0_v1_zh.md`](./PROMPT_ontology_inventory_scan_G0_v1_zh.md) | active · v1.2 | G0 本体扫描 · P3 无 `.ai.md` 硬门槛 · inventory/ 落盘 |
 | [`HARNESS_GRAPH_MODEL_dialogue_archive_v1_zh.md`](./HARNESS_GRAPH_MODEL_dialogue_archive_v1_zh.md) | archive | 对话参考 · **非真值** |
 
 ```text
