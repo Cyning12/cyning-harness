@@ -23,6 +23,8 @@ usage() {
 
   "$CYNING_HARNESS/wizard/harness-sync.sh" apply
 
+  "$CYNING_HARNESS/wizard/harness-sync.sh" --index --target /path/to/project
+
 或：
 
   "$CYNING_HARNESS/wizard/harness-sync.sh" plan --target /path/to/project
@@ -31,14 +33,16 @@ usage() {
 
 依赖：业务仓已有 .cyning-harness/profile.json（由 install.sh 生成）
 
-plan  — 仅打印将复制的文件
-apply — 执行复制（S5：git 仓须工作区干净，或 --force）
+plan   — 仅打印将复制的文件
+apply  — 执行复制（S5：git 仓须工作区干净，或 --force）
+--index — 生成 .cyning-harness/invoke_index.json（只读聚合 invokes/by-task，不覆盖 S2 域）
 EOF
 }
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     plan|apply) MODE="$1"; shift ;;
+    --index) MODE="index"; shift ;;
     --target) TARGET="$2"; shift 2 ;;
     --force) SYNC_FORCE=1; shift ;;
     -h|--help) usage; exit 0 ;;
@@ -46,11 +50,20 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-[[ "$MODE" == "plan" || "$MODE" == "apply" ]] || { usage; exit 1; }
+[[ "$MODE" == "plan" || "$MODE" == "apply" || "$MODE" == "index" ]] || { usage; exit 1; }
 
 CYNING_HARNESS="${CYNING_HARNESS:-$HARNESS_ROOT}"
 refuse_if_product_root "$TARGET" "$HARNESS_ROOT"
 PROFILE_FILE="$TARGET/.cyning-harness/profile.json"
+
+if [[ "$MODE" == "index" ]]; then
+  if [[ ! -d "$TARGET" ]]; then
+    echo "错误: 目标目录不存在 $TARGET" >&2
+    exit 1
+  fi
+  node "$SCRIPT_DIR/lib/generate-invoke-index.js" "$TARGET"
+  exit 0
+fi
 
 if [[ ! -f "$PROFILE_FILE" ]]; then
   echo "错误: 未找到 $PROFILE_FILE" >&2

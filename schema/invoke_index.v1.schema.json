@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://cyning.me/harness/schemas/invoke_index.v1.schema.json",
+  "title": "Harness InvokeSnapshot Index v1",
+  "description": "由 harness-sync --index 生成的 invokes/by-task 机器索引 · 只读聚合 · 不覆盖 S2 域",
+  "type": "object",
+  "required": ["schema_version", "generated_at", "index"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "index": {
+      "type": "object",
+      "description": "task_slug → 该 task 的 invoke 列表",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["task_slug", "invokes"],
+        "properties": {
+          "task_slug": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_-]*$"
+          },
+          "invokes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["path", "mtime", "hat_id"],
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "description": "相对业务仓根的 invoke 文件路径"
+                },
+                "mtime": {
+                  "type": "integer",
+                  "description": "文件修改时间戳（秒）"
+                },
+                "hat_id": {
+                  "type": "string",
+                  "description": "从文件名解析的帽 ID，如 30 / 40 / CLOSE / HG-RELEASE"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
