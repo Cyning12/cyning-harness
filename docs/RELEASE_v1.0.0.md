@@ -84,6 +84,7 @@ npx @cyning/harness audit --target . --task docs/tasks/active/task_xxx.md
 
 ## 链接
 
+- **使用手册**：[`docs/USER_GUIDE_v1.0_zh.md`](./USER_GUIDE_v1.0_zh.md)
 - 文档索引：[`docs/README.md`](./README.md)
 - 接入：[`docs/ONBOARDING.md`](./ONBOARDING.md)
 - 路线：[`docs/methodology/ROADMAP_v1_zh.md`](./methodology/ROADMAP_v1_zh.md)

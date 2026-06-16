@@ -141,8 +141,13 @@ if [[ "$DO_APPLY" -eq 1 ]]; then
   [[ "$SYNC_FORCE" -eq 1 ]] && SYNC_ARGS+=(--force)
   "$SCRIPT_DIR/harness-sync.sh" "${SYNC_ARGS[@]}"
   write_manifest_upgrade "$TARGET" "$VERSION"
-  echo ""
-  echo "升级完成。"
+  cp "$CYNING_HARNESS/harness/templates/QUICKREF_v1_zh.md" "$TARGET/.cyning-harness/QUICKREF.md"
+echo ""
+echo "升级完成。"
+echo "常用命令:"
+echo "  npx @cyning/harness verify --target $TARGET"
+echo "  npx @cyning/harness gate-check --target $TARGET"
+echo "  npx @cyning/harness upgrade --target $TARGET --yes"
 else
   echo "已取消 apply（仅预览）。"
   exit 0

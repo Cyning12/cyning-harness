@@ -4,6 +4,28 @@
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-06-16
+
+### Added
+
+- **业务仓 CLI 入口**：`npx @cyning/harness gate-check` · `verify` · `sync index`（读 `.cyning-harness/local.json`，无需 clone 产品包）
+- **`verify` 聚合命令**：30 前一条命令跑 gate-check + audit D5 + S5 warn + 可选 `--graph`
+- **`--help` / `--version` / `-V`**：全局与各子命令帮助
+- **Node 仓可选 `--with-scripts`**：`init|upgrade --with-scripts [--pm pnpm|npm|yarn|auto]` 写入 `devDependencies` 与 `scripts`（merge 不覆盖）
+- **业务仓 QUICKREF**：`harness/templates/QUICKREF_v1_zh.md`，install/upgrade 后写入 `.cyning-harness/QUICKREF.md`
+
+### Changed
+
+- `lib/audit.js` 使用统一 `resolveHarnessRootForTarget`，修复无 `CYNING_HARNESS` 时的路径 bug
+- `lib/cli.js` 子命令透传 `CYNING_HARNESS` 到 wizard 脚本
+- `README.md` · `docs/ONBOARDING.md` · `docs/USER_GUIDE_v1.0_zh.md` · `wizard/README.md` · IDE 片段：同步 v1.0.1 CLI 与 `verify` 用法
+- **`ontology.yaml`**：`product_semver: "1.0.1"`
+
+### Notes
+
+- **HG-RELEASE**（tag v1.0.1 · npm publish）仍留维护者人闸
+- `verify --graph` 硬挡规则与 `gate-check --graph` 一致
+
 ## [1.0.0] - 2026-06-16
 
 ### Added

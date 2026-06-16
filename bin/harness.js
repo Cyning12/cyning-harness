@@ -2,6 +2,6 @@
 import { runCli } from '../lib/cli.js';
 
 runCli(process.argv.slice(2)).catch((err) => {
-  console.error(err.message || err);
+  if (err.message) console.error(err.message);
   process.exit(typeof err.exitCode === 'number' ? err.exitCode : 1);
 });

@@ -15,6 +15,9 @@ npx @cyning/harness@latest init --preset harness-only --ide cursor,agents
 npx @cyning/harness upgrade
 npx @cyning/harness upgrade --target /path/to/project --yes --force
 
+# 30 前验证
+npx @cyning/harness verify --target /path/to/project
+
 # 仅检查版本
 npx @cyning/harness check
 ```
@@ -22,6 +25,7 @@ npx @cyning/harness check
 - 内部单源：`wizard/install.sh` → `harness-sync.sh apply`（S2 写路径不变）
 - manifest schema：[`schema/manifest.v1.schema.json`](../schema/manifest.v1.schema.json)
 - 本地开发：`node bin/harness.js init --target /path/to/project --preset harness-only --ide cursor,agents --yes`
+- Node 仓可选：`npx @cyning/harness init --with-scripts --pm pnpm`
 
 ---
 

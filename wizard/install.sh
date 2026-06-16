@@ -148,6 +148,7 @@ if [[ "$DRY_RUN" == "1" ]]; then
 else
   "$SCRIPT_DIR/harness-sync.sh" apply --target "$TARGET"
   write_manifest_init "$TARGET" "$VERSION" "$PRESET" "$IDE_LIST" "$PROFILE_DST"
+  run cp "$CYNING_HARNESS/harness/templates/QUICKREF_v1_zh.md" "$TARGET/.cyning-harness/QUICKREF.md"
 fi
 
 # CI
@@ -201,6 +202,7 @@ fi
 echo ""
 echo "安装完成。profile: $PROFILE_DST"
 echo "manifest: $(manifest_file_path "$TARGET")"
-echo "日后升级: npx @cyning/harness upgrade --target $TARGET"
-echo "或维护者: cd $CYNING_HARNESS && ./wizard/upgrade.sh --target $TARGET"
-echo "清空重装: $CYNING_HARNESS/wizard/uninstall.sh --target $TARGET"
+echo "常用命令:"
+echo "  npx @cyning/harness verify --target $TARGET"
+echo "  npx @cyning/harness gate-check --target $TARGET"
+echo "  npx @cyning/harness upgrade --target $TARGET --yes"

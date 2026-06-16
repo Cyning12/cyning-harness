@@ -3,7 +3,7 @@
 | 项 | 内容 |
 | --- | --- |
 | **入口** | 本页 → **[方法论总指引](./methodology/README.md)** |
-| **接入** | [`ONBOARDING.md`](./ONBOARDING.md) · [`../wizard/README.md`](../wizard/README.md) |
+| **接入** | [**USER_GUIDE v1.0**](./USER_GUIDE_v1.0_zh.md) · [`ONBOARDING.md`](./ONBOARDING.md) · [`../wizard/README.md`](../wizard/README.md) |
 | **架构** | [`ARCHITECTURE.md`](./ARCHITECTURE.md) |
 
 ---
@@ -12,7 +12,7 @@
 
 | 读者 | 先读 |
 | --- | --- |
-| **新接入** | ONBOARDING → wizard/install → [`methodology/execution/P0_V0.2_GAP.md`](./methodology/execution/P0_V0.2_GAP.md) |
+| **新接入** | **USER_GUIDE v1.0** → ONBOARDING → [`methodology/execution/P0_V0.2_GAP.md`](./methodology/execution/P0_V0.2_GAP.md) |
 | **实现 / 扩展** | [`methodology/product/DESIGN_ONTOLOGY_v1_zh.md`](./methodology/product/DESIGN_ONTOLOGY_v1_zh.md) |
 | **战略 / 开源** | [`methodology/pointers/`](./methodology/pointers/README.md) → 工作区 STRATEGY_* |
 | **HGM 远期** | [`methodology/graph/`](./methodology/graph/README.md) |

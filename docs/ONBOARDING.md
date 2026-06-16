@@ -42,28 +42,31 @@ cd your-project
 
 ## 2.2 ICVO 机械审计（v1.0+）
 
-`harness audit` 在 30 执行前扫描人工闸与测试声明，确保 ICVO 公理可机械检查：
+`npx @cyning/harness verify` 在 30 执行前聚合扫描人工闸与测试声明，确保 ICVO 公理可机械检查：
 
 ```bash
-# 扫描 active task 的 HG-AUDIT-R1 / HG-GRAPH-MODULES / HG-RELEASE
-npx @cyning/harness audit --target /path/to/your-repo
+# 30 前聚合验证（gate-check + audit D5 + S5 warn + 可选 --graph）
+npx @cyning/harness verify --target /path/to/your-repo
+npx @cyning/harness verify --target /path/to/your-repo \
+  --task docs/tasks/active/task_xxx.md
 
-# 指定 task（D5 测试声明检查生效）
+# 仅人工闸
+npx @cyning/harness gate-check --target /path/to/your-repo
+npx @cyning/harness gate-check --graph --target /path/to/your-repo
+
+# 指定 task 的 ICVO 审计
 npx @cyning/harness audit --target /path/to/your-repo \
   --task docs/tasks/active/task_xxx.md
 
-# 查看 Inform 图谱审核摘要
-/path/to/cyning-harness/wizard/gate-check.sh --graph --target /path/to/your-repo
-
 # 生成 invoke 索引（只读聚合，不覆盖 S2 域）
-/path/to/cyning-harness/wizard/harness-sync.sh --index --target /path/to/your-repo
+npx @cyning/harness sync index --target /path/to/your-repo
 ```
 
 | 公理 | 检查项 | 行为 |
 |------|--------|------|
-| **D3** | 30 前置人闸 | 复用 `gate-check.sh`，HG-AUDIT-R1 非 approved 时 audit 非 0 |
-| **D5** | 改码任务测试声明 | `test_strategy=required` 但无测试/CI 引用时 audit 非 0 |
-| **S5** | Git 工作区干净 | dirty 时 warn（不直接 fail audit，但 apply 须 `--force`） |
+| **D3** | 30 前置人闸 | 复用 `gate-check.sh`，HG-AUDIT-R1 非 approved 时 verify 非 0 |
+| **D5** | 改码任务测试声明 | `test_strategy=required` 但无测试/CI 引用时 verify 非 0 |
+| **S5** | Git 工作区干净 | dirty 时 warn（不直接 fail verify，但 apply 须 `--force`） |
 
 Audit **不替代** 维护者最终判断；Agent 首输出仍须人工复核。
 
