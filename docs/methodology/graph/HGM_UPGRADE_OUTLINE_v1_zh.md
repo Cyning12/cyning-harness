@@ -9,7 +9,9 @@
 | **设计真值（已有）** | [`HARNESS_GRAPH_MODEL_design_v0_zh.md`](./HARNESS_GRAPH_MODEL_design_v0_zh.md) |
 | **语义真值** | [`../product/DESIGN_ONTOLOGY_v1_zh.md`](../product/DESIGN_ONTOLOGY_v1_zh.md) v1.2 |
 | **L2 路线** | [`../ROADMAP_v1_zh.md`](../ROADMAP_v1_zh.md) §2.2 · §8 |
-| **编排 task** | 工作区 [`task_cyning_harness_g1_hgm_v2_v1.md`](../../../../docs/harness/tasks/active/task_cyning_harness_g1_hgm_v2_v1.md) |
+| **编排 task** | 工作区 [`task_cyning_harness_g1_hgm_v2_v1.md`](../../../../docs/harness/tasks/done/cyning-harness/task_cyning_harness_g1_hgm_v2_v1.md) |
+| **G1 维护者决策** | [`DECISIONS_hgm_g1_maintainer_v1_zh.md`](./DECISIONS_hgm_g1_maintainer_v1_zh.md) |
+| **Post-G1 序列表** | [`POST_G1_SEQUENCE_v1_zh.md`](../../../../docs/harness/guides/POST_G1_SEQUENCE_v1_zh.md) |
 
 > **一句话**：HGM = 过程轨 **Task / Gate / Hat / Review** 的显式图 + append-only 事件；**不替代** Markdown 真值 · **不替代** Inform 架构图谱。
 
@@ -206,12 +208,16 @@ SEM-02 维持：**主轨 v1.x · HGM 从 v2.0 主版本起** · 不写「v0.5 = 
 
 ## 10. 开放问题（下一轮讨论议程）
 
-1. **G1 axioms 最小集**：仅 D2+D3+rejected→draft，还是含 D4-a（Inform 模块闸）？
-2. **ingest 与 git**：是否 v2.0 提供 optional pre-commit ingest？
-3. **工作区多子仓**：Projects 根是否需 `harness graph ingest --workspace`（推迟 G2/G3？）
-4. **I-YAML schema 归谁**：产品仓 canonical vs 业务仓试点先行 · **倾向** 试点冻结 → 产品抽象 → 写回 governance methodology
-5. **bench S5**：rejected→draft 夹具是否并入 compliance-bench 与 HGM axioms **同一口径**？
-6. **agent 立项触发**：G1 dogfood 绿 + 维护者书面批 Track C 子 task
+> **2026-06-17 维护者拍板** · 全文见 [`DECISIONS_hgm_g1_maintainer_v1_zh.md`](./DECISIONS_hgm_g1_maintainer_v1_zh.md) · 后继序列表 [`POST_G1_SEQUENCE_v1_zh.md`](../../../../docs/harness/guides/POST_G1_SEQUENCE_v1_zh.md)
+
+| # | 议题 | 决策 |
+| --- | --- | --- |
+| 1 | G1 axioms 最小集 | **含 D4-a Inform 模块闸** → **G1.1** |
+| 2 | ingest 与 git | **optional pre-commit ingest** → **G1.1** |
+| 3 | 工作区多子仓 ingest | **推迟 G2/G3** |
+| 4 | I-YAML schema 归谁 | **Y1 已闭合** · 产品 canonical |
+| 5 | bench S5 与 HGM axioms | **语义对齐 · 实现分层** · S5 夹具 **G1.1** |
+| 6 | agent 立项触发 | G1 + **G1.1** dogfood 绿 + 书面批 · 包形态见 DECISIONS §4 |
 
 ---
 
@@ -221,8 +227,8 @@ SEM-02 维持：**主轨 v1.x · HGM 从 v2.0 主版本起** · 不写「v0.5 = 
 | --- | --- |
 | Post-v1.0 序列表 | [`POST_V1_0_SEQUENCE_v1_zh.md`](../../../../docs/harness/guides/POST_V1_0_SEQUENCE_v1_zh.md) |
 | 后端 YAML P0 | [`task_engineering_graph_yaml_p0_00_main_v1.md`](../../../../ai-ink-brain-api-python/docs/tasks/active/task_engineering_graph_yaml_p0_00_main_v1.md) |
-| 产品 I-YAML | [`task_cyning_harness_y1_yaml_inform_v19_v1.md`](../../../../docs/harness/tasks/active/task_cyning_harness_y1_yaml_inform_v19_v1.md) |
-| HGM G1 task | [`task_cyning_harness_g1_hgm_v2_v1.md`](../../../../docs/harness/tasks/active/task_cyning_harness_g1_hgm_v2_v1.md) |
+| 产品 I-YAML | [`task_cyning_harness_y1_yaml_inform_v19_v1.md`](../../../../docs/harness/tasks/done/cyning-harness/task_cyning_harness_y1_yaml_inform_v19_v1.md) |
+| HGM G1 task | [`task_cyning_harness_g1_hgm_v2_v1.md`](../../../../docs/harness/tasks/done/cyning-harness/task_cyning_harness_g1_hgm_v2_v1.md) |
 | B9（后置） | [`task_cyning_harness_b9_agent_shell_v1.md`](../../../../docs/harness/tasks/active/task_cyning_harness_b9_agent_shell_v1.md) |
 | A5 v1.0.1 | [`task_cyning_harness_a5_cli_verify_v101_v1.md`](../../../../docs/harness/tasks/active/task_cyning_harness_a5_cli_verify_v101_v1.md) |
 
@@ -233,9 +239,11 @@ SEM-02 维持：**主轨 v1.x · HGM 从 v2.0 主版本起** · 不写「v0.5 = 
 | 节 | 状态 | 签收人 | 日期 |
 | --- | --- | --- | --- |
 | §0 决策摘要 | `confirmed` | （维护者 2026-06-16 口头） | |
-| §3 G1 范围 | `pending` | | |
-| §5 事件 schema | `pending` | | |
-| §6 I-YAML 接口 | `pending` | | |
+| §3 G1 范围 | `confirmed` | 维护者 | 2026-06-17 |
+| §5 事件 schema | `confirmed` | 维护者 | 2026-06-17 |
+| §6 I-YAML 接口 | `confirmed` | 维护者 | 2026-06-17 |
+| §8 agent/B9 | `confirmed` | 维护者 | 2026-06-17 |
+| **G0 整体** | `signed` | 维护者 | 2026-06-17 |
 | §8 agent/B9 | `pending` | | |
 | **G0 整体** | `pending` | 全表勾选后开 G1 30 帽 | |
 
