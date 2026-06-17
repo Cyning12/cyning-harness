@@ -276,12 +276,12 @@ npx @cyning/harness graph yaml check --all --input docs/_tech_graph
 | 项 | 说明 |
 | --- | --- |
 | 不是胜率工具 | [`README` 试点证据 B2](../README.md) · 完整表 [`PILOT_EVIDENCE_B2_v1_zh.md`](./methodology/execution/PILOT_EVIDENCE_B2_v1_zh.md) · **小样本机制证据**，不可外推 |
-| bench `100` | [SDD-Compliance](../examples/compliance_bench/README.md) 四场景合规率 · 见上文 §6.1 |
+| bench `100` | [SDD-Compliance](../examples/compliance_bench/README.md) 五场景合规率 · 见上文 §6.1 |
 | Extended 帽 | 00/50/链式 PROMPT 不在 Starter 默认包 · 见 [`harness/prompts/README.md`](../harness/prompts/README.md) |
 | Inform-YAML | **v1.1+** · 可选编辑源 · 须 `graph yaml check` 与 `graph.json` 一致 |
 | HGM / 图数据库 | **v2.0+ 已实现** `graph ingest|snapshot|axioms` · 本地 JSONL + snapshot；Neo4j / 远端同步 **仍提案** |
 | Agent-shell | 研究轨 #9，非 npm 功能 |
-| rejected→draft | bench S5 场景 v1 未纳入；gate-check 对非 approved 拒 30 |
+| rejected→draft | **v2.0.1+** bench S5 + HGM axioms 事件流精确匹配 |
 
 ---
 
@@ -327,18 +327,31 @@ npx @cyning/harness graph ingest --target /path/to/your-repo
 # 事件重放 → .cyning-harness/graph/snapshot.json
 npx @cyning/harness graph snapshot --target /path/to/your-repo
 
-# 公理检查（D2 · D3 · S2 · rejected→draft）
+# 公理检查（D2 · D3 · D4-a · S2 · rejected→draft）
 npx @cyning/harness graph axioms check --target /path/to/your-repo
 npx @cyning/harness graph axioms check --target /path/to/your-repo --json
 ```
 
-### 13.3 与 Inform-YAML 的接口
+**公理最小集（v2.0.1）**：D2 · D3 · **D4-a**（`HG-GRAPH-MODULES` pending/rejected + in_progress）· rejected→draft（事件流精确匹配）· S2。
+
+### 13.3 可选 · Git hooks
+
+`init` **默认不安装** pre-commit。维护者可手动复制：
+
+```bash
+cp .cyning-harness/hooks/pre-commit.sample .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
+```
+
+示例 hook 调用 `graph ingest --target`（幂等增量）· 失败默认 **warn** 不阻断 commit（可改 `exit 1`）。
+
+### 13.4 与 Inform-YAML 的接口
 
 - `InformArtifact` 节点 ID：`inform:{repo_rel_path}`
 - Task → InformArtifact 边：`MUST_READ`
 - HGM **不存储** Inform 正文，只存路径指针与 schema 版本
 
-### 13.4 局限
+### 13.5 局限
 
 - v2.0 默认本地 JSONL + snapshot；**不含** Neo4j / SQLite / 远端同步
 - 多仓聚合、时光机重建任意时点图：v2.1+ 提案
@@ -370,4 +383,5 @@ npx @cyning/harness graph axioms check --target /path/to/your-repo --json
 | 2026-06-16 | 补全相对链接 · §6.1 compliance-bench · §12 阅读索引 |
 | 2026-06-16 | v1.0.1：verify / gate-check / sync index CLI · `--with-scripts` · QUICKREF |
 | 2026-06-17 | v1.1.0：新增 §10 Inform-YAML · `graph yaml compile|check` · 三轨边界说明 |
+| 2026-06-17 | v2.0.1：D4-a axioms · rejected→draft 精确化 · S5 bench · optional pre-commit hook |
 | 2026-06-17 | v2.0.0：新增 §13 HGM 过程轨 · `graph ingest|snapshot|axioms` · InformArtifact 与 MUST_READ 边 |
