@@ -58,7 +58,7 @@
 
 | 能力标签 | 代号 | 须交付（实现） | 文档 |
 | --- | --- | --- | --- |
-| **G1 · v2.0+** | HGM 起步 | `events/*.jsonl` · graph ingest · snapshot · axioms check 子集（**均未实现**） | HGM design v0.1→v0.2 |
+| **G1 · v2.0+** | HGM 起步 | `events/*.jsonl` · graph ingest · snapshot · axioms check 子集（**v2.0.0 已实现**） | HGM design v0.1→v0.2 · [`task_g1`](../../../../docs/harness/tasks/done/cyning-harness/task_cyning_harness_g1_hgm_v2_v1.md) |
 | **G2 · v2.1+** | HGM 查询 | timeline · patterns · SQLite 投影 | 可选 Neo4j 导出 |
 
 **刻意不做（至 v1.0）**：GrowingReasoningAgent · OWL 推理机 · 热插拔 Track（Q5）· Neo4j 默认后端 · **Track G ingest（v1.0 前）**。
@@ -118,8 +118,8 @@ Epic 与子 task 真值：`Projects/docs/harness/tasks/active/`
 | #7 A4 v1.0 | v1.0.0 · 引用 #8 |
 | **#8 B2 + bench** | Track B · **1+3 主证据** · P0 绿后优先 |
 | **#9 Agent-shell** | Track B · **后置** · HGM+agent 后 | deferred · 见 §8 |
-| **I-YAML** | Track A · v1.1+ Inform | [`task_y1`](../../../../docs/harness/tasks/active/task_cyning_harness_y1_yaml_inform_v19_v1.md) · YAML P0 后 |
-| **Track G G1** | HGM v2.0 | [`task_g1`](../../../../docs/harness/tasks/active/task_cyning_harness_g1_hgm_v2_v1.md) · I-YAML + G0 后 |
+| **I-YAML** | Track A · v1.1+ Inform | [`task_y1`](../../../../docs/harness/tasks/done/cyning-harness/task_cyning_harness_y1_yaml_inform_v19_v1.md) · YAML P0 后 |
+| **Track G G1** | HGM v2.0 | [`task_g1`](../../../../docs/harness/tasks/done/cyning-harness/task_cyning_harness_g1_hgm_v2_v1.md) · I-YAML + G0 后 |
 
 **证据策略（2026-06-15 锁定）**：
 

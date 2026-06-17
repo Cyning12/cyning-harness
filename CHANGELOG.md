@@ -23,7 +23,7 @@
 
 ### Notes
 
-- **HG-RELEASE**（tag v2.0.0 · npm publish）仍留维护者人闸
+- **HG-RELEASE**：tag v2.0.0 · npm `@cyning/harness@2.0.0` 已发布
 - `gate-check --graph` 语义不变；HGM 独立子命令
 - HGM v2.0 默认本地 JSONL + snapshot，不含 Neo4j / SQLite / 远端同步
 
