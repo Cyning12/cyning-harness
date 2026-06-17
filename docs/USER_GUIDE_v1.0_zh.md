@@ -1,7 +1,7 @@
-# cyning-harness v1.0 · 使用手册
+# cyning-harness v2.0 · 使用手册
 
 > **读者**：要在 **自己的业务仓库** 里落地 AI 辅助研发纪律的开发者（非 cyning-harness 维护者）。  
-> **版本**：[`@cyning/harness@1.1.0`](https://www.npmjs.com/package/@cyning/harness) · MIT  
+> **版本**：[`@cyning/harness@2.0.0`](https://www.npmjs.com/package/@cyning/harness) · MIT  
 > **仓库**：<https://github.com/Cyning12/cyning-harness>  
 > **更短入口**：[`README.md`](../README.md) Quick Start · [`ONBOARDING.md`](./ONBOARDING.md) 接入细节  
 > **Release**：[`RELEASE_v1.0.1.md`](./RELEASE_v1.0.1.md) · [`CHANGELOG.md`](../CHANGELOG.md)
@@ -279,7 +279,7 @@ npx @cyning/harness graph yaml check --all --input docs/_tech_graph
 | bench `100` | [SDD-Compliance](../examples/compliance_bench/README.md) 四场景合规率 · 见上文 §6.1 |
 | Extended 帽 | 00/50/链式 PROMPT 不在 Starter 默认包 · 见 [`harness/prompts/README.md`](../harness/prompts/README.md) |
 | Inform-YAML | **v1.1+** · 可选编辑源 · 须 `graph yaml check` 与 `graph.json` 一致 |
-| HGM / 图数据库 | **Track G · v2.0+ 提案**，v1.1 未实现事件 ingest |
+| HGM / 图数据库 | **v2.0+ 已实现** `graph ingest|snapshot|axioms` · 本地 JSONL + snapshot；Neo4j / 远端同步 **仍提案** |
 | Agent-shell | 研究轨 #9，非 npm 功能 |
 | rejected→draft | bench S5 场景 v1 未纳入；gate-check 对非 approved 拒 30 |
 
@@ -310,7 +310,42 @@ A：GitHub [Cyning12/cyning-harness](https://github.com/Cyning12/cyning-harness)
 
 ---
 
-## 13. 进一步阅读
+## 13. HGM 过程轨（v2.0+）
+
+Harness Graph Model（HGM）把 task、gate、review、invoke、sync 等过程实例变成 **append-only 事件流** 与 **可重放图快照**，用于机械检查 SDD 公理。
+
+### 13.1 事件文件
+
+HGM 事件写入 `.cyning-harness/events/YYYY-MM.jsonl`，修正 = 追加 `CorrectionEvent`，**禁止删改历史**。
+
+### 13.2 CLI
+
+```bash
+# 扫描业务仓 → 追加事件（幂等）
+npx @cyning/harness graph ingest --target /path/to/your-repo
+
+# 事件重放 → .cyning-harness/graph/snapshot.json
+npx @cyning/harness graph snapshot --target /path/to/your-repo
+
+# 公理检查（D2 · D3 · S2 · rejected→draft）
+npx @cyning/harness graph axioms check --target /path/to/your-repo
+npx @cyning/harness graph axioms check --target /path/to/your-repo --json
+```
+
+### 13.3 与 Inform-YAML 的接口
+
+- `InformArtifact` 节点 ID：`inform:{repo_rel_path}`
+- Task → InformArtifact 边：`MUST_READ`
+- HGM **不存储** Inform 正文，只存路径指针与 schema 版本
+
+### 13.4 局限
+
+- v2.0 默认本地 JSONL + snapshot；**不含** Neo4j / SQLite / 远端同步
+- 多仓聚合、时光机重建任意时点图：v2.1+ 提案
+
+---
+
+## 14. 进一步阅读
 
 | 优先级 | 文档 |
 | --- | --- |
@@ -335,3 +370,4 @@ A：GitHub [Cyning12/cyning-harness](https://github.com/Cyning12/cyning-harness)
 | 2026-06-16 | 补全相对链接 · §6.1 compliance-bench · §12 阅读索引 |
 | 2026-06-16 | v1.0.1：verify / gate-check / sync index CLI · `--with-scripts` · QUICKREF |
 | 2026-06-17 | v1.1.0：新增 §10 Inform-YAML · `graph yaml compile|check` · 三轨边界说明 |
+| 2026-06-17 | v2.0.0：新增 §13 HGM 过程轨 · `graph ingest|snapshot|axioms` · InformArtifact 与 MUST_READ 边 |

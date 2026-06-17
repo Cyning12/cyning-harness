@@ -1,0 +1,301 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cyning.dev/schemas/cyning-harness/hgm_event.v1.json",
+  "title": "cyning-harness HGM Event v1",
+  "description": "Harness Graph Model 过程轨事件 schema · append-only JSONL · v2.0+",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["event_id", "type", "occurred_at", "actor", "subject", "data"],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "pattern": "^evt:[0-9]{8}T[0-9]{6}Z:[0-9]{3,}$",
+      "description": "全局唯一事件 ID · 格式 evt:{YYYYMMDD}T{HHMMSS}Z:{seq}"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "RepositoryAdopted",
+        "TaskCreated",
+        "TaskStatusChanged",
+        "GateStatusChanged",
+        "HumanGateRejected",
+        "AuditReviewProduced",
+        "InvokeSnapshotCreated",
+        "FailureReportProduced",
+        "GateCheckRunCompleted",
+        "SyncOperationCompleted",
+        "InformArtifactUpdated",
+        "CorrectionEvent"
+      ],
+      "description": "事件类型"
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "事件发生 UTC 时间 · ISO 8601"
+    },
+    "actor": {
+      "type": "string",
+      "pattern": "^(maintainer|gate-check|sync|ci|agent:[a-zA-Z0-9_-]+|manual|system)$",
+      "description": "动作主体"
+    },
+    "subject": {
+      "type": "string",
+      "minLength": 1,
+      "description": "事件主题节点 ID · 如 task:{slug} / gate:{slug}:{gate_id}"
+    },
+    "data": {
+      "description": "事件 payload"
+    },
+    "source": {
+      "type": "string",
+      "enum": ["file_watch", "gate-check.sh", "harness-sync.sh", "manual", "cli", "agent"],
+      "description": "事件采集来源"
+    },
+    "supersedes": {
+      "type": "string",
+      "pattern": "^evt:[0-9]{8}T[0-9]{6}Z:[0-9]{3,}$",
+      "description": "CorrectionEvent 指向被修正的事件 ID（可选）"
+    }
+  },
+  "$defs": {
+    "statusValue": {
+      "type": "string",
+      "enum": ["draft", "pending", "in_progress", "approved", "rejected", "done", "archived"]
+    },
+    "taskSubject": {
+      "type": "string",
+      "pattern": "^task:[a-zA-Z0-9_-]+$"
+    },
+    "gateSubject": {
+      "type": "string",
+      "pattern": "^gate:[a-zA-Z0-9_-]+:[a-zA-Z0-9_-]+$"
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "type": { "const": "RepositoryAdopted" } } },
+      "then": {
+        "properties": {
+          "subject": { "pattern": "^repo:[a-zA-Z0-9_-]+$" },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["manifest_version", "preset"],
+            "properties": {
+              "manifest_version": { "type": "string" },
+              "preset": { "type": "string" },
+              "ide": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "type": { "const": "TaskCreated" } } },
+      "then": {
+        "properties": {
+          "subject": { "$ref": "#/$defs/taskSubject" },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["task_slug", "title", "status"],
+            "properties": {
+              "task_slug": { "type": "string" },
+              "title": { "type": "string" },
+              "status": { "$ref": "#/$defs/statusValue" },
+              "path": { "type": "string" },
+              "tags": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "type": { "const": "TaskStatusChanged" } } },
+      "then": {
+        "properties": {
+          "subject": { "$ref": "#/$defs/taskSubject" },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["old_status", "new_status"],
+            "properties": {
+              "old_status": { "$ref": "#/$defs/statusValue" },
+              "new_status": { "$ref": "#/$defs/statusValue" },
+              "artifact": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "type": { "const": "GateStatusChanged" } } },
+      "then": {
+        "properties": {
+          "subject": { "$ref": "#/$defs/gateSubject" },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["old_status", "new_status", "task_slug", "human_gate_id"],
+            "properties": {
+              "old_status": { "$ref": "#/$defs/statusValue" },
+              "new_status": { "$ref": "#/$defs/statusValue" },
+              "task_slug": { "type": "string" },
+              "human_gate_id": { "type": "string" },
+              "blocks_hats": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "type": { "const": "HumanGateRejected" } } },
+      "then": {
+        "properties": {
+          "subject": { "$ref": "#/$defs/gateSubject" },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["task_slug", "human_gate_id", "reason"],
+            "properties": {
+              "task_slug": { "type": "string" },
+              "human_gate_id": { "type": "string" },
+              "reason": { "type": "string" },
+              "returns_to_status": { "$ref": "#/$defs/statusValue" }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "type": { "const": "AuditReviewProduced" } } },
+      "then": {
+        "properties": {
+          "subject": { "$ref": "#/$defs/taskSubject" },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["review_path", "round"],
+            "properties": {
+              "review_path": { "type": "string" },
+              "round": { "type": "string", "enum": ["R1", "R2", "CLOSE"] },
+              "hat_id": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "type": { "const": "InvokeSnapshotCreated" } } },
+      "then": {
+        "properties": {
+          "subject": { "$ref": "#/$defs/taskSubject" },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["invoke_path"],
+            "properties": {
+              "invoke_path": { "type": "string" },
+              "hat_id": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "type": { "const": "FailureReportProduced" } } },
+      "then": {
+        "properties": {
+          "subject": { "$ref": "#/$defs/taskSubject" },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["failure_path", "at_gate"],
+            "properties": {
+              "failure_path": { "type": "string" },
+              "at_gate": { "type": "string" },
+              "reason": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "type": { "const": "GateCheckRunCompleted" } } },
+      "then": {
+        "properties": {
+          "subject": { "$ref": "#/$defs/taskSubject" },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["exit_code", "task_slug"],
+            "properties": {
+              "exit_code": { "type": "integer" },
+              "task_slug": { "type": "string" },
+              "graph_checked": { "type": "boolean" },
+              "audit_checked": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "type": { "const": "SyncOperationCompleted" } } },
+      "then": {
+        "properties": {
+          "subject": { "pattern": "^repo:[a-zA-Z0-9_-]+$" },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["mode", "version"],
+            "properties": {
+              "mode": { "type": "string", "enum": ["plan", "apply"] },
+              "version": { "type": "string" },
+              "files_touched": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "type": { "const": "InformArtifactUpdated" } } },
+      "then": {
+        "properties": {
+          "subject": { "pattern": "^inform:.+" },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "inform_schema"],
+            "properties": {
+              "path": { "type": "string" },
+              "inform_schema": { "type": "string" },
+              "compiled_from": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "type": { "const": "CorrectionEvent" } } },
+      "then": {
+        "required": ["supersedes"],
+        "properties": {
+          "subject": { "minLength": 1 },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["field", "old_value", "new_value"],
+            "properties": {
+              "field": { "type": "string" },
+              "old_value": {},
+              "new_value": {},
+              "reason": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

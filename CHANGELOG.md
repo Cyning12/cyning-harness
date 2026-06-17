@@ -4,6 +4,29 @@
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-06-17
+
+### Added
+
+- **HGM G1**：`lib/graph-hgm.js` · 过程轨事件模型（Task / Gate / Review / Invoke / Sync / InformArtifact）
+- **HGM Event Schema v1**：`docs/methodology/graph/schemas/hgm_event_v1.schema.json` · append-only JSONL
+- **HGM CLI**：`harness graph ingest|snapshot|axioms check`（v2.0+）
+- **InformArtifact 与 MUST_READ 边**：task → inform 节点 · 对齐 Track I-YAML 路径约定
+- **HGM 公理子集**：D2（pending gate 阻塞 30）· D3（in_progress 缺 GateCheckRun）· S2（sync 禁止 touch S2）· rejected→draft 提醒
+- **测试覆盖**：`test/graph-hgm.test.js` · 60/60
+
+### Changed
+
+- **版本**：`package.json` · `ontology.yaml` → **2.0.0**
+- **README**：当前版本 → v2.0.0 · 补充 HGM 命令速查
+- **USER_GUIDE**：新增 §13 HGM 过程轨章 · 版本 → v2.0.0
+
+### Notes
+
+- **HG-RELEASE**（tag v2.0.0 · npm publish）仍留维护者人闸
+- `gate-check --graph` 语义不变；HGM 独立子命令
+- HGM v2.0 默认本地 JSONL + snapshot，不含 Neo4j / SQLite / 远端同步
+
 ## [1.1.0] - 2026-06-17
 
 ### Added
