@@ -1,53 +1,58 @@
-# Prompt · 项目本体构成扫描 · HGM G0（v1.2）
+# Prompt · 项目本体构成扫描 · HGM G0（v1.3）
 
 | 项 | 内容 |
 | --- | --- |
 | **状态** | `active` · G0 讨论素材 · **须满足执行前提 P1–P5** |
 | **用途** | 扫描产品仓或试点仓 · 产出 **本体清单报告**（不修改 DESIGN_ONTOLOGY） |
-| **触发时机** | 试点仓 **Graph YAML 全量迁移关账**（**全部 `.ai.md` 已删除**）+ **HG-TASK-DRAFT** 签收 · 见 [`HGM_UPGRADE_OUTLINE_v1_zh.md`](./HGM_UPGRADE_OUTLINE_v1_zh.md) G0 |
-| **关联 task** | `task_ontology_inventory_scan_v1`（扫描任务单 · 待建）· [`task_cyning_harness_g1_hgm_v2_v1.md`](../../../../docs/harness/tasks/active/task_cyning_harness_g1_hgm_v2_v1.md)（HGM G1） |
+| **触发时机** | Inform YAML 闭环 **done** + **HG-TASK-DRAFT** 签收 · 见 [`task_ontology_inventory_scan_g0_v1.md`](../../../../docs/harness/tasks/active/task_ontology_inventory_scan_g0_v1.md) · [`HGM_UPGRADE_OUTLINE_v1_zh.md`](./HGM_UPGRADE_OUTLINE_v1_zh.md) G0 |
+| **关联 task** | [`task_ontology_inventory_scan_g0_v1.md`](../../../../docs/harness/tasks/active/task_ontology_inventory_scan_g0_v1.md) · [`task_cyning_harness_g1_hgm_v2_v1.md`](../../../../docs/harness/tasks/active/task_cyning_harness_g1_hgm_v2_v1.md)（HGM G1 · deferred） |
 | **语义真值（执行时必读）** | [`../product/DESIGN_ONTOLOGY_v1_zh.md`](../product/DESIGN_ONTOLOGY_v1_zh.md) · [`HARNESS_GRAPH_MODEL_design_v0_zh.md`](./HARNESS_GRAPH_MODEL_design_v0_zh.md) |
-| **预期产出** | [`inventory/ONTOLOGY_INVENTORY_cyning_harness_v1.yaml`](./inventory/ONTOLOGY_INVENTORY_cyning_harness_v1.yaml)（主）· `inventory/ONTOLOGY_INVENTORY_ai_ink_brain_v1.yaml`（试点参考） |
+| **预期产出** | [`inventory/ONTOLOGY_INVENTORY_cyning_harness_v1.yaml`](./inventory/ONTOLOGY_INVENTORY_cyning_harness_v1.yaml)（主）· [`inventory/ONTOLOGY_INVENTORY_ai_ink_brain_api_python_v1.yaml`](./inventory/ONTOLOGY_INVENTORY_ai_ink_brain_api_python_v1.yaml)（试点） |
 | **Open Folder** | **`cyning-harness/`** 或 **`ai-ink-brain-api-python/`** · **禁止**工作区根全量扫描 |
+| **invoke** | [`PROMPT_START_30_v1.md`](../../../../docs/harness/invokes/by-task/ontology-inventory-scan-g0/PROMPT_START_30_v1.md) |
 
 ---
 
-## 执行 Prompt（v1.2 · 整合修正）
+## 执行 Prompt（v1.3 · P3 放宽 · 先扫描后删 ai.md）
 
 ```text
 # 任务：扫描当前项目，生成“项目本体构成报告”
 
-> **硬门槛**：本任务 **不得** 在试点仓仍存在任意 `.ai.md` 时执行。须在 Graph YAML **全量迁移关账**（删除全部 `.ai.md` · 图源仅留 `*.graph.yaml` + 生成 `.md`）之后启动。
+> **维护者决策 D-G0-P3（v1.3）**：试点仓 **允许** 仍存在 `@deprecated` 的 `*.ai.md`。
+> 扫描须将其列入 `legacy_pending_delete` · **不在本任务删除** · 删源见后继 task `graph-yaml-remove-ai-md`。
 
 ## ⚠️ 执行前提（硬性检查，不满足则终止）
 
-在开始扫描之前，**必须先确认以下条件全部满足**。任一条件不满足，输出提示信息并终止执行。
+在开始扫描之前，**必须先确认以下条件全部满足**。任一 **硬门槛** 不满足，输出 fail_msg 并终止。
 
-**试点仓检查顺序**：先 **P3**（无 `.ai.md`）→ 再 **P2**（YAML 图源就绪）。P3 失败则不必继续 P2。
+**试点仓检查顺序**：**P1 → P2 → P4 → P5** · **P3 为盘点项（不阻断扫描）**
 
 ### 前置条件清单
 
 preconditions:
-  # 1. 仓库范围确认
+  # 1. 仓库范围确认（硬门槛）
   - id: "P1"
     check: "当前所在目录是 cyning-harness/ 或 ai-ink-brain-api-python/"
     fail_msg: "请在产品仓（cyning-harness/）或试点仓（ai-ink-brain-api-python/）下执行此扫描。工作区根不执行全量扫描。"
 
-  # 2. 全部 .ai.md 已删除（试点仓 · 全量迁移关账 · 硬门槛）
-  - id: "P3"
-    check: "find docs/_tech_graph -name '*.ai.md' 2>/dev/null | wc -l | xargs test 0 -eq"
-    fail_msg: "docs/_tech_graph/ 下仍存在 .ai.md 文件。请先完成 Graph YAML 全量迁移并删除全部 .ai.md，再执行本体扫描。"
-    note: "试点仓执行时 **必检**；产品仓跳过 P3"
-
-  # 3. YAML 图源就绪（试点仓 · P3 通过后）
+  # 2. YAML 图源就绪（试点仓 · 硬门槛）
   - id: "P2"
     check: "test -s docs/_tech_graph/00_main.graph.yaml"
     fail_msg: "docs/_tech_graph/00_main.graph.yaml 不存在或为空。请先完成 00_main YAML 迁移。"
     note: "试点仓执行时检查；产品仓跳过 P2"
 
-  # 4. 维护者审批
+  # 3. deprecated .ai.md 盘点（试点仓 · 软门槛 · 不阻断）
+  - id: "P3"
+    check: "find docs/_tech_graph -name '*.ai.md' 2>/dev/null"
+    fail_msg: null
+    note: |
+      试点仓：若存在 .ai.md → 逐文件列入报告 legacy_pending_delete（status: deprecated_readonly）。
+      **不得** 因 .ai.md 存在而终止扫描。
+      产品仓跳过 P3。
+
+  # 4. 维护者审批（硬门槛）
   - id: "P4"
-    check: "HG-TASK-DRAFT 已签收（本次扫描任务 task_ontology_inventory_scan_v1）"
+    check: "HG-TASK-DRAFT approved（task_ontology_inventory_scan_g0_v1）"
     fail_msg: "请先获得维护者签收 HG-TASK-DRAFT 后再执行。"
 
   # 5. 扫描目的声明
@@ -142,9 +147,11 @@ product_manifest:
 
 pilot_manifest:
   - path: "docs/_tech_graph/00_main.graph.yaml"
-    role: "图源 YAML（主流程 · 须 P3 通过后存在）"
+    role: "图源 YAML（主流程）"
   - path: "docs/_tech_graph/*.graph.yaml"
-    role: "图源 YAML（全量 flow）· 展开 glob 后逐文件扫描 · 不含 .ai.md"
+    role: "图源 YAML（全量 flow）· 展开 glob 后逐文件扫描"
+  - path: "docs/_tech_graph/*.ai.md"
+    role: "legacy · @deprecated 只读对照 · 须列入 legacy_pending_delete · 本任务不删"
   - path: "docs/_tech_graph/_manifest.json"
     role: "端点/表/env 索引本体"
   - path: "docs/_tech_graph/_contract_manifest.json"
@@ -237,6 +244,13 @@ YAML 结构（字段名须保留）：
     meta_paths_observed: ["tkb", "htb"]
     missing_meta_paths: ["..."]
 
+  legacy_pending_delete:  # 试点仓 · v1.3 新增 · 仅盘点
+    - path: "docs/_tech_graph/00_main.ai.md"
+      status: "deprecated_readonly"
+      successor: "docs/_tech_graph/00_main.graph.yaml"
+      note: "删源 task: graph-yaml-remove-ai-md · 须 HG-INVENTORY-ARCHIVED 后"
+    # ... 其余 6× flow .ai.md 同理 ...
+
   gaps:
     - "..."
 
@@ -253,24 +267,25 @@ YAML 结构（字段名须保留）：
 
 - **报告格式**：YAML
 - **落盘路径**（根据执行目录）：
-  - 产品仓：cyning-harness/docs/methodology/graph/inventory/ONTOLOGY_INVENTORY_cyning_harness_v1.yaml
-  - 试点仓：cyning-harness/docs/methodology/graph/inventory/ONTOLOGY_INVENTORY_ai_ink_brain_v1.yaml
-    （试点仓执行时仍写入产品仓 inventory/ · 若无法跨仓写入则落盘对话并提示维护者手动拷贝）
-- **提交策略**：报告仅作 G0 讨论附件，**不强制提交 Git**。维护者审阅后可删除或仅保留摘要。
+  - 产品仓扫描：`cyning-harness/docs/methodology/graph/inventory/ONTOLOGY_INVENTORY_cyning_harness_v1.yaml`
+  - 试点仓扫描：`cyning-harness/docs/methodology/graph/inventory/ONTOLOGY_INVENTORY_ai_ink_brain_api_python_v1.yaml`
+    （试点仓执行时仍写入产品仓 inventory/ · 若无法跨仓写入则落盘 invoke 附件并提示维护者手动拷贝）
+- **提交策略**：维护者审阅后 **须提交 Git 留档**（本链 D-G0-ARCHIVE）· 签 HG-INVENTORY-ARCHIVED · 此后方可删 `.ai.md`。
 - **若目录不存在**：mkdir -p docs/methodology/graph/inventory/ 后写入。
 
 ---
 
 ## 整合执行流程
 
-1. 检查执行前提 **P1 → P3 → P2 → P4 → P5** → 任一失败则终止并输出 fail_msg
-2. 确定当前目录 → 产品仓 or 试点仓
-3. 读取固定文件清单 → 逐个解析
-4. 标注原语类型 T/K/H/B（仅 Lens）
-5. 按 Track 命名分组 → sub_ontologies
-6. 输出 epic_task_mapping
-7. 生成报告 → 落盘到 inventory/ 指定路径
-8. 提示维护者：「扫描完成，请审阅报告后决定是否提交 Git」
+1. 检查执行前提 **P1 → P2 → P4 → P5** → 硬门槛失败则终止
+2. 试点仓执行 **P3 盘点** → 填充 `legacy_pending_delete` · **不终止**
+3. 确定当前目录 → 产品仓 or 试点仓
+4. 读取固定文件清单 → 逐个解析（含 deprecated `.ai.md` 只读摘要）
+5. 标注原语类型 T/K/H/B（仅 Lens）
+6. 按 Track 命名分组 → sub_ontologies
+7. 输出 epic_task_mapping
+8. 生成报告 → 落盘到 inventory/ 指定路径
+9. 提示维护者：「扫描完成 · 请审阅 · 留档 merge 后签 HG-INVENTORY-ARCHIVED · 再开删 ai.md task」
 
 ---
 
@@ -295,3 +310,4 @@ YAML 结构（字段名须保留）：
 | v1.0 | 2026-06-16 | 初版落盘 |
 | v1.1 | 2026-06-16 | 整合修正：P1–P5 前提 · T/K/H/B Lens · 固定清单 · Track 分组 · epic_task_mapping · inventory 落盘 · ontology-check 关系 |
 | v1.2 | 2026-06-16 | P2 路径改为 `docs/_tech_graph/00_main.graph.yaml` · P3 前置为硬门槛（全删 `.ai.md` 后方可执行）· pilot_manifest 去 `src/` |
+| v1.3 | 2026-06-17 | **D-G0-P3**：P3 改为软门槛 · `legacy_pending_delete` 盘点 · 先扫描后删 ai.md · 落盘须 Git 留档 · 关联 task_ontology_inventory_scan_g0_v1 · 试点产出文件名统一 |
