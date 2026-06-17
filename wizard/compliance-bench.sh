@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SDD-Compliance micro-bench · v1 · S1–S4
+# SDD-Compliance micro-bench · v1 · S1–S5
 # 输出合规率 %；不测 LLM 解题，只测 Orchestrate/Verify 可机械部分。
 set -euo pipefail
 
@@ -12,14 +12,14 @@ QUIET=0
 
 usage() {
   cat <<'EOF'
-用法：compliance-bench.sh [--all | S1 S2 S3 S4] [--quiet]
+用法：compliance-bench.sh [--all | S1 S2 S3 S4 S5] [--quiet]
 
-  --all     运行 S1–S4（默认输出含公理解释与摘要表）
+  --all     运行 S1–S5（默认输出含公理解释与摘要表）
   --quiet   CI/脚本模式：stdout 仅打印合规率数字；摘要说明走 stderr
 
 说明：
   合规率 = PASS 场景数 ÷ 总场景数 × 100。
-  100 表示 S1–S4 全部通过，即 gate-check / sync 行为符合 SDD 公理；
+  100 表示 S1–S5 全部通过，即 gate-check / sync 行为符合 SDD 公理；
   不是 LLM 解题正确率，也不是业务项目胜率。
 
 示例：
@@ -30,9 +30,9 @@ EOF
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --all) SCENARIOS=(S1 S2 S3 S4); shift ;;
+    --all) SCENARIOS=(S1 S2 S3 S4 S5); shift ;;
     --quiet) QUIET=1; shift ;;
-    S1|S2|S3|S4) SCENARIOS+=("$1"); shift ;;
+    S1|S2|S3|S4|S5) SCENARIOS+=("$1"); shift ;;
     -h|--help) usage; exit 0 ;;
     *) echo "未知参数: $1" >&2; usage; exit 1 ;;
   esac
@@ -53,14 +53,26 @@ log_scenario() {
   [[ "$QUIET" == "1" ]] || echo "$@"
 }
 
+gate_status() {
+  local file="$1" gate="$2"
+  awk -F'|' -v g="$gate" '
+    $0 ~ /^[[:space:]]*\|/ && index($0, g) > 0 {
+      gsub(/^[[:space:]]+|[[:space:]]+$/, "", $3)
+      gsub(/\*/, "", $3)
+      print $3
+      exit
+    }
+  ' "$file"
+}
+
 print_banner() {
   [[ "$QUIET" == "1" ]] && return 0
   log_scenario "╔══════════════════════════════════════════════════════════════╗"
-  log_scenario "║  SDD-Compliance micro-bench · v1 · S1–S4                    ║"
+  log_scenario "║  SDD-Compliance micro-bench · v1 · S1–S5                    ║"
   log_scenario "╚══════════════════════════════════════════════════════════════╝"
   log_scenario ""
   log_scenario "性质  机械合规测试 · 合成夹具 · 不调用 LLM"
-  log_scenario "公理  D2 HumanGate · D3 30 前置闸 · S2 sync 域边界"
+  log_scenario "公理  D2 HumanGate · D3 30 前置闸 · S2 sync 域 · rejected→draft"
   log_scenario "夹具  $BENCH_DIR/"
   log_scenario "场景  ${SCENARIOS[*]}"
   log_scenario ""
@@ -199,6 +211,36 @@ scenario_S4() {
   fi
 }
 
+task_status() {
+  local file="$1"
+  sed -n 's/.*\*\*状态\*\*[^`]*`\([^`]*\)`.*/\1/p' "$file" | head -1
+}
+
+scenario_S5() {
+  local dir="$BENCH_DIR/S5_rejected_draft"
+  local tf="$dir/task.md"
+  scenario_header "S5" "rejected→draft · task 须回 draft" \
+    "rejected→draft（与 HGM axioms 同语义）" \
+    "examples/compliance_bench/S5_rejected_draft/" \
+    "HG-AUDIT-R1=rejected 且 task status=draft → 合规"
+
+  local audit status
+  audit="$(gate_status "$tf" HG-AUDIT-R1)"
+  status="$(task_status "$tf")"
+
+  if [[ "$audit" == "rejected" && "$status" == "draft" ]]; then
+    scenario_footer "S5" "PASS" "gate rejected · task draft" \
+      "否决后 task 已回 draft · 符合 rejected→draft 公理（bench 静态态 · axioms 为事件流真值）"
+    PASS=$((PASS+1))
+    RESULTS+=("S5|PASS|rejected gate + draft status")
+  else
+    scenario_footer "S5" "FAIL" "audit=$audit status=$status" \
+      "rejected 后 task 须 draft · 检查夹具或 gate-check 行为"
+    FAIL=$((FAIL+1))
+    RESULTS+=("S5|FAIL|audit=$audit status=$status")
+  fi
+}
+
 print_summary() {
   local total=$((PASS+FAIL))
   local rate=0
@@ -243,6 +285,7 @@ for s in "${SCENARIOS[@]}"; do
     S2) scenario_S2 ;;
     S3) scenario_S3 ;;
     S4) scenario_S4 ;;
+    S5) scenario_S5 ;;
   esac
 done
 

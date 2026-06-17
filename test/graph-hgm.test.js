@@ -208,6 +208,138 @@ test('checkAxioms S2 检测 sync touch S2 路径', () => {
   assert.ok(result.violations.some((v) => v.axiom === 'S2'));
 });
 
+test('checkAxioms rejected→draft positive：rejected 后有 draft 回退', () => {
+  const events = [
+    {
+      event_id: 'evt:20260617T120000Z:001',
+      type: 'TaskCreated',
+      occurred_at: '2026-06-17T12:00:00Z',
+      actor: 'system',
+      subject: 'task:demo',
+      data: { task_slug: 'demo', title: 'Demo', status: 'in_progress' },
+    },
+    {
+      event_id: 'evt:20260617T120000Z:002',
+      type: 'GateStatusChanged',
+      occurred_at: '2026-06-17T12:01:00Z',
+      actor: 'maintainer',
+      subject: 'gate:demo:HG-AUDIT-R1',
+      data: {
+        old_status: 'pending',
+        new_status: 'rejected',
+        task_slug: 'demo',
+        human_gate_id: 'HG-AUDIT-R1',
+        blocks_hats: ['30'],
+      },
+    },
+    {
+      event_id: 'evt:20260617T120000Z:003',
+      type: 'HumanGateRejected',
+      occurred_at: '2026-06-17T12:01:01Z',
+      actor: 'maintainer',
+      subject: 'gate:demo:HG-AUDIT-R1',
+      data: { task_slug: 'demo', human_gate_id: 'HG-AUDIT-R1', returns_to_status: 'draft' },
+    },
+    {
+      event_id: 'evt:20260617T120000Z:004',
+      type: 'TaskStatusChanged',
+      occurred_at: '2026-06-17T12:02:00Z',
+      actor: 'maintainer',
+      subject: 'task:demo',
+      data: { task_slug: 'demo', new_status: 'draft' },
+    },
+  ];
+  const snapshot = buildSnapshot(events);
+  const result = checkAxioms(snapshot, events);
+  assert.equal(result.ok, true);
+  assert.equal(result.violations.filter((v) => v.axiom === 'rejected→draft').length, 0);
+});
+
+test('checkAxioms rejected→draft negative：缺 draft 回退', () => {
+  const events = [
+    {
+      event_id: 'evt:20260617T120000Z:001',
+      type: 'TaskCreated',
+      occurred_at: '2026-06-17T12:00:00Z',
+      actor: 'system',
+      subject: 'task:demo',
+      data: { task_slug: 'demo', title: 'Demo', status: 'in_progress' },
+    },
+    {
+      event_id: 'evt:20260617T120000Z:002',
+      type: 'HumanGateRejected',
+      occurred_at: '2026-06-17T12:01:00Z',
+      actor: 'maintainer',
+      subject: 'gate:demo:HG-AUDIT-R1',
+      data: { task_slug: 'demo', human_gate_id: 'HG-AUDIT-R1', returns_to_status: 'draft' },
+    },
+  ];
+  const snapshot = buildSnapshot(events);
+  const result = checkAxioms(snapshot, events);
+  assert.equal(result.ok, false);
+  assert.ok(result.violations.some((v) => v.axiom === 'rejected→draft' && v.severity === 'error'));
+});
+
+test('checkAxioms D4-a 检测 in_progress + HG-GRAPH-MODULES pending', () => {
+  const events = [
+    {
+      event_id: 'evt:20260617T120000Z:001',
+      type: 'TaskCreated',
+      occurred_at: '2026-06-17T12:00:00Z',
+      actor: 'system',
+      subject: 'task:demo',
+      data: { task_slug: 'demo', title: 'Demo', status: 'in_progress' },
+    },
+    {
+      event_id: 'evt:20260617T120000Z:002',
+      type: 'GateStatusChanged',
+      occurred_at: '2026-06-17T12:01:00Z',
+      actor: 'system',
+      subject: 'gate:demo:HG-GRAPH-MODULES',
+      data: {
+        old_status: 'pending',
+        new_status: 'pending',
+        task_slug: 'demo',
+        human_gate_id: 'HG-GRAPH-MODULES',
+        blocks_hats: ['30'],
+      },
+    },
+  ];
+  const snapshot = buildSnapshot(events);
+  const result = checkAxioms(snapshot, events);
+  assert.equal(result.ok, false);
+  assert.ok(result.violations.some((v) => v.axiom === 'D4-a' && v.severity === 'error'));
+});
+
+test('ingestRepo rejected gate + draft status 产出 TaskStatusChanged(draft)', () => {
+  const target = setupTarget();
+  writeTask(
+    target,
+    'task_rejected_draft.md',
+    `# Task · rejected draft
+
+> **状态**：\`draft\`
+
+### 人工闸
+
+| human_gate_id | status | blocks | 说明 |
+| --- | --- | --- | --- |
+| HG-AUDIT-R1 | rejected | 30 | veto |
+`,
+  );
+
+  const result = ingestRepo(target, { dryRun: true });
+  assert.ok(result.events.some((e) => e.type === 'HumanGateRejected'));
+  assert.ok(
+    result.events.some(
+      (e) => e.type === 'TaskStatusChanged' && e.data.new_status === 'draft',
+    ),
+  );
+  const snapshot = buildSnapshot(result.events);
+  const ax = checkAxioms(snapshot, result.events);
+  assert.equal(ax.violations.filter((v) => v.axiom === 'rejected→draft').length, 0);
+});
+
 test('CLI graph ingest --dry-run', () => {
   const target = setupTarget();
   writeTask(

@@ -4,6 +4,25 @@
 
 ## [Unreleased]
 
+## [2.0.1] - 2026-06-17
+
+### Added
+
+- **D4-a 公理**：`checkAxioms()` 检测 in_progress + `HG-GRAPH-MODULES` pending/rejected · MUST_READ 缺 Inform 可选 warn
+- **compliance-bench S5**：`S5_rejected_draft/` · rejected→draft 静态夹具 · `--all` 含 S5（5/5 = 100%）
+- **optional pre-commit**：`.cyning-harness/hooks/pre-commit.sample` · USER_GUIDE §13.3 · 默认 init 不安装
+
+### Changed
+
+- **rejected→draft**：事件流精确匹配 `TaskStatusChanged(draft)` · 有回退则 pass · 缺则 error
+- **版本**：`package.json` → **2.0.1**
+- **USER_GUIDE**：§13 公理集 · optional Git hooks
+
+### Notes
+
+- **HG-RELEASE**：待维护者 publish `@cyning/harness@2.0.1`
+- bench S5 语义向 HGM axioms 靠拢 · drift 时改夹具不改 axioms
+
 ## [2.0.0] - 2026-06-17
 
 ### Added
