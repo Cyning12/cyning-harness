@@ -1,0 +1,233 @@
+# G0 本体构成扫描 · 产品仓主报告
+# 生成：ontology-inventory-scan-g0 · 30 执行 · freeze_id ONTOLOGY-INVENTORY-G0
+# 约束：只读扫描 · 未修改 DESIGN_ONTOLOGY 或任何真值文件
+
+project: cyning-harness
+scan_date: "2026-06-17"
+report_role: primary
+prompt_version: "1.3"
+freeze_id: ONTOLOGY-INVENTORY-G0
+
+preconditions:
+  P1: pass  # cwd = cyning-harness/
+  P2: skip  # 产品仓无 docs/_tech_graph/
+  P3: skip  # 产品仓无 .ai.md
+  P4: pass  # HG-TASK-DRAFT approved
+  P5: pass  # G0 讨论素材 · 不修改 DESIGN_ONTOLOGY
+
+scanned_manifest:
+  product_manifest:
+    - path: docs/methodology/STRATEGY_ONTOLOGY_cyning_harness_v1_zh.md
+      role: 战略本体
+      exists: false
+      note: 清单路径未落盘；真值 POINTER 见 docs/methodology/pointers/STRATEGY_ONTOLOGY_v1_zh.md → 工作区 docs/harness/guides/
+    - path: docs/methodology/pointers/STRATEGY_ONTOLOGY_v1_zh.md
+      role: 战略本体（POINTER · 追加扫描）
+      exists: true
+      note: 禁止复制全文 · 指向工作区 L1 战略本体
+    - path: docs/methodology/product/DESIGN_ONTOLOGY_v1_zh.md
+      role: 产品设计本体（主）
+      exists: true
+      version: v1.2
+      status: draft
+    - path: docs/methodology/product/PRODUCT_ONTOLOGY_v1.1.md
+      role: 产品设计本体（v1.1，若存在）
+      exists: false
+    - path: docs/methodology/graph/HGM_UPGRADE_OUTLINE_v1_zh.md
+      role: HGM 升级大纲（G0）
+      exists: true
+      version: v1.0
+      status: outline
+    - path: docs/methodology/graph/HARNESS_GRAPH_MODEL_design_v0_zh.md
+      role: HGM 设计稿（v0）
+      exists: true
+      version: v0.1
+      status: proposal
+    - path: docs/methodology/ROADMAP_v1_zh.md
+      role: 路线图
+      exists: true
+      version: v1.4
+      status: active
+    - path: harness/meta/ontology.yaml
+      role: 机器可读本体（v0.4+ 规划，若存在）
+      exists: false
+      note: DESIGN_ONTOLOGY §0.4 骨架已文档化 · v0.4+ harness ontology-check 待实现
+
+meta_ontology:
+  implicit_primitive_lens:
+    present: true
+    documents:
+      - PROMPT_ontology_inventory_scan_G0_v1_zh.md  # T/K/H/B 仅作扫描 Lens
+      - DESIGN_ONTOLOGY_v1_zh.md  # 类/关系/公理 · 非 T/K/H/B 节点类型
+  explicit_meta_path_convention:
+    present: false
+    note: HGM design v0 提及事件→投影路径 · 未在产品仓固化 T→K→B 元路径 schema
+  global_axioms:
+    present: true
+    source: DESIGN_ONTOLOGY_v1_zh.md §5
+    axiom_ids_sample: [P1, P2, S1, S2, S3, S4, S5, D1, D2, D3, D4, D5, D6, D7]
+    note: P=过程 · S=同步 · D=部署/发布 · 与 gate-check / sync 机械检查对齐
+
+sub_ontologies:
+  - id: PROCESS_TRACK
+    name: 过程本体
+    files:
+      - docs/methodology/product/DESIGN_ONTOLOGY_v1_zh.md
+      - harness/prompts/10-requirements.md
+      - harness/prompts/22-task-audit.md
+      - harness/prompts/30-execute-code.md
+      - harness/prompts/40-self-check.md
+      - harness/templates/TASK_TEMPLATE.md
+      - harness/templates/TASK_epic.md
+    primitives_used: [T, K, H, B]
+    core_classes:
+      - Task
+      - Epic
+      - Hat
+      - HumanGate
+      - InvokeSnapshot
+      - AuditReview
+      - FailureReport
+      - GateCheckRun
+    key_relations:
+      - Task --governedBy--> Hat
+      - Task --hasGate--> HumanGate
+      - HumanGate --blocks--> Hat
+      - Epic --decomposesInto--> Task
+      - Task --dependsOn--> Task
+      - Hat --mayProduce--> InvokeSnapshot
+      - Hat --mayProduce--> AuditReview
+    key_axioms:
+      - S2 禁止 sync 覆盖 docs/tasks、reviews、invokes/by-task
+      - 改码类 Task 须 HG-AUDIT-R1 approved 方可 30
+      - depends_on 禁止循环依赖
+
+  - id: GRAPH_TRACK
+    name: 图源本体（HGM 设计轨 · 非 Inform _tech_graph）
+    files:
+      - docs/methodology/graph/HARNESS_GRAPH_MODEL_design_v0_zh.md
+      - docs/methodology/graph/HGM_UPGRADE_OUTLINE_v1_zh.md
+      - docs/methodology/graph/PROMPT_ontology_inventory_scan_G0_v1_zh.md
+    primitives_used: [T, H]
+    core_classes:
+      - BusinessRepository
+      - InformArtifact  # HGM 节点标签 · 引用业务仓 GraphTrack
+      - GateCheckRun
+      - SyncOperation
+    key_relations:
+      - Task --mustRead--> InformArtifact
+      - GateCheckRun --CHECKED--> Task
+      - SyncOperation --SYNCED--> BusinessRepository
+      - Epic --DECOMPOSES--> Task
+    key_axioms:
+      - H1 无侵入 · 未启用 HGM 时与纯文件模式一致
+      - H2 文件优先 · S2 保护域只追加事件
+      - H3 事件不可变
+
+  - id: GOVERNANCE_TRACK
+    name: 治理本体
+    files:
+      - docs/methodology/ROADMAP_v1_zh.md
+      - docs/methodology/product/DESIGN_ONTOLOGY_v1_zh.md  # §0.1 变更原则 · §0.3 外部贡献清单
+      - docs/methodology/graph/HGM_UPGRADE_OUTLINE_v1_zh.md  # D1–D5 维护者决策
+    primitives_used: [T, K]
+    core_classes:
+      - Track
+      - Preset
+      - VersionManifest
+    key_relations:
+      - Preset --configures--> AdoptedProfile
+      - Track --declaredIn--> TrackManifest
+    key_axioms:
+      - SEM-02 Track G 用 v2.x · 不写 v0.5/v0.6 指 HGM
+      - v1.0 关账后启动 G1
+
+  - id: IDE_TRACK
+    name: IDE 适配本体
+    files:
+      - harness/prompts/FRAGMENT_30_invoke_block_v1_zh.md
+      - harness/prompts/FRAGMENT_30_gate_verify_v1_zh.md
+      - harness/prompts/FRAGMENT_task_domain_infer_v1_zh.md
+    primitives_used: [K]
+    core_classes:
+      - IDEFragment
+      - MarkerBlock
+    key_relations:
+      - IDEFragment --embeddedIn--> CLAUDE.md / AGENTS.md
+    key_axioms:
+      - cyning-harness:begin/end marker 可 merge 区段
+
+  - id: VERIFY_TRACK
+    name: 验证本体
+    files:
+      - wizard/gate-check.sh
+      - test/  # npm test · audit · gate-check.graph
+    primitives_used: [K, H]
+    core_classes:
+      - GateCheckRun
+      - VerifyArtifact
+    key_relations:
+      - Task --verifiedBy--> VerifyArtifact
+      - GateCheckRun --CHECKED--> Task
+    key_axioms:
+      - gate-check 机械扫描 active task 闸表
+      - v1.0 gate-check --graph 校验 Inform 模块依赖
+
+  - id: STANDARDS_TRACK
+    name: 约束本体
+    files: []
+    primitives_used: [K]
+    core_classes:
+      - ConstrainArtifact
+    key_relations:
+      - Task --constrainedBy--> ConstrainArtifact
+    key_axioms: []
+    note: 产品仓模板级 · 实例化后落业务仓 docs/standards/ 与 .cursor/rules/
+
+  - id: WIKI_TRACK
+    name: 知识库本体
+    files: []
+    primitives_used: [T]
+    core_classes: []
+    key_relations: []
+    key_axioms: []
+    note: 产品仓无 coding_wiki · 试点在业务仓
+
+epic_task_mapping:
+  definition: EpicTask 是 Task 的特化子类
+  evidence: DESIGN_ONTOLOGY_v1_zh.md §1.4
+  fields:
+    - depends_on: string[] — 子 Task slug 列表
+    - completion_policy: must_complete_all | any_completes
+    - child_tasks: string[]
+  related_gate: HG-EPIC-ROADMAP（Epic CLOSE 专用闸门）
+  note: Epic 不直接执行 30，通过子 Task 状态聚合判断完成
+
+graph_summary:
+  primitive_lens_used: [T, K, H, B]
+  hgm_node_labels:
+    - BusinessRepository
+    - Task
+    - HumanGate
+    - Hat
+    - AuditReview
+    - InvokeSnapshot
+    - FailureReport
+    - GateCheckRun
+    - SyncOperation
+    - InformArtifact
+  meta_paths_observed:
+    - tkb  # Track/Preset 配置 → 约束键(test_strategy) → Task 实例
+    - htb  # VersionManifest/upgrade 历史 → Track 版本 → 同步产物
+  missing_meta_paths:
+    - 显式 T→K→B schema 未落盘（仅 Prompt G0 Lens 分析用）
+    - ontology.yaml 机器可读双轨未实现
+
+legacy_pending_delete: []  # 产品仓无 .ai.md
+
+gaps:
+  - manifest 路径 STRATEGY_ONTOLOGY_cyning_harness_v1_zh.md 不存在；实际为 pointers/STRATEGY_ONTOLOGY_v1_zh.md（POINTER）
+  - PRODUCT_ONTOLOGY_v1.1.md 未发现
+  - harness/meta/ontology.yaml 未实现（v0.4+ 规划 · DESIGN_ONTOLOGY §0.4 仅文档骨架）
+  - 产品仓无 docs/_tech_graph/ · Inform GraphTrack 在业务仓试点
+  - WIKI_TRACK / STANDARDS_TRACK 在产品仓仅为模板引用 · 无实例文件

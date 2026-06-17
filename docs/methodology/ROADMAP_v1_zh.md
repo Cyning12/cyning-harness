@@ -117,7 +117,9 @@ Epic 与子 task 真值：`Projects/docs/harness/tasks/active/`
 | #6 A3 public push | v0.4.0 |
 | #7 A4 v1.0 | v1.0.0 · 引用 #8 |
 | **#8 B2 + bench** | Track B · **1+3 主证据** · P0 绿后优先 |
-| **#9 Agent-shell** | Track B · **2 并行** · 核实期 · 不挡 A3 |
+| **#9 Agent-shell** | Track B · **后置** · HGM+agent 后 | deferred · 见 §8 |
+| **I-YAML** | Track A · v1.1+ Inform | [`task_y1`](../../../../docs/harness/tasks/active/task_cyning_harness_y1_yaml_inform_v19_v1.md) · YAML P0 后 |
+| **Track G G1** | HGM v2.0 | [`task_g1`](../../../../docs/harness/tasks/active/task_cyning_harness_g1_hgm_v2_v1.md) · I-YAML + G0 后 |
 
 **证据策略（2026-06-15 锁定）**：
 
@@ -134,6 +136,24 @@ Epic 与子 task 真值：`Projects/docs/harness/tasks/active/`
 
 ---
 
+## 8. Post-v1.0 执行序（2026-06-16）
+
+维护者决策真值：工作区 [`POST_V1_0_SEQUENCE_v1_zh.md`](../../../../docs/harness/guides/POST_V1_0_SEQUENCE_v1_zh.md) · HGM 讨论 [`HGM_UPGRADE_OUTLINE_v1_zh.md`](./graph/HGM_UPGRADE_OUTLINE_v1_zh.md)
+
+| 序 | 里程碑 | 阻塞 |
+| --- | --- | --- |
+| 0 | A5 @1.0.1 · Epic CLOSE · **v1.0 公众号本周发** | — |
+| 1 | Ink 后端 Graph YAML P0 CLOSE | — |
+| 2 | 产品 Inform-YAML **v1.1+**（2.0 前） | 1 |
+| 3 | HGM G0 大纲讨论 + schema 冻结 | 1 |
+| 4 | HGM G1 **v2.0** ingest | 2 + 3 |
+| 5 | cyning-harness-agent 基础 | 4 · 待立项 |
+| 6 | B9 Agent-shell findings | 5 |
+
+**原则**：Inform YAML 在 v2.0 前并入主轨 · HGM 在后端 YAML 试点后启动 · B9 最后。
+
+---
+
 ## 7. 修订记录
 
 | 版本 | 日期 | 说明 |
@@ -146,3 +166,4 @@ Epic 与子 task 真值：`Projects/docs/harness/tasks/active/`
 | v1.3.2 | 2026-06-15 | P0 金样关账 · v0.2→v0.3 首闸满足 · A1 next |
 | v1.3.3 | 2026-06-15 | A1 实现关账 · A2 next · v0.3.0 表标注 |
 | v1.4 | 2026-06-15 | **SEM-02**：HGM Track G **v0.5/v0.6 → v2.x** · 增 §2.0 命名纪律 |
+| v1.5 | 2026-06-16 | 增 §8 Post-v1.0 序 · I-YAML v1.1+ · B9 后置 · 链 HGM 大纲 |

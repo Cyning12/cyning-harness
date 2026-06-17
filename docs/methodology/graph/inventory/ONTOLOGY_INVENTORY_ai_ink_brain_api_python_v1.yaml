@@ -1,0 +1,283 @@
+# G0 本体构成扫描 · 试点仓辅助报告
+# 生成：ontology-inventory-scan-g0 · 30 执行 · freeze_id ONTOLOGY-INVENTORY-G0
+# 约束：只读扫描 · 未删 .ai.md · 未改 export/compile
+
+project: ai-ink-brain-api-python
+scan_date: "2026-06-17"
+report_role: pilot_reference
+prompt_version: "1.3"
+freeze_id: ONTOLOGY-INVENTORY-G0
+
+preconditions:
+  P1: pass  # 扫描源 = ai-ink-brain-api-python/
+  P2: pass  # docs/_tech_graph/00_main.graph.yaml 存在且非空
+  P3: inventory_only  # 7× .ai.md 列入 legacy_pending_delete · 不阻断
+  P4: pass  # HG-TASK-DRAFT approved
+  P5: pass  # G0 讨论素材
+
+scanned_manifest:
+  pilot_manifest:
+    - path: docs/_tech_graph/00_main.graph.yaml
+      role: 图源 YAML（主流程）
+      exists: true
+      graph_id: "00_main"
+      node_count: 24
+    - path: docs/_tech_graph/10_flow_rag.graph.yaml
+      role: 图源 YAML（RAG 子流程）
+      exists: true
+      graph_id: "10_flow_rag"
+    - path: docs/_tech_graph/11_flow_text2sql.graph.yaml
+      role: 图源 YAML（Text2SQL 子流程）
+      exists: true
+      graph_id: "11_flow_text2sql"
+    - path: docs/_tech_graph/12_flow_fts.graph.yaml
+      role: 图源 YAML（FTS 子流程）
+      exists: true
+      graph_id: "12_flow_fts"
+    - path: docs/_tech_graph/13_flow_supabase_rpc.graph.yaml
+      role: 图源 YAML（Supabase RPC 子流程）
+      exists: true
+      graph_id: "13_flow_supabase_rpc"
+    - path: docs/_tech_graph/14_runtime_observability.graph.yaml
+      role: 图源 YAML（运行时可观测）
+      exists: true
+      graph_id: "14_runtime_observability"
+    - path: docs/_tech_graph/15_e2e_boundary.graph.yaml
+      role: 图源 YAML（E2E 边界）
+      exists: true
+      graph_id: "15_e2e_boundary"
+    - path: docs/_tech_graph/_manifest.json
+      role: 端点/表/env 索引本体
+      exists: true
+      schema_version: tech_graph_manifest_v1
+      endpoint_count: 18
+      table_count: 5
+      env_count: 53
+    - path: docs/_tech_graph/_contract_manifest.json
+      role: 契约/公理本体
+      exists: true
+      schema_version: tech_graph_contract_manifest_v1
+      topic: unified_chat_sse_contract
+    - path: docs/_tech_graph/99_spec.md
+      role: 治理/规约本体
+      exists: true
+    - path: docs/_tech_graph/01_struct.md
+      role: 数据结构本体
+      exists: true
+    - path: docs/_tech_graph/graph.json
+      role: 物化图（由 YAML export 生成，非手写）
+      exists: true
+      node_count: 135
+      edge_count: 186
+      graph_ids: [00_main, 10_flow_rag, 11_flow_text2sql, 12_flow_fts, 13_flow_supabase_rpc, 14_runtime_observability, 15_e2e_boundary]
+
+meta_ontology:
+  implicit_primitive_lens:
+    present: true
+    documents:
+      - 99_spec.md  # AI 行为约束 C1–C6 · drift_check 锚点
+      - _contract_manifest.json  # payload_min_keys · allowed_events 作 K 类锚点
+  explicit_meta_path_convention:
+    present: true
+    documents:
+      - 99_spec.md  # YAML 单源 → compile → .md · export → graph.json
+    note: Inform YAML 闭环（P0–P1 done）· .ai.md 已 deprecated
+  global_axioms:
+    present: true
+    source: 99_spec.md + CI tools/
+    axioms_sample:
+      - 禁止编造不存在的表/字段/RPC/端点
+      - 端点/RPC/表/env 变更须同步 _manifest.json
+      - graph.json 禁止手改 · 由 YAML export 生成
+      - _contract_manifest payload_min_keys 删改导致 contract_check 失败
+
+sub_ontologies:
+  - id: GRAPH_TRACK
+    name: 图源本体
+    files:
+      - docs/_tech_graph/00_main.graph.yaml
+      - docs/_tech_graph/10_flow_rag.graph.yaml
+      - docs/_tech_graph/11_flow_text2sql.graph.yaml
+      - docs/_tech_graph/12_flow_fts.graph.yaml
+      - docs/_tech_graph/13_flow_supabase_rpc.graph.yaml
+      - docs/_tech_graph/14_runtime_observability.graph.yaml
+      - docs/_tech_graph/15_e2e_boundary.graph.yaml
+      - docs/_tech_graph/graph.json
+    primitives_used: [T, K, H]
+    core_classes:
+      - GraphNode
+      - GraphEdge
+      - Anchor
+      - InformArtifact
+    key_relations:
+      - graph.yaml --compile--> *.md
+      - graph.yaml --export--> graph.json
+      - Node --depends_on--> Node  # mark -> ~> ?> 等拓扑边
+      - Edge --anchor--> api/*.py symbol
+    key_axioms:
+      - 单图编辑源为 .graph.yaml
+      - flowchart 须遵循 99_mermaid_protocol.md 拓扑协议（历史 .ai.md 承载）
+
+  - id: GOVERNANCE_TRACK
+    name: 治理本体
+    files:
+      - docs/_tech_graph/99_spec.md
+      - docs/_tech_graph/_contract_manifest.json
+      - docs/_tech_graph/_manifest.json
+      - docs/_tech_graph/_test_manifest.json
+    primitives_used: [K, H]
+    core_classes:
+      - ContractManifest
+      - TechGraphManifest
+      - TestManifest
+    key_relations:
+      - CI --validates--> _manifest.json
+      - CI --validates--> _contract_manifest.json
+      - drift_check --scans--> docs/_tech_graph/*.md
+    key_axioms:
+      - tech_graph_manifest_check.py 门禁
+      - tech_graph_contract_check.py SSE 键名校验
+      - tech_graph_drift_check.py 子串匹配防静默过期
+
+  - id: STANDARDS_TRACK
+    name: 约束本体（数据结构规约）
+    files:
+      - docs/_tech_graph/01_struct.md
+    primitives_used: [T, B]
+    core_classes:
+      - documents
+      - code_chunks
+      - chatbi_access_tokens
+      - rag_conversation_logs
+      - FileMeta
+    key_relations:
+      - documents --> FileMeta : metadata
+      - code_chunks --> FileMeta : metadata
+    key_axioms:
+      - Struct 表达 DB 结构 · 来源 supabase/sql/*.sql
+
+  - id: PROCESS_TRACK
+    name: 过程本体
+    files:
+      - docs/tasks/active/
+      - docs/harness/
+      - docs/tasks/RECENT_TASK_SCHEDULE.md
+    primitives_used: [T, H, B]
+    core_classes:
+      - Task
+      - InvokeSnapshot
+      - HumanGate
+    key_relations:
+      - Task --mustRead--> InformArtifact  # _tech_graph/*
+      - Task --blocks--> graph-yaml-remove-ai-md  # 待 G0 关账后
+    key_axioms:
+      - Harness SDD 帽链 10→22→30→40
+      - Inform 闭环 P0–P1 done（PR #178）
+
+  - id: VERIFY_TRACK
+    name: 验证本体
+    files:
+      - .github/workflows/tech-graph.yml
+      - tools/tech_graph_manifest_check.py
+      - tools/tech_graph_contract_check.py
+      - tools/tech_graph_drift_check.py
+      - tools/tech_graph_test_manifest_check.py
+      - tools/graph_yaml_compile.py
+      - tools/graph_yaml_export.py
+    primitives_used: [K, H]
+    core_classes:
+      - VerifyArtifact
+      - GateCheckRun
+    key_relations:
+      - CI --runs--> manifest_check / contract_check / drift_check
+      - export --generates--> graph.json
+    key_axioms:
+      - pytest 排除 intent_eval / intent_benchmark
+      - graph.json 白名单手改禁止
+
+  - id: WIKI_TRACK
+    name: 知识库本体
+    files:
+      - docs/coding_wiki/syntheses/
+      - docs/spec/governance/SPEC-Governance-Wiki-TechGraph-Bridge-v1.md
+    primitives_used: [T, K]
+    core_classes:
+      - WikiSynthesis
+      - graph_nodes  # frontmatter 种子
+    key_relations:
+      - WikiSynthesis --graph_nodes--> GraphNode
+      - graph_query.py --neighbors/downstream/upstream--> graph.json
+    key_axioms:
+      - coding_wiki_graph_nodes_lint.py 校验 frontmatter
+
+  - id: IDE_TRACK
+    name: IDE 适配本体
+    files:
+      - AGENTS.md
+      - .cursor/rules/
+    primitives_used: [K]
+    core_classes:
+      - ConstrainArtifact
+    key_relations:
+      - Task --constrainedBy--> ConstrainArtifact
+    key_axioms: []
+
+epic_task_mapping:
+  definition: EpicTask 是 Task 的特化子类
+  evidence: cyning-harness DESIGN_ONTOLOGY_v1_zh.md §1.4（试点仓引用产品语义真值）
+  fields:
+    - depends_on: string[] — 子 Task slug 列表
+    - completion_policy: must_complete_all | any_completes
+  related_gate: HG-EPIC-ROADMAP
+  note: 试点仓 RECENT_TASK_SCHEDULE §1.7 G0 链 #1/3 为本扫描 task
+
+graph_summary:
+  primitive_lens_used: [T, K, H, B]
+  hgm_node_labels:
+    - InformArtifact  # _tech_graph/* 映射
+    - Task
+    - HumanGate
+    - InvokeSnapshot
+  meta_paths_observed:
+    - tkb  # flow 图 Topic → contract payload_min_keys → 业务端点/表实体
+    - htb  # git/02_version → YAML 版本字段 → graph.json 物化
+    - tkh  # Track 命名（GRAPH vs PROCESS）→ CI 键校验 → merge 门禁
+  missing_meta_paths:
+    - HGM events/*.jsonl 未启用（G1 deferred）
+    - 部分 Sub-graph 死链（并行 task graph-yaml-subgraph-nit）
+
+legacy_pending_delete:
+  - path: docs/_tech_graph/00_main.ai.md
+    status: deprecated_readonly
+    successor: docs/_tech_graph/00_main.graph.yaml
+    note: 删源 task graph-yaml-remove-ai-md · 须 HG-INVENTORY-ARCHIVED 后
+  - path: docs/_tech_graph/10_flow_rag.ai.md
+    status: deprecated_readonly
+    successor: docs/_tech_graph/10_flow_rag.graph.yaml
+    note: 删源 task graph-yaml-remove-ai-md · 须 HG-INVENTORY-ARCHIVED 后
+  - path: docs/_tech_graph/11_flow_text2sql.ai.md
+    status: deprecated_readonly
+    successor: docs/_tech_graph/11_flow_text2sql.graph.yaml
+    note: 删源 task graph-yaml-remove-ai-md · 须 HG-INVENTORY-ARCHIVED 后
+  - path: docs/_tech_graph/12_flow_fts.ai.md
+    status: deprecated_readonly
+    successor: docs/_tech_graph/12_flow_fts.graph.yaml
+    note: 删源 task graph-yaml-remove-ai-md · 须 HG-INVENTORY-ARCHIVED 后
+  - path: docs/_tech_graph/13_flow_supabase_rpc.ai.md
+    status: deprecated_readonly
+    successor: docs/_tech_graph/13_flow_supabase_rpc.graph.yaml
+    note: 删源 task graph-yaml-remove-ai-md · 须 HG-INVENTORY-ARCHIVED 后
+  - path: docs/_tech_graph/14_runtime_observability.ai.md
+    status: deprecated_readonly
+    successor: docs/_tech_graph/14_runtime_observability.graph.yaml
+    note: 删源 task graph-yaml-remove-ai-md · 须 HG-INVENTORY-ARCHIVED 后
+  - path: docs/_tech_graph/15_e2e_boundary.ai.md
+    status: deprecated_readonly
+    successor: docs/_tech_graph/15_e2e_boundary.graph.yaml
+    note: 删源 task graph-yaml-remove-ai-md · 须 HG-INVENTORY-ARCHIVED 后
+
+gaps:
+  - 7× .ai.md 仍存 · 已标 legacy_pending_delete · 待后继 task 删除
+  - Sub-graph 死链未修（非本 task 范围 · graph-yaml-subgraph-nit 并行）
+  - HGM G1 ingest 未实现（task_cyning_harness_g1_hgm_v2_v1 · blocked）
+  - 02_version.md 未列入 pilot_manifest 固定清单（存在但未逐文件展开）
