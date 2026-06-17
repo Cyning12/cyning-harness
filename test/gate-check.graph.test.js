@@ -93,3 +93,34 @@ test('gate-check --graph --json 输出 JSON', () => {
   assert.equal(data[0].files[0].name, '01_struct.md');
   assert.equal(data[0].files[0].status, 'approved');
 });
+
+test('gate-check --graph 对 Inform-YAML 文件友好列出', () => {
+  const target = fs.mkdtempSync(path.join(os.tmpdir(), 'cyning-harness-graph-yaml-'));
+  fs.mkdirSync(path.join(target, '.cyning-harness'), { recursive: true });
+  fs.writeFileSync(
+    path.join(target, '.cyning-harness/manifest.json'),
+    '{"version":"1.1.0","preset":"harness-only"}\n',
+  );
+  writeTaskWithGraph(target, 'approved');
+  fs.mkdirSync(path.join(target, 'docs/_tech_graph'), { recursive: true });
+  fs.writeFileSync(
+    path.join(target, 'docs/_tech_graph/00_main.graph.yaml'),
+    `schema_version: "inform_graph.v3"
+graph_id: "00_main"
+title: "Main"
+nodes:
+  - id: "A"
+    label: "Start"
+edges: []
+`,
+  );
+
+  const result = spawnSync('bash', [gateScript, '--target', target, '--graph'], {
+    cwd: repoRoot,
+    encoding: 'utf8',
+  });
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /HG-GRAPH-MODULES: approved/);
+  assert.match(result.stdout, /00_main\.graph\.yaml/);
+});

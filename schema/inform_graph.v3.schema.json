@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cyning.dev/schemas/cyning-harness/inform_graph.v3.json",
+  "title": "cyning-harness Inform Graph YAML v3",
+  "description": "Graph Source v3 编辑源 schema · YAML → Mermaid MD + graph.json（Inform 轨 · v1.1+）",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["graph_id", "title", "nodes", "edges"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "inform_graph.v3",
+      "description": "Inform Graph YAML schema 版本（v1.1+ 产品化后固定）"
+    },
+    "graph_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_]+$",
+      "description": "图 ID · 与文件名 <graph_id>.graph.yaml 一致"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "人类可读图标题"
+    },
+    "description": {
+      "type": "string",
+      "description": "图用途简述"
+    },
+    "version": {
+      "type": "string",
+      "description": "编辑源版本号或日期"
+    },
+    "direction": {
+      "type": "string",
+      "enum": ["TD", "TB", "BT", "LR", "RL"],
+      "default": "TD",
+      "description": "Mermaid flowchart 方向"
+    },
+    "notes": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array", "items": { "type": "string" } }
+      ],
+      "description": "附加说明 · compile 后写入 MD"
+    },
+    "nodes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/node" },
+      "minItems": 1
+    },
+    "edges": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/edge" }
+    }
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$",
+          "description": "节点唯一标识 · Mermaid 节点 ID"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "description": "节点显示标签"
+        },
+        "kind": {
+          "type": "string",
+          "enum": ["flow", "struct", "external"],
+          "description": "节点种类（可选）"
+        }
+      }
+    },
+    "edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to"],
+      "properties": {
+        "from": {
+          "type": "string",
+          "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$",
+          "description": "源节点 ID"
+        },
+        "to": {
+          "type": "string",
+          "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$",
+          "description": "目标节点 ID"
+        },
+        "mark": {
+          "type": "string",
+          "description": "Mermaid 箭头标记 · 如 -> ~> ?> ::branches [ok]"
+        },
+        "label": {
+          "type": "string",
+          "description": "边语义标签"
+        },
+        "type": {
+          "type": "string",
+          "description": "边类型 · 覆盖 mark 推断"
+        },
+        "anchors": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/anchor" }
+        }
+      }
+    },
+    "anchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "代码/文档相对路径"
+        },
+        "symbol": {
+          "type": "string",
+          "description": "符号名 · 与 line 二选一或共存"
+        },
+        "line": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "行号 · 与 symbol 二选一或共存"
+        }
+      }
+    }
+  }
+}

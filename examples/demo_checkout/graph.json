@@ -1,0 +1,111 @@
+{
+  "schema_version": "graph_v2",
+  "freeze_id": "TECH_GRAPH_S2_FREEZE_20260519_V2_3",
+  "generated_at": "2026-06-17T00:00:00Z",
+  "graphs": [
+    {
+      "id": "00_main",
+      "title": "Harness P0 金样流程",
+      "source_yaml_path": "00_main.graph.yaml"
+    }
+  ],
+  "nodes": [
+    {
+      "graph_id": "00_main",
+      "id": "DONE",
+      "label": "P0 通过"
+    },
+    {
+      "graph_id": "00_main",
+      "id": "EXEC",
+      "label": "30 执行帽"
+    },
+    {
+      "graph_id": "00_main",
+      "id": "GATE",
+      "label": "gate-check"
+    },
+    {
+      "graph_id": "00_main",
+      "id": "INIT",
+      "label": "harness init"
+    },
+    {
+      "graph_id": "00_main",
+      "id": "R1",
+      "label": "22 审核帽"
+    },
+    {
+      "graph_id": "00_main",
+      "id": "START",
+      "label": "空 Git 仓"
+    },
+    {
+      "graph_id": "00_main",
+      "id": "TASK",
+      "label": "task_demo_p0_golden"
+    }
+  ],
+  "edges": [
+    {
+      "anchors": [],
+      "from": "EXEC",
+      "graph_id": "00_main",
+      "label": "40 自检",
+      "mark": "->",
+      "sync": true,
+      "to": "DONE",
+      "type": "depends_on"
+    },
+    {
+      "anchors": [],
+      "from": "GATE",
+      "graph_id": "00_main",
+      "label": "exit 0",
+      "mark": "->",
+      "sync": true,
+      "to": "EXEC",
+      "type": "depends_on"
+    },
+    {
+      "anchors": [],
+      "from": "INIT",
+      "graph_id": "00_main",
+      "label": "复制金样 task",
+      "mark": "->",
+      "sync": true,
+      "to": "TASK",
+      "type": "depends_on"
+    },
+    {
+      "anchors": [],
+      "from": "R1",
+      "graph_id": "00_main",
+      "label": "HG-AUDIT-R1 approved",
+      "mark": "->",
+      "sync": true,
+      "to": "GATE",
+      "type": "depends_on"
+    },
+    {
+      "anchors": [],
+      "from": "START",
+      "graph_id": "00_main",
+      "label": "install.sh",
+      "mark": "->",
+      "sync": true,
+      "to": "INIT",
+      "type": "depends_on"
+    },
+    {
+      "anchors": [],
+      "from": "TASK",
+      "graph_id": "00_main",
+      "label": "10 → 22",
+      "mark": "->",
+      "sync": true,
+      "to": "R1",
+      "type": "depends_on"
+    }
+  ]
+}

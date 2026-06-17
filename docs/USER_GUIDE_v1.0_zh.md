@@ -1,7 +1,7 @@
 # cyning-harness v1.0 · 使用手册
 
 > **读者**：要在 **自己的业务仓库** 里落地 AI 辅助研发纪律的开发者（非 cyning-harness 维护者）。  
-> **版本**：[`@cyning/harness@1.0.1`](https://www.npmjs.com/package/@cyning/harness) · MIT  
+> **版本**：[`@cyning/harness@1.1.0`](https://www.npmjs.com/package/@cyning/harness) · MIT  
 > **仓库**：<https://github.com/Cyning12/cyning-harness>  
 > **更短入口**：[`README.md`](../README.md) Quick Start · [`ONBOARDING.md`](./ONBOARDING.md) 接入细节  
 > **Release**：[`RELEASE_v1.0.1.md`](./RELEASE_v1.0.1.md) · [`CHANGELOG.md`](../CHANGELOG.md)
@@ -226,20 +226,66 @@ npm run harness -- check --target /tmp/foo
 
 ---
 
-## 10. 局限与诚实边界（v1.0）
+## 10. Inform-YAML 图谱编辑源（v1.1+）
+
+从 `@cyning/harness@1.1.0` 起，业务仓可选择用 **`docs/_tech_graph/*.graph.yaml`** 作为 Inform 架构图谱的编辑源，再编译为 `.md`（人类可读）与 `graph.json`（机器可读）。
+
+### 10.1 三轨边界
+
+| 轨 | 文件 | 用途 | 版本 |
+| --- | --- | --- | --- |
+| **MD 人类轨** | `docs/_tech_graph/*.md` | 代码审阅、README 引用、Mermaid 渲染 | v1.0+ |
+| **YAML 编辑源** | `docs/_tech_graph/*.graph.yaml` | 结构化编辑、diff、CI 校验 | **v1.1+** |
+| **HGM 过程轨** | `.cyning-harness/events/*.jsonl` | Task / Gate / Review 实例与事件史 | **v2.0+** |
+
+**原则**：YAML 为 Inform 编辑源，HGM 为过程事件图；YAML **不替代** task/review 真值，HGM **不替代** YAML/MD Inform 正文。
+
+### 10.2 最小工作流
+
+```bash
+# 1. 在业务仓编辑 docs/_tech_graph/00_main.graph.yaml
+# 2. 编译为 Markdown（人类可读）
+npx @cyning/harness graph yaml compile --graph-id 00_main --input docs/_tech_graph
+
+# 3. 校验 YAML 与 graph.json 切片是否一致
+npx @cyning/harness graph yaml check --graph-id 00_main --input docs/_tech_graph
+
+# 4. 一次性编译/校验全部 *.graph.yaml
+npx @cyning/harness graph yaml compile --all --input docs/_tech_graph
+npx @cyning/harness graph yaml check --all --input docs/_tech_graph
+```
+
+### 10.3 schema 与迁移
+
+- **产品 schema**：[`schema/inform_graph.v3.schema.json`](../../schema/inform_graph.v3.schema.json)
+- **迁移对照表**：[`docs/methodology/graph/INFORM_YAML_MIGRATION_v1_zh.md`](./methodology/graph/INFORM_YAML_MIGRATION_v1_zh.md)
+- **试点真值**：Ink 后端 `ai-ink-brain-api-python/docs/_tech_graph/*.graph.yaml`
+
+### 10.4 与 gate-check --graph 的关系
+
+`gate-check --graph` 语义不变：仍扫描 `docs/_tech_graph/` 下所有模块/流程文件，输出 `HG-GRAPH-MODULES` 状态摘要。新增 `.graph.yaml` 文件会 **友好列出**，不改变通过/失败规则。
+
+### 10.5 金样
+
+`examples/demo_checkout/00_main.graph.yaml` 提供零风险 Inform-YAML 切片，可对照其生成的 `00_main.md` 与 `graph.json`。
+
+---
+
+## 11. 局限与诚实边界（v1.1）
 
 | 项 | 说明 |
 | --- | --- |
 | 不是胜率工具 | [`README` 试点证据 B2](../README.md) · 完整表 [`PILOT_EVIDENCE_B2_v1_zh.md`](./methodology/execution/PILOT_EVIDENCE_B2_v1_zh.md) · **小样本机制证据**，不可外推 |
 | bench `100` | [SDD-Compliance](../examples/compliance_bench/README.md) 四场景合规率 · 见上文 §6.1 |
 | Extended 帽 | 00/50/链式 PROMPT 不在 Starter 默认包 · 见 [`harness/prompts/README.md`](../harness/prompts/README.md) |
-| HGM / 图数据库 | **Track G · v2.0+ 提案**，v1.0 未实现 |
+| Inform-YAML | **v1.1+** · 可选编辑源 · 须 `graph yaml check` 与 `graph.json` 一致 |
+| HGM / 图数据库 | **Track G · v2.0+ 提案**，v1.1 未实现事件 ingest |
 | Agent-shell | 研究轨 #9，非 npm 功能 |
 | rejected→draft | bench S5 场景 v1 未纳入；gate-check 对非 approved 拒 30 |
 
 ---
 
-## 11. 常见问题
+## 12. 常见问题
 
 **Q：Harness 会调用我的 LLM 吗？**  
 A：不会。LLM 在你使用的 IDE 里；Harness 只提供文件、脚本与约定。
@@ -253,12 +299,18 @@ A：`init --ide cursor` 会生成入口片段；Harness task + prompts 是 **任
 **Q：升级后 task 会被覆盖吗？**  
 A：不会（S2 域）。若 prompts 模板有更新，apply 会更新 **模板侧**，不删你的 active task。
 
+**Q：如何编辑 Inform 架构图？**  
+A：v1.1+ 可选 `docs/_tech_graph/*.graph.yaml` 作为编辑源，运行 `npx @cyning/harness graph yaml compile|check` 生成 MD / 校验 graph.json。
+
+**Q：HGM 与 Inform-YAML 是什么关系？**  
+A：Inform-YAML 是 **架构图谱** 的编辑源；HGM（v2.0+）是 **过程协作** 的事件图。二者并列，HGM 通过 `InformArtifact` 节点引用 Inform 产物，但不覆盖其正文。
+
 **Q：如何贡献或报 issue？**  
 A：GitHub [Cyning12/cyning-harness](https://github.com/Cyning12/cyning-harness) · MIT。
 
 ---
 
-## 12. 进一步阅读
+## 13. 进一步阅读
 
 | 优先级 | 文档 |
 | --- | --- |
@@ -282,3 +334,4 @@ A：GitHub [Cyning12/cyning-harness](https://github.com/Cyning12/cyning-harness)
 | 2026-06-16 | v1.0 stable 首版使用手册 |
 | 2026-06-16 | 补全相对链接 · §6.1 compliance-bench · §12 阅读索引 |
 | 2026-06-16 | v1.0.1：verify / gate-check / sync index CLI · `--with-scripts` · QUICKREF |
+| 2026-06-17 | v1.1.0：新增 §10 Inform-YAML · `graph yaml compile|check` · 三轨边界说明 |
