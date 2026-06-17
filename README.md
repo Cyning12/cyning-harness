@@ -91,6 +91,7 @@ npx @cyning/harness upgrade --gate-check       # upgrade 前自动 audit
 - **S5**：dirty 工作区 warn，apply 须 `--force` 明示  
 
 Inform 图谱闸：`npx @cyning/harness gate-check --graph --target /path/to/your-repo`  
+Inform-YAML：`npx @cyning/harness graph yaml compile|check --input docs/_tech_graph`（v1.1+）  
 Invoke 索引：`npx @cyning/harness sync index --target /path/to/your-repo`（不覆盖 S2 域）
 
 Node 仓可选：`npx @cyning/harness init --with-scripts` → `pnpm harness:verify`。  
@@ -167,7 +168,7 @@ cyning-harness/
 
 | 项 | 值 |
 |----|-----|
-| 当前 | **v1.0.0** — A4 stable · ICVO audit · invoke_index · gate-check --graph · B2 证据 |
+| 当前 | **v1.1.0** — Inform-YAML · `graph yaml compile|check` · ICVO audit · invoke_index · gate-check --graph · B2 证据 |
 | 上一档 | v0.4.0 — A3 public push · MIT · 脱敏金样 |
 | 许可 | **MIT** · [`LICENSE`](LICENSE) · Release [`docs/RELEASE_v1.0.0.md`](docs/RELEASE_v1.0.0.md) |
 

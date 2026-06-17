@@ -10,6 +10,9 @@
 | --- | --- |
 | [`task_demo_p0_golden_v1.md`](./task_demo_p0_golden_v1.md) | 金样 task · 复制到 `docs/tasks/active/` |
 | [`ACCEPTANCE.md`](./ACCEPTANCE.md) | 分阶段验收勾选 |
+| [`00_main.graph.yaml`](./00_main.graph.yaml) | Inform-YAML v3 编辑源示例（v1.1+） |
+| [`00_main.md`](./00_main.md) | 由 `graph yaml compile` 生成的人类可读图 |
+| [`graph.json`](./graph.json) | 由 YAML 物化的机器可读图切片 |
 | `reviews/` | （自行创建）22 产出落盘目录 |
 
 ---

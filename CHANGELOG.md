@@ -4,6 +4,28 @@
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-06-17
+
+### Added
+
+- **Inform Graph YAML v3**：`schema/inform_graph.v3.schema.json` · 对齐试点 `*.graph.yaml` 编辑源
+- **Inform-YAML 迁移对照表**：`docs/methodology/graph/INFORM_YAML_MIGRATION_v1_zh.md` · 试点字段 → 产品字段
+- **`harness graph yaml compile|check`**：YAML → Mermaid MD + 结构化表 · YAML ↔ graph.json slice diff
+- **demo_checkout dogfood**：`examples/demo_checkout/00_main.graph.yaml` + `graph.json` + `00_main.md`
+- **测试覆盖**：`test/graph-yaml.test.js` + `test/gate-check.graph.test.js` Inform-YAML 路径
+
+### Changed
+
+- **USER_GUIDE v1.0**：新增 §13 Inform-YAML 章 · 明确 MD / YAML / HGM 三轨边界
+- **README**：当前版本 → **v1.1.0** · 补充 `graph yaml` 命令速查
+- **`ontology.yaml`**：`product_semver: "1.1.0"`
+
+### Notes
+
+- **HG-RELEASE**（tag v1.1.0 · npm publish）仍留维护者人闸
+- `gate-check --graph` 语义不变；Inform 模块闸仍读 `docs/_tech_graph/`
+- HGM G1 v2.0 仍待 Y1 merge + npm 发布（或维护者书面豁免）后启动
+
 ## [1.0.2] - 2026-06-16
 
 ### Fixed
