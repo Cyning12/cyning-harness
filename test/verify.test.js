@@ -179,3 +179,116 @@ test('CLI 未知命令 exit 1', () => {
   assert.equal(result.status, 1);
   assert.match(result.stderr, /未知命令/);
 });
+
+test('verify --json · approved → may_start_30 true', () => {
+  const target = fs.mkdtempSync(path.join(os.tmpdir(), 'cyning-harness-json-'));
+  fs.mkdirSync(path.join(target, '.cyning-harness'), { recursive: true });
+  fs.writeFileSync(
+    path.join(target, '.cyning-harness/manifest.json'),
+    '{"version":"2.0.2","preset":"harness-only"}\n',
+  );
+  writeTaskWithGate(target, 'approved');
+  const activeDir = path.join(target, 'docs/tasks/active');
+  const taskPath = path.join(activeDir, 'task_demo.md');
+  const content = fs.readFileSync(taskPath, 'utf8');
+  fs.writeFileSync(
+    taskPath,
+    content.replace(
+      '### 人工闸',
+      `## Harness 元信息\n\n| 字段 | 值 |\n| --- | --- |\n| **task_slug** | \`demo\` |\n| **entry_invoke_30** | \`docs/harness/prompts/30.md\` |\n\n### 人工闸`,
+    ),
+  );
+  writeSidecar(target, 'required');
+  fs.mkdirSync(path.join(target, 'test'), { recursive: true });
+  fs.writeFileSync(path.join(target, 'test/demo.test.js'), '');
+
+  const result = runNode([
+    'verify',
+    '--target',
+    target,
+    '--task',
+    'docs/tasks/active/task_demo.md',
+    '--json',
+  ]);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const payload = JSON.parse(result.stdout.trim());
+  assert.equal(payload.may_start_30, true);
+  assert.equal(payload.next_hat, '30');
+  assert.equal(payload.entry_invoke_30, 'docs/harness/prompts/30.md');
+});
+
+test('verify --json · HG-AUDIT-R1 pending → may_start_30 false', () => {
+  const target = fs.mkdtempSync(path.join(os.tmpdir(), 'cyning-harness-json-'));
+  fs.mkdirSync(path.join(target, '.cyning-harness'), { recursive: true });
+  fs.writeFileSync(
+    path.join(target, '.cyning-harness/manifest.json'),
+    '{"version":"2.0.2","preset":"harness-only"}\n',
+  );
+  writeTaskWithGate(target, 'pending');
+
+  const result = runNode([
+    'verify',
+    '--target',
+    target,
+    '--task',
+    'docs/tasks/active/task_demo.md',
+    '--json',
+  ]);
+  assert.equal(result.status, 2);
+  const payload = JSON.parse(result.stdout.trim());
+  assert.equal(payload.may_start_30, false);
+  assert.ok(payload.blocked_reason);
+});
+
+test('verify --json · entry_invoke Projects/ 无 workspace-root', () => {
+  const target = fs.mkdtempSync(path.join(os.tmpdir(), 'cyning-harness-json-'));
+  fs.mkdirSync(path.join(target, '.cyning-harness'), { recursive: true });
+  fs.writeFileSync(
+    path.join(target, '.cyning-harness/manifest.json'),
+    '{"version":"2.0.2","preset":"harness-only"}\n',
+  );
+  writeTaskWithGate(target, 'approved');
+  const taskPath = path.join(target, 'docs/tasks/active/task_demo.md');
+  const content = fs.readFileSync(taskPath, 'utf8');
+  fs.writeFileSync(
+    taskPath,
+    content.replace(
+      '### 人工闸',
+      `## Harness 元信息\n\n| 字段 | 值 |\n| --- | --- |\n| **entry_invoke_30** | \`Projects/docs/harness/foo.md\` |\n\n### 人工闸`,
+    ),
+  );
+
+  const result = runNode([
+    'verify',
+    '--target',
+    target,
+    '--task',
+    'docs/tasks/active/task_demo.md',
+    '--json',
+  ]);
+  const payload = JSON.parse(result.stdout.trim());
+  assert.equal(payload.entry_invoke_30_resolved, null);
+  assert.ok(payload.warnings.some((w) => w.includes('workspace-root')));
+});
+
+test('verify --agent-hint 人类可读摘要', () => {
+  const target = fs.mkdtempSync(path.join(os.tmpdir(), 'cyning-harness-hint-'));
+  fs.mkdirSync(path.join(target, '.cyning-harness'), { recursive: true });
+  fs.writeFileSync(
+    path.join(target, '.cyning-harness/manifest.json'),
+    '{"version":"2.0.2","preset":"harness-only"}\n',
+  );
+  writeTaskWithGate(target, 'approved');
+
+  const result = runNode([
+    'verify',
+    '--target',
+    target,
+    '--task',
+    'docs/tasks/active/task_demo.md',
+    '--agent-hint',
+  ]);
+  assert.equal(result.status, 0);
+  assert.match(result.stdout, /agent-hint/);
+  assert.match(result.stdout, /may_start_30/);
+});

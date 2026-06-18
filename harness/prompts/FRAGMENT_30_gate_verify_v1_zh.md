@@ -20,7 +20,7 @@ reviews：task_*_audit_R1_*.md 存在且 R1 通过？ {是/否}
 
 结论：{STOP · 签闸指引 | 可进入读码/改码}
 
-机械辅助（推荐）：`npx @cyning/harness verify --target <meta> --task docs/tasks/active/task_*.md`
+机械辅助（30 改码前必须）：`npx @cyning/harness verify --target <meta> --task docs/tasks/active/task_*.md [--json] [--agent-hint] [--workspace-root <Projects>]`
 ```
 
 ## Agent 纪律

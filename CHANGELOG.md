@@ -4,6 +4,27 @@
 
 ## [Unreleased]
 
+## [2.0.2] - 2026-06-18
+
+### Added
+
+- **A6 Agent handoff**：`verify --json` · `--agent-hint` · `--workspace-root`
+- **lib/task-meta.js**：解析 task Harness 表 `entry_invoke_*` · 人工闸 · `may_start_30`
+- **schema/verify_result.v1.schema.json**：JSON 输出文档化
+- **sync index**：索引 task `entry_points.{10,20,30}`
+- **compliance-bench S6**：`S6_agent_handoff/` · `--all` 含 S6（6/6 = 100%）
+
+### Changed
+
+- **FRAGMENT_30**：verify 从「推荐」→ **「30 改码前必须」**
+- **USER_GUIDE** §5.1 Agent handoff · **QUICKREF** 新 flags
+- **版本**：`package.json` → **2.0.2**
+
+### Notes
+
+- **HG-RELEASE**：待维护者 publish `@cyning/harness@2.0.2`
+- dogfood：`kimi-code-meta` · `task_meta_graph_issue_sync_gate_v1.md`
+
 ## [2.0.1] - 2026-06-17
 
 ### Added

@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://cyning.me/harness/schemas/verify_result.v1.schema.json",
+  "title": "Harness Verify Agent Handoff Result v1",
+  "description": "npx @cyning/harness verify --json 输出 · A6 v2.0.2+",
+  "oneOf": [
+    { "$ref": "#/definitions/single" },
+    { "$ref": "#/definitions/multi" }
+  ],
+  "definitions": {
+    "single": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "verify_ok",
+        "task",
+        "may_start_30"
+      ],
+      "properties": {
+        "schema_version": { "type": "string", "const": "1" },
+        "verify_ok": { "type": "boolean" },
+        "task": { "type": "string" },
+        "task_path": { "type": "string" },
+        "task_slug": { "type": ["string", "null"] },
+        "may_start_30": { "type": "boolean" },
+        "blocked_reason": { "type": ["string", "null"] },
+        "review_path": { "type": ["string", "null"] },
+        "entry_invoke_20": { "type": ["string", "null"] },
+        "entry_invoke_20_resolved": { "type": ["string", "null"] },
+        "entry_invoke_30": { "type": ["string", "null"] },
+        "entry_invoke_30_resolved": { "type": ["string", "null"] },
+        "next_hat": { "type": ["string", "null"], "enum": ["30", null] },
+        "agent_preamble": { "type": ["string", "null"] },
+        "warnings": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "gates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "status"],
+            "properties": {
+              "id": { "type": "string" },
+              "status": { "type": "string" },
+              "blocks_hats": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "multi": {
+      "type": "object",
+      "required": ["schema_version", "verify_ok", "tasks"],
+      "properties": {
+        "schema_version": { "type": "string", "const": "1" },
+        "verify_ok": { "type": "boolean" },
+        "tasks": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/single" }
+        }
+      }
+    }
+  }
+}

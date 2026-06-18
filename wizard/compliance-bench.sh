@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SDD-Compliance micro-bench · v1 · S1–S5
+# SDD-Compliance micro-bench · v1 · S1–S6
 # 输出合规率 %；不测 LLM 解题，只测 Orchestrate/Verify 可机械部分。
 set -euo pipefail
 
@@ -12,14 +12,14 @@ QUIET=0
 
 usage() {
   cat <<'EOF'
-用法：compliance-bench.sh [--all | S1 S2 S3 S4 S5] [--quiet]
+用法：compliance-bench.sh [--all | S1 S2 S3 S4 S5 S6] [--quiet]
 
-  --all     运行 S1–S5（默认输出含公理解释与摘要表）
+  --all     运行 S1–S6（默认输出含公理解释与摘要表）
   --quiet   CI/脚本模式：stdout 仅打印合规率数字；摘要说明走 stderr
 
 说明：
   合规率 = PASS 场景数 ÷ 总场景数 × 100。
-  100 表示 S1–S5 全部通过，即 gate-check / sync 行为符合 SDD 公理；
+  100 表示 S1–S6 全部通过，即 gate-check / sync / verify handoff 行为符合 SDD 公理；
   不是 LLM 解题正确率，也不是业务项目胜率。
 
 示例：
@@ -30,9 +30,9 @@ EOF
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --all) SCENARIOS=(S1 S2 S3 S4 S5); shift ;;
+    --all) SCENARIOS=(S1 S2 S3 S4 S5 S6); shift ;;
     --quiet) QUIET=1; shift ;;
-    S1|S2|S3|S4|S5) SCENARIOS+=("$1"); shift ;;
+    S1|S2|S3|S4|S5|S6) SCENARIOS+=("$1"); shift ;;
     -h|--help) usage; exit 0 ;;
     *) echo "未知参数: $1" >&2; usage; exit 1 ;;
   esac
@@ -68,7 +68,7 @@ gate_status() {
 print_banner() {
   [[ "$QUIET" == "1" ]] && return 0
   log_scenario "╔══════════════════════════════════════════════════════════════╗"
-  log_scenario "║  SDD-Compliance micro-bench · v1 · S1–S5                    ║"
+  log_scenario "║  SDD-Compliance micro-bench · v1 · S1–S6                    ║"
   log_scenario "╚══════════════════════════════════════════════════════════════╝"
   log_scenario ""
   log_scenario "性质  机械合规测试 · 合成夹具 · 不调用 LLM"
@@ -241,6 +241,32 @@ scenario_S5() {
   fi
 }
 
+scenario_S6() {
+  local dir="$BENCH_DIR/S6_agent_handoff"
+  local tf="task_s6_agent_handoff.md"
+  scenario_header "S6" "Agent handoff · verify --json" \
+    "A6 · 30 前 Agent 可发现路由" \
+    "examples/compliance_bench/S6_agent_handoff/" \
+    "HG-AUDIT-R1=approved + entry_invoke_30 → may_start_30 true"
+
+  local json may entry
+  json="$(node "$HARNESS_ROOT/bin/harness.js" verify --target "$dir" --task "$tf" --json 2>/dev/null || true)"
+  may="$(printf '%s' "$json" | node -e "let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{try{const j=JSON.parse(d);console.log(j.may_start_30)}catch{console.log('')}})")"
+  entry="$(printf '%s' "$json" | node -e "let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{try{const j=JSON.parse(d);console.log(j.entry_invoke_30||'')}catch{console.log('')}})")"
+
+  if [[ "$may" == "true" && -n "$entry" ]]; then
+    scenario_footer "S6" "PASS" "may_start_30=true · entry_invoke_30 非空" \
+      "verify --json 输出 Agent handoff 字段 · A6 路由可机械发现"
+    PASS=$((PASS+1))
+    RESULTS+=("S6|PASS|may_start_30=true")
+  else
+    scenario_footer "S6" "FAIL" "may=$may entry=$entry" \
+      "verify --json 缺 handoff 字段 · 须修 lib/task-meta 或夹具"
+    FAIL=$((FAIL+1))
+    RESULTS+=("S6|FAIL|may=$may")
+  fi
+}
+
 print_summary() {
   local total=$((PASS+FAIL))
   local rate=0
@@ -286,6 +312,7 @@ for s in "${SCENARIOS[@]}"; do
     S3) scenario_S3 ;;
     S4) scenario_S4 ;;
     S5) scenario_S5 ;;
+    S6) scenario_S6 ;;
   esac
 done
 
