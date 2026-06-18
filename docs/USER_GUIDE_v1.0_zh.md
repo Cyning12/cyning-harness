@@ -114,6 +114,12 @@ npx @cyning/harness@1.0.1 init --preset harness-only --ide cursor,agents --yes
 # 30 前聚合验证（gate-check + audit D5 + S5 warn + 可选 --graph）
 npx @cyning/harness verify --target . --task docs/tasks/active/task_xxx.md
 
+# Agent handoff（v2.0.2+）：JSON 路由 + 下一帽提示
+npx @cyning/harness verify --target . \
+  --task docs/tasks/active/task_xxx.md \
+  [--json] [--agent-hint] \
+  [--workspace-root /path/to/Projects]
+
 # 仅人工闸
 npx @cyning/harness gate-check --target . --task docs/tasks/active/task_xxx.md
 npx @cyning/harness gate-check --graph --target .    # Inform 图谱闸
@@ -131,6 +137,24 @@ npx @cyning/harness gate-check --graph --target .    # Inform 图谱闸
 | `HG-GRAPH-MODULES` | 架构模块表人签 | pending → 拒改码 30 |
 | `HG-RELEASE` | 发版闸（产品仓） | 一般业务仓不涉及 |
 
+### 5.1 Agent handoff（v2.0.2+）
+
+`verify --json` 从 task Harness 表解析 `entry_invoke_30` 等字段，输出 Agent 可消费的机械路由（不读取 Projects 文件正文）：
+
+| JSON 字段 | 含义 |
+| --- | --- |
+| `may_start_30` | 等价 gate-check「可 30」 |
+| `blocked_reason` | 阻塞时 D2/D3 文案 |
+| `review_path` | 最新 `*_audit_R1_*.md`（相对 target） |
+| `entry_invoke_30` | task 表原始路径 |
+| `entry_invoke_30_resolved` | 绝对路径（`Projects/` 前缀须 `--workspace-root`） |
+| `next_hat` | `"30"` 或 `null` |
+| `agent_preamble` | 短句提醒首输出 GATE_VERIFY |
+
+Schema：[`schema/verify_result.v1.schema.json`](../schema/verify_result.v1.schema.json)
+
+---
+
 **Inform 图谱闸（v1.0）**：改码类 task 前，确保 `docs/_tech_graph/` 模块表已维护者签 `HG-GRAPH-MODULES = approved`。存量大仓可按 [`ONBOARDING.md`](./ONBOARDING.md) §3 选 S0–S3 档位，**不必一次画完所有 Mermaid**。
 
 ---
@@ -142,7 +166,7 @@ npx @cyning/harness gate-check --graph --target .    # Inform 图谱闸
 | `npx @cyning/harness init` | 首次安装模板与 manifest（可选 `--with-scripts`） |
 | `npx @cyning/harness upgrade` | 同步产品包更新（可加 `--gate-check` 先 audit） |
 | `npx @cyning/harness check` | 检查是否有新版本 |
-| `npx @cyning/harness verify` | 30 前聚合：gate-check + audit D5 + S5 warn + 可选 `--graph` |
+| `npx @cyning/harness verify` | 30 前聚合：gate-check + audit D5 + S5 warn + 可选 `--graph` · v2.0.2+ `--json` / `--agent-hint` / `--workspace-root` |
 | `npx @cyning/harness gate-check` | 仅人工闸（`--graph` / `--json`） |
 | `npx @cyning/harness audit` | ICVO 机械审计（D3/D5/S5） |
 | `npx @cyning/harness sync index` | 生成 `.cyning-harness/invoke_index.json` |

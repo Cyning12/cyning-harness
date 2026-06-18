@@ -8,7 +8,7 @@
 
 ```bash
 # 30 前聚合验证（gate-check + audit D5 + S5 warn + 可选 --graph）
-npx @cyning/harness verify [--target .] [--task docs/tasks/active/task_xxx.md] [--graph]
+npx @cyning/harness verify [--target .] [--task docs/tasks/active/task_xxx.md] [--graph] [--json] [--agent-hint] [--workspace-root PATH]
 
 # 仅人工闸	npx @cyning/harness gate-check [--target .] [--task ...] [--graph] [--json]
 
