@@ -1,10 +1,12 @@
 # 一致性审计报告 · 2026-06-15
 
-| 项 | 内容 |
-| --- | --- |
-| **状态** | `closed` · 后续任务已落盘 |
-| **触发** | [`prompts/PROMPT_doc_consistency_audit_v1_zh.md`](./prompts/PROMPT_doc_consistency_audit_v1_zh.md) |
-| **真值层** | L2 `docs/methodology/` |
+
+| 项       | 内容                                                                                                 |
+| ------- | -------------------------------------------------------------------------------------------------- |
+| **状态**  | `closed` · 后续任务已落盘                                                                                 |
+| **触发**  | `[prompts/PROMPT_doc_consistency_audit_v1_zh.md](./prompts/PROMPT_doc_consistency_audit_v1_zh.md)` |
+| **真值层** | L2 `docs/methodology/`                                                                             |
+
 
 ---
 
@@ -16,20 +18,22 @@ L2 真值链大体自洽，但存在 semver（v0.5 HGM 晚于 v1.0 闸门）、H
 
 ## 问题清单（按严重程度）
 
-| 级别 | ID | 问题 | 影响读者 | 建议改法 | 涉及文件 | 状态 |
-| --- | --- | --- | --- | --- | --- | --- |
-| P0 | SEM-01 | v0.5.x 在 semver 表位于 v1.0 后，数字易误读 | 以为 HGM 是 v1.0 前产品版 | Track G 子表 + 对外脚注 | `ROADMAP_v1_zh.md` 等 | ✅ → **SEM-02 改 v2.x** |
-| P0 | SEM-02 | SEM-01 脚注仍不足 · v0.5/v0.6 像主轨续号 | 问「0.5 在哪」 | HGM 改 **v2.0+ / v2.1+** · ROADMAP §2.0 | 全 L2 链 | ✅ 2026-06-15 |
-| P0 | ICV-01 | 公众 ICV 三支柱 vs 产品 ICVO 四支柱 | 续篇自相矛盾 | ICVO 升级说明 + 地图 v1.0.3 脚注 | 本体 · README · 公众稿 | ✅ |
-| P0 | IMPL-01 | A0「已完成」vs P0 进行中 | 过度承诺 v0.2 | 拆 A0a/A0b | `STRATEGY_MASTER` | ✅ |
-| P0 | IMPL-02 | HGM/jsonl/npx 未标 proposal | 以为已实现 | 统一 `proposal · 未实现` | HGM · README §5.3 | ✅ |
-| P1 | MIX-01 | HGM §5 写 gate-check --graph @ v0.4 | 与 ROADMAP v1.0 冲突 | 校正为 v1.0 Inform | `HARNESS_GRAPH_MODEL_design_v0_zh.md` | ✅ |
-| P1 | MAP-01 | DOCUMENT_MAP §4 README v1.0 滞后 | 锚点误报 | 更新 §4 | `DOCUMENT_MAP_v1_zh.md` | ✅ |
-| P1 | MAP-02 | README §6 缺 v1.1 修订行 | 版本不一致 | 补修订记录 | `methodology/README.md` | ✅ |
-| P1 | MIX-02 | Harness Engineering vs 纪律包 | 误解为 Runtime | STRATEGY §1.1 澄清 | `STRATEGY_MASTER` | ✅ |
-| P1 | STRAT-01 | §4 无 Track G / ICVO D 轨 | L1 读者漏 G 轨 | 增 §4.9 | `STRATEGY_MASTER` | ✅ |
-| P2 | VER-01 | invoke_index v0.4+ vs v1.0 | 排期歧义 | 统一 v1.0 | `DESIGN_ONTOLOGY` §6 | ✅ |
-| P2 | PILOT-01 | 试点 vs P0 ACCEPTANCE 边界 | 对外泛化 | PILOT 边界句 | `PILOT_kimi_code_fork` | ✅ |
+
+| 级别  | ID       | 问题                                 | 影响读者               | 建议改法                                   | 涉及文件                                  | 状态                    |
+| --- | -------- | ---------------------------------- | ------------------ | -------------------------------------- | ------------------------------------- | --------------------- |
+| P0  | SEM-01   | v0.5.x 在 semver 表位于 v1.0 后，数字易误读   | 以为 HGM 是 v1.0 前产品版 | Track G 子表 + 对外脚注                      | `ROADMAP_v1_zh.md` 等                  | ✅ → **SEM-02 改 v2.x** |
+| P0  | SEM-02   | SEM-01 脚注仍不足 · v0.5/v0.6 像主轨续号     | 问「0.5 在哪」          | HGM 改 **v2.0+ / v2.1+** · ROADMAP §2.0 | 全 L2 链                                | ✅ 2026-06-15          |
+| P0  | ICV-01   | 公众 ICV 三支柱 vs 产品 ICVO 四支柱          | 续篇自相矛盾             | ICVO 升级说明 + 地图 v1.0.3 脚注               | 本体 · README · 公众稿                     | ✅                     |
+| P0  | IMPL-01  | A0「已完成」vs P0 进行中                   | 过度承诺 v0.2          | 拆 A0a/A0b                              | `STRATEGY_MASTER`                     | ✅                     |
+| P0  | IMPL-02  | HGM/jsonl/npx 未标 proposal          | 以为已实现              | 统一 `proposal · 未实现`                    | HGM · README §5.3                     | ✅                     |
+| P1  | MIX-01   | HGM §5 写 gate-check --graph @ v0.4 | 与 ROADMAP v1.0 冲突  | 校正为 v1.0 Inform                        | `HARNESS_GRAPH_MODEL_design_v0_zh.md` | ✅                     |
+| P1  | MAP-01   | DOCUMENT_MAP §4 README v1.0 滞后     | 锚点误报               | 更新 §4                                  | `DOCUMENT_MAP_v1_zh.md`               | ✅                     |
+| P1  | MAP-02   | README §6 缺 v1.1 修订行               | 版本不一致              | 补修订记录                                  | `methodology/README.md`               | ✅                     |
+| P1  | MIX-02   | Harness Engineering vs 纪律包         | 误解为 Runtime        | STRATEGY §1.1 澄清                       | `STRATEGY_MASTER`                     | ✅                     |
+| P1  | STRAT-01 | §4 无 Track G / ICVO D 轨            | L1 读者漏 G 轨         | 增 §4.9                                 | `STRATEGY_MASTER`                     | ✅                     |
+| P2  | VER-01   | invoke_index v0.4+ vs v1.0         | 排期歧义               | 统一 v1.0                                | `DESIGN_ONTOLOGY` §6                  | ✅                     |
+| P2  | PILOT-01 | 试点 vs P0 ACCEPTANCE 边界             | 对外泛化               | PILOT 边界句                              | `PILOT_kimi_code_fork`                | ✅                     |
+
 
 ---
 
@@ -65,7 +69,10 @@ L2 真值链大体自洽，但存在 semver（v0.5 HGM 晚于 v1.0 闸门）、H
 
 ## 修订记录
 
-| 日期 | 说明 |
-| --- | --- |
-| 2026-06-15 | 初版审计 · 同日落盘修复 |
+
+| 日期         | 说明                              |
+| ---------- | ------------------------------- |
+| 2026-06-15 | 初版审计 · 同日落盘修复                   |
 | 2026-06-15 | SEM-02：HGM semver **v2.x** 全链回填 |
+
+
