@@ -1,11 +1,11 @@
-# 产品设计本体 · cyning-harness（v1.2）
+# 产品设计本体 · cyning-harness（v1.3）
 
 
 | 项       | 内容                                                                                                                    |
 | ------- | --------------------------------------------------------------------------------------------------------------------- |
 | **状态**  | `draft`                                                                                                               |
-| **版本**  | v1.2                                                                                                                  |
-| **日期**  | 2026-06-15                                                                                                            |
+| **版本**  | v1.3                                                                                                                  |
+| **日期**  | 2026-06-21                                                                                                            |
 | **范围**  | **产品内部**概念模型 · 指导模板 / wizard / sync / SDD 链实现                                                                         |
 | **非范围** | 商业战略、ETCLOVG 行业对标（见 [`../pointers/STRATEGY_ONTOLOGY_v1_zh.md`](../pointers/STRATEGY_ONTOLOGY_v1_zh.md)） |
 | **真值**  | 本文件 + [`../../ARCHITECTURE.md`](../../ARCHITECTURE.md) + [`../../../harness/templates/`](../../../harness/templates/) + `ontology.yaml`（机器可读抽取 · v0.4+ · 与本文件同目录） |
@@ -64,7 +64,7 @@ Stakeholder                       Hat · Task · Gate · Review 运行时
 
 ```yaml
 # docs/ontology.yaml · 从本 Markdown 抽取 · 非第二真值
-version: "1.2"
+version: "1.3"
 classes:
   - id: Track
     domain: Package
@@ -110,7 +110,7 @@ schemas:
 | **VersionManifest**   | 钉住产品包版本（v0.3+）       | `.cyning-harness/manifest.json`    | `{ "version": "0.3.0" }`   |
 | **Task**              | 可验收工作项文档             | `docs/tasks/active/task_*.md`      | 改码 task                    |
 | **Epic**              | 多 Task 总纲（**v1 暂为 Task 特化** · 见 §1.4） | `docs/tasks/active/TASK_epic_*.md` | Epic 编排                    |
-| **Hat**               | SDD 角色帽（行为约束）        | `docs/harness/prompts/N-*.md`      | `22-task-audit`            |
+| **Hat**               | SDD 角色帽（行为约束）        | `docs/harness/prompts/N-*.md`      | `20-task-audit`（Starter 别名 `22-task-audit`） |
 | **InvokeSnapshot**    | 新帽开局时的调用体落盘          | `docs/harness/invokes/`            | `invoke_*_30_*.md`         |
 | **AuditReview**       | 任务审核书面产出             | `docs/harness/reviews/`            | `*_audit_R1_*.md`          |
 | **FailureReport**     | 30 执行失败时的结构化产出（v0.3+） | `docs/harness/reviews/` 或 task 附录 | `*_30_failure_*.md`        |
@@ -213,7 +213,7 @@ Task --executedIn--> ExecutionShell                [external]  # Cursor / Kimi C
 
 ```yaml
 Hat:
-  hat_id: string                 # 稳定 ID · 如 "22-task-audit" · gate-check 解析用
+  hat_id: string                 # 稳定 ID · 如 "20-task-audit" · gate-check 解析用 · 历史 "22-task-audit" 为别名
 
 Task:
   task_slug: string
@@ -259,7 +259,9 @@ SyncOperation:
 | HumanGate → blocks_hats     | **1..*** · **无重复 hat_id** | 同一 Gate 内不可重复阻塞同一帽 |
 | Hat → blocked_by_gates      | **0..***（同 Task 内） | 多 Gate 可叠阻塞同一 Hat（如 30） |
 | Task → HG-AUDIT-R1          | 改码类 **1:1 必须** | 30 前须存在且可解析   |
-| 22 每轮 → AuditReview         | **1:1 必须**     | 零阻塞也落盘        |
+| Task → HG-SPEC-SIGNOFF      | Epic / 功能轨 **0..1** | SPEC 已 signed 后 00 方可派 P0 task 链至 30 |
+| 20-task-audit 每轮 → AuditReview | **1:1 必须**     | 零阻塞也落盘        |
+| 20-spec-audit 每轮 → AuditReview | **1:1 必须**（功能轨） | 如 `*_spec_ACCEPT_*` |
 | InvokeSnapshot → 新帽开局       | **0..1**       | 每帽首次 §3 替换后落盘 |
 | Sync → Task/Reviews/by-task | **禁止覆盖**       | 业务数据与纪律层分离    |
 
@@ -304,23 +306,36 @@ instance_marker: .cyning-harness/tracks/process.yaml
 
 JSON Schema 真值：`docs/schemas/track-schema.json`（v0.4+ · 与 `ontology.yaml` 的 `schemas.track` 互链）。
 
-### 3.2 帽链（Hat 特化 · Starter vs Extended）
+### 3.2 帽链（Hat 特化 · Starter vs Extended · **V2**）
 
 ```text
 Hat（抽象）
-├── OrchestratorHat（00 · 工作区 Extended · 非 Starter 默认）
-├── StarterHat
-│   ├── RequirementsHat（10）
-│   ├── TaskAuditHat（22）
-│   └── ExecuteHat（30）
-└── ExtendedHat（工作区 POINTER · 20/40/50/链式 PROMPT）
+├── OrchestratorHat（00 · Extended · 工作区）
+├── RequirementsHat（10 · 拆为两子类）
+│   ├── SpecRequirementsHat（10-spec · Extended）
+│   └── TaskRequirementsHat（10-task · Starter 别名 10-requirements）
+├── AuditHat（20 · 拆为两子类 · 均须 reviews/）
+│   ├── SpecAuditHat（20-spec-audit · Extended · HG-SPEC-SIGNOFF）
+│   └── TaskAuditHat（20-task-audit · Starter 别名 22-task-audit · HG-AUDIT-R1）
+├── ExecuteHat（30 · Starter）
+├── SelfCheckHat（40 · Extended · A2 待入 Starter）
+└── ReinspectHat（50 · Extended）
 ```
+
+**10 / 20 双类型对照（V2 · 与工作区 [`GUIDANCE_harness_hat_v2_chain_v1_zh.md`](../../../../docs/harness/guides/GUIDANCE_harness_hat_v2_chain_v1_zh.md) 对齐）**
+
+| 10（思考回填） | 20（书面审） | 人闸 |
+|----------------|--------------|------|
+| **10-spec** | **20-spec-audit** | **HG-SPEC-SIGNOFF** |
+| **10-task** | **20-task-audit** | **HG-AUDIT-R1** |
+
+**轻量 task（维护者同意）**：SPEC 已 HG-SPEC-SIGNOFF → 00 草稿 → **10-task R0–R2** → **20-task-audit R1** → HG-AUDIT-R1 → 30→40→…
 
 **设计决策**：
 
-- 产品包默认闭包 = **StarterHat 子集 + ProcessTrack**。
-- **ExtendedHat 仅供内部 / 签约伙伴** · 工作区 POINTER · **不**复制进用户仓 · README 须明确声明，避免社区误以为功能缺失。
-- `blocks_hats` **必须**引用 `Hat.hat_id` · gate-check 动态解析 · **禁止**硬编码裸编号字符串作为唯一真值。
+- 产品包 Starter 闭包 = **10-task（10-requirements）+ 20-task-audit（22-task-audit）+ 30 + 40**（A2）。  
+- **10-spec / 20-spec-audit** 为 **ExtendedHat** · 工作区 POINTER · **不**默认复制进用户仓。  
+- `blocks_hats` **必须**引用 `Hat.hat_id` · gate-check 动态解析 · **禁止**硬编码裸编号字符串作为唯一真值 · **须**接受历史别名 `22-task-audit`。
 
 ### 3.3 Preset 特化
 
@@ -367,36 +382,69 @@ Task（抽象）
 
 ## 4. 状态机与生命周期
 
-### 4.1 SDD 帽链（ProcessTrack 核心）
+### 4.1 SDD 帽链（ProcessTrack 核心 · **V2**）
+
+**标准流程（人读版 · 与 [`SDD_HAT_FLOW_v2_zh.md`](./SDD_HAT_FLOW_v2_zh.md) 一致）**
 
 ```text
-[00] ──► 10 ◄──────────────────────────────────────────────┐
-          │ draft/pending/in_progress                        │
-          ▼                                                  │
-        [20?] ──► 22(R*) ──[HG approved]──► 30 ──► 40 ──► 22(CLOSE) ──► done
-          │         │                         │
-          │         ├── HG pending ──► blocked ──► (approve) ──► 继续
-          │         ├── HG rejected ──► task.status=draft ──► 10（强制）
-          │         └── 30 失败 ──► FailureReport ──► failed ──► 22 或 10
-          └── 否决 ──► 10
+人 + 00 chat 大纲
+  → 10-spec R0–R9
+  → 20-spec-audit + HG-SPEC-SIGNOFF（人签 · 可多轮修改）
+  → 00 起草 P0 task
+  → 10-task
+  → 20-task-audit R1（↺ 10-task）
+  → HG-AUDIT-R1（人签）
+  → 30 → 40（同 Agent · 自修重跑 40 直至通过）
+  → 50（↺ 30 · 可选）
+  → CLOSE（小问题 → 下一 task/SPEC · 偏差过大 → 10-spec/10-task）
 ```
 
-**FailureReport 联动（模板级 · v0.3+）**：10 / 22 Prompt **须**检查 task 是否关联 `FailureReport`；若存在，`failed` 原因与退回路径须在 Review / 需求节 **显式引用** 该 Artifact 路径。
+**状态机（实现读版）**
+
+```text
+[00] ──► 10-spec ◄──────────────────────────────┐
+          │                                        │
+          ▼                                        │
+     20-spec-audit(R*) ──[HG-SPEC-SIGNOFF]──► [00 起草 task]
+          │         │                              │
+          │         └── 人 rejected / 未过 ──► 10-spec
+          └── 否决 ──► 10-spec                     │
+                                                   │
+[00] ──► 10-task ◄─────────────────────────────────┤
+          │                                        │
+          ▼                                        │
+     20-task-audit(R*) ──[HG-AUDIT-R1]──► 30 ══► 40（同 Agent 闭环）
+          │         │                         │
+          │         │                         ├── 50? ── fail ──► 30
+          │         │                         └── CLOSE ──► done | 下一 task | ↺ 10
+          │         ├── HG pending ──► blocked
+          │         ├── HG rejected ──► 10-task
+          │         └── 30 失败 ──► FailureReport ──► 20-task-audit 或 10-task
+          └── 否决 ──► 10-task
+```
+
+**30→40 纪律**：40 为 Verify 子步；**默认不单独派 40 对话** · 30 Agent 跑 task 验证命令、回填自检结论 · 不通过则改码并重跑直至通过。
+
+**bugfix 轨**：跳过 10-spec / 20-spec-audit · 自 **10-task → 20-task-audit → 30**。
+
+**FailureReport 联动（模板级 · v0.3+）**：10-task / 20-task-audit Prompt **须**检查 task 是否关联 `FailureReport`；若存在，`failed` 原因与退回路径须在 Review / 需求节 **显式引用** 该 Artifact 路径。
 
 | 转移      | 条件                                              |
 | ------- | ----------------------------------------------- |
-| → 30    | `HG-AUDIT-R1 = approved` **且** 22 无内容阻塞         |
+| → 30    | `HG-AUDIT-R1 = approved` **且** 20-task-audit 无内容阻塞         |
+| Epic → 30（链） | **另须** `HG-SPEC-SIGNOFF = approved`（若 task 自 SPEC 投影） |
 | 30 拒开工  | 任一 blocking gate = pending · 或 failure_paths 缺失 → **blocked** |
-| 30 执行失败 | 产出 **FailureReport** · task.status → **failed** · 维护者选择退回 22 或 10 |
-| HG rejected | 记录否决理由 · task.status → **draft** · **强制** 回 10 | 
-| → CLOSE | 22 终轮「签收/关闭」节 + task status → done              |
-| 10 重入   | 来自 20 否决 · HG **rejected** · 30 **failed**（含 FailureReport） |
+| 30 执行失败 | 产出 **FailureReport** · task.status → **failed** · 维护者选择退回 20-task-audit 或 10-task |
+| HG rejected | 记录否决理由 · task.status → **draft** · **强制** 回 10-task | 
+| → CLOSE | 50 pass 或跳过 50 · task status → done · **小问题**留下一 task/SPEC · **偏差过大**维护者 ↺ 10-spec/10-task |
+| 50 fail | 打回 **30** 修复 |
+| 10-task 重入   | 20-spec-audit / 20-task-audit 否决 · HG **rejected** · 30 **failed** · CLOSE 决策重开 |
 
 
 | Task.status | 含义 | 恢复路径 |
 | --- | --- | --- |
 | `blocked` | Gate pending 或 30 拒开工 | Gate approved → 继续 30 |
-| `failed` | 30 执行失败已落 FailureReport | 退回 22 修复 或 退回 10 重定范围 |
+| `failed` | 30 执行失败已落 FailureReport | 退回 20-task-audit 或 退回 10-task 重定范围 |
 
 ### 4.2 HumanGate
 
@@ -410,7 +458,7 @@ pending ──(maintainer reject)──► rejected
 pending ──(Agent 30 扫描)──► BLOCKED（运行时 · 非持久 status）──► TEMPLATE_30_gate_stop
 ```
 
-| status | 22 行为 | 30 行为 | 后续 |
+| status | 20-task-audit 行为 | 30 行为 | 后续 |
 | --- | --- | --- | --- |
 | `pending` | 可产出 Review · **禁止**附 30 Prompt（D2） | **BLOCKED** | — |
 | `approved` | 正常 | 允许开工 | — |
@@ -494,8 +542,8 @@ R1 ──(零阻塞 + 人签)──► 30 允许
 
 | ID     | 公理                                                  |
 | ------ | --------------------------------------------------- |
-| **D1** | 每次 22 **必须** 产出 `AuditReview`（零阻塞须写明）               |
-| **D2** | `HG-AUDIT-R1 = pending` 时 22 **禁止** 附 30 Prompt     |
+| **D1** | 每次 **20-task-audit** **必须** 产出 `AuditReview`（零阻塞须写明）               |
+| **D2** | `HG-AUDIT-R1 = pending` 时 **20-task-audit** **禁止** 附 30 Prompt     |
 | **D3** | 30 首输出 **必须** 扫描 task 闸表（见 `TEMPLATE_30_gate_stop`） · 目标 CLI：`gate-check` |
 | **D4** | 改码 task 开工前 `HG-GRAPH-MODULES = approved`（D4-a）     |
 | **D5** | `test_strategy=required` → 须先失败测试再实现（或同 PR 可见红过）    |
@@ -620,18 +668,22 @@ npx CLI  ≡  WizardTool 新实例
 
 ---
 
-## 8. 与 SDD 编号对照（快速查）
+## 8. 与 SDD 编号对照（快速查 · **V2**）
 
+> 链真值（工作区）：[`docs/harness/guides/GUIDANCE_harness_hat_v2_chain_v1_zh.md`](../../../../docs/harness/guides/GUIDANCE_harness_hat_v2_chain_v1_zh.md)
 
-| 编号  | Hat 类           | 必落盘类             |
-| --- | --------------- | ---------------- |
-| 00  | OrchestratorHat | —（Handoff / KPI · Extended） |
-| 10  | RequirementsHat | Task（更新）         |
-| 20  | SpecReviewHat   | —（对话 · Extended） |
-| 22  | TaskAuditHat    | **AuditReview**  |
-| 30  | ExecuteHat      | 代码 diff · **FailureReport**（失败时） |
-| 40  | SelfCheckHat    | Task.自检结论 · Extended Starter 待 A2 |
-| 50  | ReinspectHat    | 可选 Review · Extended |
+| 编号  | Hat 类 / hat_id      | 必落盘类             | Starter |
+| --- | --------------- | ---------------- | --- |
+| 00  | OrchestratorHat | —（Handoff / KPI · Extended） | — |
+| **10-spec** | SpecRequirementsHat | SPEC（更新） | Extended |
+| **10-task** | TaskRequirementsHat | Task（更新） | ✅（`10-requirements` 别名） |
+| **20-spec-audit** | SpecAuditHat | **AuditReview**（`*_spec_*`） | Extended |
+| **20-task-audit** | TaskAuditHat | **AuditReview**（`*_audit_*`） | ✅（`22-task-audit` 别名） |
+| 30  | ExecuteHat | 代码 diff · **FailureReport**（失败时） | ✅ |
+| 40  | SelfCheckHat | Task.自检结论 | Extended（A2 待入 Starter） |
+| 50  | ReinspectHat | 可选 Review | Extended |
+
+**历史编号（别名 · 勿删）**：`20-review-spec-task` → **10-spec**；`10-requirements` → **10-task**；`22-task-audit` → **20-task-audit**。
 
 
 ---
@@ -697,7 +749,7 @@ npx CLI  ≡  WizardTool 新实例
 ### 11.1 下一步优先级（评审共识 · 非本体变更）
 
 ```text
-P0  最小 v0.2 闭环（harness-only · sync plan/apply · 10→22→30 金样）
+P0  最小 v0.2 闭环（harness-only · sync · 见 SDD_HAT_FLOW_v2 标准流程）
 P1  gate-check 基础 · README Quick Start + §7.5 展开
 P2  examples/kimi-code-integration（v0.3）· 第一篇对外博客
 P3  v0.2.0 tag · Kimi 社区触达 · 简历链 GitHub
@@ -716,4 +768,5 @@ P3  v0.2.0 tag · Kimi 社区触达 · 简历链 GitHub
 | v1.1 | 2026-06-15 | 吸收外部评审：元本体 · ICVO · 异常态 · 迁移/rollback · Epic 编排 · S5/S6/D7 · track.yaml · Q5 |
 | v1.1.1 | 2026-06-15 | Preset 更名 `kimi-code-meta` · §3.3.1 meta/bootstrap 用语 · 锁定 rejected→10 · 合并冲突强制人工 |
 | v1.2 | 2026-06-15 | v1.2 评审：§0.3 贡献清单 · §0.4 ontology.yaml · track-schema · D6-a · 合并 base 澄清 · plan 预检 · 状态图细化 · depends_on 禁环 |
+| v1.3 | 2026-06-21 | **V2 帽链**：10-spec/10-task · 20-spec-audit/20-task-audit · 30→40 同 Agent · 50/CLOSE 打回 · [`SDD_HAT_FLOW_v2_zh.md`](./SDD_HAT_FLOW_v2_zh.md) |
 

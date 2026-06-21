@@ -54,19 +54,21 @@ git clone git@github.com:Cyning12/cyning-harness.git && cd cyning-harness
 /path/to/cyning-harness/wizard/harness-sync.sh apply --target /path/to/your-repo
 ```
 
-**P0 金样（10→22→30）：** [`examples/demo_checkout/README.md`](examples/demo_checkout/README.md) · [`docs/methodology/execution/P0_V0.2_GAP.md`](docs/methodology/execution/P0_V0.2_GAP.md)
+**P0 金样：** [`examples/demo_checkout/README.md`](examples/demo_checkout/README.md) · 完整帽链见 [`docs/methodology/product/SDD_HAT_FLOW_v2_zh.md`](docs/methodology/product/SDD_HAT_FLOW_v2_zh.md)
 
 **Kimi Code fork：** `--preset oss-fork-meta` 或 [`wizard/bootstrap-oss-fork-meta.sh`](wizard/bootstrap-oss-fork-meta.sh) · 过程轨不进上游 PR。
 
 ---
 
-## 典型工作流
+## 典型工作流（V2）
 
 ```text
-install / adopt  →  harness-sync plan/apply  →  @ task + prompts（10→22→30）
-                      ↑ 产品包 git pull 后 upgrade.sh
-30 前：npx @cyning/harness verify  ·  HG-AUDIT-R1 = approved
+人 + 00 大纲 → 10-spec → 20-spec-audit + HG-SPEC-SIGNOFF
+  → 00 起草 task → 10-task → 20-task-audit + HG-AUDIT-R1
+  → 30（含 40 自检闭环）→ [50] → CLOSE
 ```
+
+Starter 包：`10-task` · `20-task-audit` · `30` · `40` · 30 前 `npx @cyning/harness verify` · **HG-AUDIT-R1 = approved**
 
 1. 阅读 [`docs/ONBOARDING.md`](docs/ONBOARDING.md)  
 2. [`npx @cyning/harness init`](docs/USER_GUIDE_v1.0_zh.md) 或 [`wizard/install.sh`](wizard/install.sh) / [`adopt-existing.sh`](wizard/adopt-existing.sh)  

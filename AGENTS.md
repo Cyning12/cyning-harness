@@ -5,9 +5,10 @@
 ## 阅读顺序
 
 1. [`README.md`](README.md)
-2. [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
-3. [`docs/ONBOARDING.md`](docs/ONBOARDING.md)
-4. 按任务进入 `harness/templates/` 或 `wizard/`
+2. [`docs/methodology/product/SDD_HAT_FLOW_v2_zh.md`](docs/methodology/product/SDD_HAT_FLOW_v2_zh.md) · 帽链流程
+3. [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+4. [`docs/ONBOARDING.md`](docs/ONBOARDING.md)
+5. 按任务进入 `harness/templates/` 或 `wizard/`
 
 ## 修改纪律
 

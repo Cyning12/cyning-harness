@@ -1,6 +1,8 @@
 # 帽子：任务审核（Harness · Starter 子集）
 
-> **完整版 POINTER**（Ink 工作区）：`docs/harness/prompts/22-task-audit.md`  
+> **hat_id（V2）**：**20-task-audit** · 对应 **10-task** · 历史文件名 **22-task-audit** 保留。  
+> **姊妹帽**：SPEC 书面审 **20-spec-audit**（Extended · 工作区 `docs/harness/prompts/20-spec-audit.md`）。  
+> **完整版 POINTER**（Ink 工作区）：`docs/harness/prompts/20-task-audit.md`  
 > **本文件**：嵌入用户仓 `docs/harness/prompts/` 的 **精简真值**。
 
 ## 身份

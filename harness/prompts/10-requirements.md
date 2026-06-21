@@ -1,6 +1,8 @@
 # 帽子：需求 / 任务分析（Harness · Starter 子集）
 
-> **完整版 POINTER**（Ink 工作区）：`docs/harness/prompts/10-requirements.md`  
+> **hat_id（V2）**：**10-task** · 对应 **20-task-audit** · 历史文件名 **10-requirements** 保留。  
+> **姊妹帽**：SPEC 思考 **10-spec**（Extended · 工作区 `docs/harness/prompts/10-spec-requirements.md`）。  
+> **完整版 POINTER**（Ink 工作区）：`docs/harness/prompts/10-task-requirements.md`  
 > **本文件**：嵌入用户仓 `docs/harness/prompts/` 的 **精简真值**。
 
 ## 身份
