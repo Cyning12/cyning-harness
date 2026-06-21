@@ -4,6 +4,26 @@
 
 ## [Unreleased]
 
+## [2.0.4] - 2026-06-21
+
+### Added
+
+- **[`SDD_HAT_FLOW_v2_zh.md`](docs/methodology/product/SDD_HAT_FLOW_v2_zh.md)**：V2 标准帽链真值（10-spec/10-task · 20-spec-audit/20-task-audit · 30⇄40 同 Agent · 50/CLOSE 打回）
+- **复查落盘**：[`docs/methodology/execution/reviews/review_v2_hat_flow_20260621.md`](docs/methodology/execution/reviews/review_v2_hat_flow_20260621.md)
+
+### Changed
+
+- **[`DESIGN_ONTOLOGY_v1_zh.md`](docs/methodology/product/DESIGN_ONTOLOGY_v1_zh.md)** → **v1.3** · §3.2 / §4.1 / §8 与 V2 对齐
+- **[`ontology.yaml`](ontology.yaml)**：`version: "1.3"` · `starter_hats` / `extended_hats` / D1·D2 公理
+- **Starter prompts**：[`harness/prompts/README.md`](harness/prompts/README.md) · [`30-execute-code.md`](harness/prompts/30-execute-code.md) · [`40-self-check.md`](harness/prompts/40-self-check.md) · 30→40 同 Agent 闭环纪律
+- **入口文档**：[`README.md`](README.md) · [`AGENTS.md`](AGENTS.md) · [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) 链 V2 流程
+- **版本**：`package.json` · `ontology.yaml` `product_semver` → **2.0.4**
+
+### Notes
+
+- **HG-RELEASE**：待维护者 publish `@cyning/harness@2.0.4` · tag `v2.0.4`
+- docs-only patch · 无 CLI breaking · `npm test` 72/72
+
 ## [2.0.2] - 2026-06-18
 
 ### Added
