@@ -2,7 +2,8 @@
 
 > **状态**：`active`（M2 v0.1）  
 > **形态**：**脚本优先**（[`wizard/README.md`](./README.md)）；本文档为 preset 说明备查  
-> **关联**：[`docs/ONBOARDING.md`](../docs/ONBOARDING.md) · GUIDANCE D3 IDE 轨
+> **关联**：[`docs/ONBOARDING.md`](../docs/ONBOARDING.md) · GUIDANCE D3 IDE 轨  
+> **新建项目引导**：[`wizard/guides/GUIDE_new_project_bootstrap_v1_zh.md`](./guides/GUIDE_new_project_bootstrap_v1_zh.md) — 从零接入的 6 步操作手册
 
 ---
 
