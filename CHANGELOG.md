@@ -4,6 +4,18 @@
 
 ## [Unreleased]
 
+## [2.1.1] - 2026-06-30
+
+### Fixed
+
+- **task 人工闸解析**：`lib/task-meta.js` 与 `wizard/gate-check.sh` 现在会去除 Markdown 反引号，避免将 `` `approved` `` 误判为 pending。
+- 影响命令：`verify`、`gate-check`。
+
+### Notes
+
+- **HG-RELEASE**：待维护者 publish `@cyning/harness@2.1.1` · tag `v2.1.1`
+- patch · 无 CLI breaking · `npm test` 预期通过
+
 ## [2.1.0] - 2026-06-30
 
 ### Added
