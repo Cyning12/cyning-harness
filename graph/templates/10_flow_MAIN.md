@@ -1,47 +1,89 @@
-# 主路径 Flow 示例（人类友好版）
+---
+graph_id: 10_flow_MAIN
+title: 主路径 Flow 示例
+description: 典型 HTTP 请求从入口到响应的主干流程
+version: '2026-06-30'
+generated_from: 10_flow_MAIN.graph.yaml
+generator: scripts/graph_yaml_compile.js
+---
 
-> **用途**：`docs/_tech_graph/10_flow_MAIN.md` — **至少 1 条**主业务流（新仓 / S0 必做）。  
-> **双轨**：须与 [`10_flow_MAIN.ai.md`](./10_flow_MAIN.ai.md) 语义等价。  
-> **嵌入后**：将占位路径替换为真实 handler / 路由 / 页面流。
+# 主路径 Flow 示例
+
+> 典型 HTTP 请求从入口到响应的主干流程
+
+> **源文件**：`10_flow_MAIN.graph.yaml` · 由 `scripts/graph_yaml_compile.js` 生成 · 请勿直接手写本文件
 
 ```mermaid
 flowchart TD
-    %% Entry: 例 GET/POST /api/v1/resource — 替换为真实入口
-
-    %% === 请求阶段 ===
-    IN[HTTP 请求] --> AUTH[鉴权 / 会话校验]
-    AUTH --> VAL[参数校验<br/>schema / DTO]
-    VAL --> SVC[业务服务层<br/>例：ResourceService]
-
-    %% === 数据阶段 ===
-    SVC --> REPO[仓储 / ORM<br/>例：ResourceRepository]
-    REPO --> DB[(数据库 / 存储)]
-
-    REPO -->|无记录| NOTFOUND[404 / 空结果]
-    SVC -->|业务规则失败| BIZERR[4xx 业务错误]
-
-    %% === 响应阶段 ===
-    SVC --> RESP[组装响应 DTO]
-    RESP --> OUT[返回 JSON / 页面]
-
-    %% === 可观测（可选）===
-    OUT --> LOG[结构化日志 / trace]
-
-    %% 样式
-    classDef request fill:#e1f5fe,stroke:#01579b,stroke-width:2px
-    classDef domain fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
-    classDef data fill:#fff8e1,stroke:#ff6f00,stroke-width:1px
-
-    class IN,AUTH,VAL request
-    class SVC,RESP,OUT domain
-    class REPO,DB,LOG data
+    IN[[HTTP 请求]]
+    AUTH[[鉴权 / 会话校验]]
+    VAL[[参数校验]]
+    SVC[[业务服务层]]
+    ERR_AUTH[[Auth Failed]]
+    ERR_VAL[[Validation Failed]]
+    REPO[[仓储 / ORM]]
+    DB[(数据库 / 存储)]
+    HIT{record exists?}
+    NOTFOUND[[404 / 空结果]]
+    BIZERR[[4xx 业务错误]]
+    RESP[[组装响应 DTO]]
+    OUT[[返回 JSON / 页面]]
+    LOG(( 结构化日志 ))
+    MAIN_DOC[>00_main.md]
+    IN --> AUTH
+    AUTH --"[ok]"--> VAL
+    AUTH --"[err]"--> ERR_AUTH
+    VAL --"[ok]"--> SVC
+    VAL --"[err]"--> ERR_VAL
+    SVC --> REPO
+    REPO --> DB
+    REPO --"?>"--> HIT
+    HIT --"[no]"--> NOTFOUND
+    HIT --"[yes]"--> SVC
+    SVC --"[err]"--> BIZERR
+    SVC --> RESP
+    RESP --> OUT
+    OUT --"::archives"--> LOG
+    IN --"加载"--> MAIN_DOC
+    %% 锚点：见 YAML 源 edges[].anchors
 ```
 
-## 与顶层图关系
+## Nodes
 
-- 在 [`00_main.md`](./00_main.md) 中由 `M1` 或等价节点 **加载** 本文件。
-- 模块归属见 [`01_struct.md`](./01_struct.md) 中 `api` / `core` 等行。
+| ID | Label |
+|----|-------|
+| IN | HTTP 请求 |
+| AUTH | 鉴权 / 会话校验 |
+| VAL | 参数校验 |
+| SVC | 业务服务层 |
+| ERR_AUTH | Auth Failed |
+| ERR_VAL | Validation Failed |
+| REPO | 仓储 / ORM |
+| DB | 数据库 / 存储 |
+| HIT | record exists? |
+| NOTFOUND | 404 / 空结果 |
+| BIZERR | 4xx 业务错误 |
+| RESP | 组装响应 DTO |
+| OUT | 返回 JSON / 页面 |
+| LOG | 结构化日志 |
+| MAIN_DOC | >00_main.md |
 
-## 增量维护
+## Edges
 
-改 BFF / API 契约时：**同 task** 更新本 flow 或另开图谱子 task；Harness 关账 ≠ 图谱关账。
+| From | To | Label | Type | Anchors |
+|------|----|-------|------|---------|
+| IN | AUTH | -> |  | middleware/auth.py::require_user |
+| AUTH | VAL | [ok] |  |  |
+| AUTH | ERR_AUTH | [err] |  | middleware/auth.py#L42 |
+| VAL | SVC | [ok] |  | services/resource_service.py::handle |
+| VAL | ERR_VAL | [err] |  |  |
+| SVC | REPO | -> |  | repositories/resource_repo.py::find_by_id |
+| REPO | DB | -> |  | db/session.py |
+| REPO | HIT | ?> |  |  |
+| HIT | NOTFOUND | [no] |  |  |
+| HIT | SVC | [yes] |  |  |
+| SVC | BIZERR | [err] |  | services/resource_service.py |
+| SVC | RESP | -> |  |  |
+| RESP | OUT | -> |  | handlers/resource.py::to_response |
+| OUT | LOG | ::archives | archives | observability/logger.py |
+| IN | MAIN_DOC | 加载 |  |  |
