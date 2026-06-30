@@ -4,6 +4,25 @@
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-06-30
+
+### Added
+
+- **YAML-first 图谱模板**：`graph/templates/00_main.graph.yaml`、`10_flow_MAIN.graph.yaml`
+- **编译脚本**：`scripts/graph_yaml_compile.js`（Node.js · `js-yaml`）从 `.graph.yaml` 生成 `.md`
+- **校验脚本**：`scripts/verify-template-compile.sh` — 校验同步、无残留 `.ai.md`、生成物齐全
+- **模板 v0.2**：`graph/templates/README.md` 更新复制流程；`99_mermaid_protocol.md` 升级 v3 YAML-first
+
+### Changed
+
+- **图谱模板**：删除 `graph/templates/00_main.ai.md`、`10_flow_MAIN.ai.md`；`00_main.md`、`10_flow_MAIN.md` 改为生成物
+- **版本**：`package.json` → **2.1.0**
+
+### Notes
+
+- **HG-RELEASE**：待维护者 publish `@cyning/harness@2.1.0` · tag `v2.1.0`
+- docs-only minor · 无 CLI breaking · `npm test` 预期通过
+
 ## [2.0.4] - 2026-06-21
 
 ### Added

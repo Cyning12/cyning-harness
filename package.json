@@ -1,6 +1,6 @@
 {
   "name": "@cyning/harness",
-  "version": "2.0.4",
+  "version": "2.1.0",
   "description": "cyning-harness discipline package · init / upgrade / check CLI",
   "license": "MIT",
   "type": "module",
