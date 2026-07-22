@@ -4,6 +4,31 @@
 
 ## [Unreleased]
 
+## [2.2.1] - 2026-07-22
+
+### Fixed
+
+- **slug 一致性误报**：`task close` 检查 4 与 `task lint-done` 的 slug 比较现在对下划线/连字符惯例等价（`task_cyning_harness_a5_*_v1.md` ↔ `cyning-harness-a5-*`，工作区实测命名惯例）。dogfood 本仓 task 时发现：2.2.0 严格相等比较会把全部工作区 task 误 BLOCKED。
+- `lib/task-meta.js` 新增 `normalizeSlug`；两命令双侧规范化后比较。
+
+### Notes
+
+- patch · 无 CLI breaking · `npm test` 94 全绿
+
+## [2.2.0] - 2026-07-22
+
+### Added
+
+- **`harness task close`**：受闸归档子命令（方案 A · invoke 留档机械闸）。5 项机械校验 —— invoke 留档（`docs/harness/invokes/by-task/<slug>/` 含 ≥1 个 `.md`）、`### 自检结论` 非占位符、`## 验收标准` 无未勾选项、文件名/元信息/invoke 目录 slug 一致、`> **状态**` ∈ {done, completed}；任一失败 exit 2 + `CLOSE: BLOCKED` 且**不执行** mv。默认 dry-run（只检不 mv），`--yes` 才归档到 `active/` 同级 `done/`（basename 保留，`--target` 可覆盖）。
+- **`harness task lint-done`**：CI 一致性兜底（方案 C）。diff `docs/tasks/done/` + `docs/harness/tasks/done/`（递归）slug 集合 vs `invokes/by-task/` 目录名；done 有而 invokes 无 exit 2 列缺失，反向仅 warn。
+- `lib/task-close.js` · `lib/task-lint-done.js`；`lib/task-meta.js` 新增导出 `extractSection` · `extractTaskSlug`。
+- Prompt 纪律同步：`harness/prompts/30-execute-code.md`（归档只能走 `task close` PASS）、`harness/invokes/TEMPLATE_invoke.md`（close 机械闸行）。
+
+### Notes
+
+- 背景：ops-desk-api 连续 4 任务 30 漏落 invoke（2026-07-20 根因分析）——invoke 留档原是纯 Prompt 层纪律，本版补上机械闸。
+- minor · 无 CLI breaking · `npm test` 91 全绿 · SPEC `docs/spec/SPEC-task-close-invoke-gate_v1.md`
+
 ## [2.1.1] - 2026-06-30
 
 ### Fixed
