@@ -171,6 +171,21 @@ test('close BLOCKED：文件名 slug ≠ 元信息 task_slug', () => {
   assert.ok(fs.existsSync(path.join(target, rel)));
 });
 
+test('close PASS：文件名下划线 ↔ task_slug 连字符惯例等价（工作区实测惯例）', () => {
+  const target = makeTarget();
+  const content = TASK_OK.replace('**task_slug** | `demo`', '**task_slug** | `demo-task`');
+  const activeDir = path.join(target, 'docs/tasks/active');
+  fs.mkdirSync(activeDir, { recursive: true });
+  fs.writeFileSync(path.join(activeDir, 'task_demo_task_v1.md'), content);
+  const invokeDir = path.join(target, 'docs/harness/invokes/by-task/demo-task');
+  fs.mkdirSync(invokeDir, { recursive: true });
+  fs.writeFileSync(path.join(invokeDir, 'invoke.md'), '# invoke\n');
+
+  const result = runNode(['task', 'close', '--file', 'docs/tasks/active/task_demo_task_v1.md', '--yes'], target);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.equal(lastLine(result.stdout), 'CLOSE: PASS · demo-task');
+});
+
 test('close BLOCKED：状态 in_progress；无反引号 done 可过', () => {
   const target = makeTarget();
   const rel = writeFixture(target, {

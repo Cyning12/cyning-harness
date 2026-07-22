@@ -52,7 +52,7 @@ test('lint-done FAIL：done 有而 invokes 无 → exit 2 · 列出缺失 slug�
   const result = runNode(['task', 'lint-done', '--target', target]);
   assert.equal(result.status, 2, result.stderr || result.stdout);
   assert.match(result.stdout, /LINT-DONE: FAIL/);
-  assert.match(result.stdout, /legacy_close/);
+  assert.match(result.stdout, /legacy-close/);
   assert.doesNotMatch(result.stdout, /demo.*缺失|缺失.*demo/);
 });
 
@@ -65,7 +65,7 @@ test('lint-done：invokes 多出仅 warn · exit 0', () => {
   const result = runNode(['task', 'lint-done', '--target', target]);
   assert.equal(result.status, 0, result.stderr || result.stdout);
   assert.match(result.stdout, /warn/i);
-  assert.match(result.stdout, /wip_task/);
+  assert.match(result.stdout, /wip-task/);
 });
 
 test('lint-done：递归 done 子目录（done/chatbi/）', () => {
@@ -74,7 +74,7 @@ test('lint-done：递归 done 子目录（done/chatbi/）', () => {
 
   const result = runNode(['task', 'lint-done', '--target', target]);
   assert.equal(result.status, 2);
-  assert.match(result.stdout, /nested_flow/);
+  assert.match(result.stdout, /nested-flow/);
 });
 
 test('lint-done：编排仓布局 docs/harness/tasks/done 同样纳入', () => {
@@ -83,7 +83,7 @@ test('lint-done：编排仓布局 docs/harness/tasks/done 同样纳入', () => {
 
   const result = runNode(['task', 'lint-done', '--target', target]);
   assert.equal(result.status, 2);
-  assert.match(result.stdout, /meta_task/);
+  assert.match(result.stdout, /meta-task/);
 });
 
 test('lint-done：两布局均无 done 目录 → PASS（空集合）', () => {
@@ -100,6 +100,16 @@ test('lint-done：done/ 下 README.md 与 _views 不计入 slug 集合', () => {
   writeDoneTask(target, 'docs/tasks/done/_views/board.md');
   writeDoneTask(target, 'docs/tasks/done/task_demo_v1.md');
   writeInvokeDir(target, 'demo');
+
+  const result = runNode(['task', 'lint-done', '--target', target]);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /LINT-DONE: PASS/);
+});
+
+test('lint-done：done 文件下划线 ↔ invoke 目录连字符视为同一 slug', () => {
+  const target = makeTarget();
+  writeDoneTask(target, 'docs/tasks/done/task_demo_task_v1.md');
+  writeInvokeDir(target, 'demo-task');
 
   const result = runNode(['task', 'lint-done', '--target', target]);
   assert.equal(result.status, 0, result.stderr || result.stdout);

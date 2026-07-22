@@ -4,6 +4,17 @@
 
 ## [Unreleased]
 
+## [2.2.1] - 2026-07-22
+
+### Fixed
+
+- **slug 一致性误报**：`task close` 检查 4 与 `task lint-done` 的 slug 比较现在对下划线/连字符惯例等价（`task_cyning_harness_a5_*_v1.md` ↔ `cyning-harness-a5-*`，工作区实测命名惯例）。dogfood 本仓 task 时发现：2.2.0 严格相等比较会把全部工作区 task 误 BLOCKED。
+- `lib/task-meta.js` 新增 `normalizeSlug`；两命令双侧规范化后比较。
+
+### Notes
+
+- patch · 无 CLI breaking · `npm test` 94 全绿
+
 ## [2.2.0] - 2026-07-22
 
 ### Added
