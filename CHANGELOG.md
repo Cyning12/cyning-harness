@@ -14,6 +14,7 @@
 ### Notes
 
 - patch · 无 CLI breaking · `npm test` 94 全绿
+- **已发布**：`@cyning/harness@2.2.1`（npm `latest` · 2026-07-22）· tag `v2.2.1` 已推送
 
 ## [2.2.0] - 2026-07-22
 
@@ -28,6 +29,7 @@
 
 - 背景：ops-desk-api 连续 4 任务 30 漏落 invoke（2026-07-20 根因分析）——invoke 留档原是纯 Prompt 层纪律，本版补上机械闸。
 - minor · 无 CLI breaking · `npm test` 91 全绿 · SPEC `docs/spec/SPEC-task-close-invoke-gate_v1.md`
+- **已发布**：`@cyning/harness@2.2.0`（2026-07-22）· tag `v2.2.0` 已推送；**已被 2.2.1 取代**（slug 规范化修复，业务仓请直接升 2.2.1）
 
 ## [2.1.1] - 2026-06-30
 
