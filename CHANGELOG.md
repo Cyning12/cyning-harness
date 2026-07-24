@@ -17,6 +17,7 @@
 - 背景：Post-G4 方案 N1+N2 · rethink 方向二骨架；dogfood active lint FAIL 率高故本波不做 block。
 - SPEC：`docs/spec/SPEC-lifecycle-and-verify-lint_v1.md`
 - minor · `npm test` 含 lifecycle + verify-lint-warn
+- **已发布**：`@cyning/harness@2.7.0`（npm `latest` · 2026-07-24）· tag `v2.7.0`
 
 ## [2.6.0] - 2026-07-24
 
