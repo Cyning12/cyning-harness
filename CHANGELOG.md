@@ -21,6 +21,7 @@
 - 背景：机械化率审计 `docs/rethink/2026-07-mechanization-rate/`（缺口 G1+G3 · 46% 规范零机械）。
 - dogfood：工作区 17 个 active task 全量 lint，15 个存在真实结构缺口（E5×13 · E4×9 · E1×8 · E6×6 · E3×6 · E7×3 · E2×3）——矩阵预言被数据证实。
 - minor · 无 CLI breaking · `npm test` 108 全绿 · SPEC `docs/spec/SPEC-task-lint-structure-gate_v1.md`
+- **已发布**：`@cyning/harness@2.3.0`（npm `latest` · 2026-07-24）· tag `v2.3.0` 已推送
 
 ## [2.2.1] - 2026-07-22
 
