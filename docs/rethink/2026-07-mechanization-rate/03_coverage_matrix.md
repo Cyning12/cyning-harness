@@ -35,7 +35,7 @@ description: 机械化率统计矩阵 + 缺口聚类 + 候选闸优先级排序 
 | 优先级 | 缺口 | 风险 | 成本 | 候选闸形态 | 挂点 |
 |---|---|---|---|---|---|
 | ~~P0~~ ✅ | **G1 · task md 结构 lint** | 高（下游全部闸的输入假设） | 低（解析与 M5 共享） | **已落地 v2.3.0**：`harness task lint`（E1–E7/W1–W3）· 不接入 verify（dogfood 后另议） | 10 产出时 |
-| **P0** | **G2 · reviews 留档闸** | 高（与 invoke 失守同构，且是 HG-AUDIT-R1 的签署依据） | 低（glob 命名模式） | `verify` 增检查：`reviews/task_<slug>_audit_R1_*.md` 存在（may_start_30 加条件）；可选 `close` 增第 6 项 | verify（30 前）· close（归档前） |
+| ~~P0~~ ✅ | **G2 · reviews 留档闸** | 高（与 invoke 失守同构，且是 HG-AUDIT-R1 的签署依据） | 低（glob 命名模式） | **已落地 v2.5.0**：verify blocking（`missing R<n> review`）+ close 检查 6 · 豁免 `--allow-no-review` · 匹配两侧剥离版本后缀 | verify（30 前）· close（归档前） |
 | ~~P1~~ ✅（task 部分） | **G3 · 文本纪律 grep 闸** | 中 | 极低（正则） | **已落地 v2.3.0**（E6 绝对路径）；invoke 预写 approved grep 缓做（SPEC R2：误报不可控） | 同 G1 |
 | **P1** | **G4 · 思考轮结构检查** | 中（阶段 C 纪律，漏槽=思考轮形同虚设） | 中（格式变体多，须宽容：只查槽位存在与控制表字段，不查内容质量） | 并入 `task lint`：R0–R5 槽 + `actual_last_round`/`early_stop`/`residual_risks` 字段存在性 | 10 产出时 |
 | **P2** | **G7 · 执行证据** | 高但难（「真跑过」本质要 runner 见证） | 高 | `harness run -- <验证命令>`：包装执行、留 exit code + 输出摘要到 `.cyning-harness/runs/`，40 回填引用 run id | 方向二状态机内再做 |

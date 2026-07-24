@@ -4,6 +4,21 @@
 
 ## [Unreleased]
 
+## [2.5.0] - 2026-07-24
+
+### Changed
+
+- **⚠ 行为变更 · reviews 留档闸（G2）**：`verify --task` 新增 blocking 条件——`docs/harness/reviews/task_<base>_audit_R<n>_*.md`（n≥1）不存在时 `VERIFY: BLOCKED · missing R<n> review` exit 2（即使人工闸表全 approved）。职责切分：机器只查**存在性**，审查结论仍由维护者签 `HG-AUDIT-R1` 覆盖。**豁免**：`--allow-no-review`（warn 放行 · 留痕）。
+- `task close` 新增**检查 6**：归档时 R<n> 审查文应存在（纸链完整）；同 `--allow-no-review` 豁免。
+- `findReviewPath` 升级 `findReview`：glob `_audit_R1_` → `_audit_R` 多轮取最新；**匹配两侧剥离版本后缀**（合法变体 `task_x_v1.md` ↔ `task_x_audit_R1_*.md` · R1 审查实测案例）；`review_path` 字段兼容。
+- verify `--json` handoff 新增 `review_found` / `review_latest` / `review_rounds`；`may_start_30` 纳入审查文条件。
+
+### Notes
+
+- 背景：机械化率审计 G2（rethink 矩阵 P0 最后一块）；22/20 帽自此脱离「全帽零机械」。
+- dogfood：工作区 approved 任务全过（含版本后缀变体 ops_clarify · 恰好是 R1 审查抓出的案例）。
+- minor · verify 行为变更（本版核心 · 见上）· `npm test` 118 全绿 · SPEC `docs/spec/SPEC-reviews-retention-gate_v1.md`
+
 ## [2.4.0] - 2026-07-24
 
 ### Changed

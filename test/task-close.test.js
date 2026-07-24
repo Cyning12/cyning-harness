@@ -41,8 +41,8 @@ function makeTarget() {
   return fs.mkdtempSync(path.join(os.tmpdir(), 'cyning-harness-close-'));
 }
 
-/** 标准 fixture：active task + invoke 落盘齐全；overrides 可改 task 正文 */
-function writeFixture(target, { taskContent = TASK_OK, taskName = 'task_demo_v1.md', invoke = true } = {}) {
+/** 标准 fixture：active task + invoke + R1 审查文齐全；overrides 可改 task 正文 */
+function writeFixture(target, { taskContent = TASK_OK, taskName = 'task_demo_v1.md', invoke = true, review = true } = {}) {
   const activeDir = path.join(target, 'docs/tasks/active');
   fs.mkdirSync(activeDir, { recursive: true });
   fs.writeFileSync(path.join(activeDir, taskName), taskContent);
@@ -50,6 +50,11 @@ function writeFixture(target, { taskContent = TASK_OK, taskName = 'task_demo_v1.
     const invokeDir = path.join(target, 'docs/harness/invokes/by-task/demo');
     fs.mkdirSync(invokeDir, { recursive: true });
     fs.writeFileSync(path.join(invokeDir, 'invoke_20260722_30_demo.md'), '# invoke\n');
+  }
+  if (review) {
+    const reviewsDir = path.join(target, 'docs/harness/reviews');
+    fs.mkdirSync(reviewsDir, { recursive: true });
+    fs.writeFileSync(path.join(reviewsDir, 'task_demo_audit_R1_20260724.md'), '# review\n');
   }
   return path.join('docs/tasks/active', taskName);
 }
@@ -180,6 +185,9 @@ test('close PASS：文件名下划线 ↔ task_slug 连字符惯例等价（工�
   const invokeDir = path.join(target, 'docs/harness/invokes/by-task/demo-task');
   fs.mkdirSync(invokeDir, { recursive: true });
   fs.writeFileSync(path.join(invokeDir, 'invoke.md'), '# invoke\n');
+  const reviewsDir = path.join(target, 'docs/harness/reviews');
+  fs.mkdirSync(reviewsDir, { recursive: true });
+  fs.writeFileSync(path.join(reviewsDir, 'task_demo_task_audit_R1_20260724.md'), '# review\n');
 
   const result = runNode(['task', 'close', '--file', 'docs/tasks/active/task_demo_task_v1.md', '--yes'], target);
   assert.equal(result.status, 0, result.stderr || result.stdout);
@@ -228,6 +236,9 @@ test('close：源文件不在 */active/ · 无 --target 拒绝；有 --target �
   const invokeDir = path.join(target, 'docs/harness/invokes/by-task/demo');
   fs.mkdirSync(invokeDir, { recursive: true });
   fs.writeFileSync(path.join(invokeDir, 'invoke.md'), '# invoke\n');
+  const reviewsDir = path.join(target, 'docs/harness/reviews');
+  fs.mkdirSync(reviewsDir, { recursive: true });
+  fs.writeFileSync(path.join(reviewsDir, 'task_demo_audit_R1_20260724.md'), '# review\n');
 
   const refused = runNode(['task', 'close', '--file', 'docs/tasks/done/task_demo_v1.md', '--yes'], target);
   assert.equal(refused.status, 2);
@@ -242,6 +253,22 @@ test('close：源文件不在 */active/ · 无 --target 拒绝；有 --target �
   assert.ok(fs.existsSync(destArg));
 });
 
+test('close 检查 6：R<n> 审查文缺失 → exit 2 不 mv；--allow-no-review warn 放行', () => {
+  const target = makeTarget();
+  const rel = writeFixture(target, { review: false });
+
+  const blocked = runNode(['task', 'close', '--file', rel, '--yes'], target);
+  assert.equal(blocked.status, 2);
+  assert.match(blocked.stdout, /missing R<n> review/);
+  assert.ok(fs.existsSync(path.join(target, rel)), 'BLOCKED 不应 mv');
+
+  const waived = runNode(['task', 'close', '--file', rel, '--yes', '--allow-no-review'], target);
+  assert.equal(waived.status, 0, waived.stderr || waived.stdout);
+  assert.match(waived.stdout, /warn/i);
+  assert.equal(lastLine(waived.stdout), 'CLOSE: PASS · demo');
+  assert.ok(fs.existsSync(path.join(target, 'docs/tasks/done/task_demo_v1.md')));
+});
+
 test('close：编排仓布局 docs/harness/tasks/active → 同级 done', () => {
   const target = makeTarget();
   const activeDir = path.join(target, 'docs/harness/tasks/active');
@@ -250,6 +277,9 @@ test('close：编排仓布局 docs/harness/tasks/active → 同级 done', () => 
   const invokeDir = path.join(target, 'docs/harness/invokes/by-task/demo');
   fs.mkdirSync(invokeDir, { recursive: true });
   fs.writeFileSync(path.join(invokeDir, 'invoke.md'), '# invoke\n');
+  const reviewsDir = path.join(target, 'docs/harness/reviews');
+  fs.mkdirSync(reviewsDir, { recursive: true });
+  fs.writeFileSync(path.join(reviewsDir, 'task_demo_audit_R1_20260724.md'), '# review\n');
 
   const result = runNode(['task', 'close', '--file', 'docs/harness/tasks/active/task_demo_v1.md', '--yes'], target);
   assert.equal(result.status, 0, result.stderr || result.stdout);

@@ -32,6 +32,12 @@ function writeTaskWithGate(target, gateStatus) {
 | HG-AUDIT-R1 | ${gateStatus} | 30 | gate |
 `,
   );
+  // reviews 留档闸（v2.5+）：approved 任务的默认 fixture 须有 R1 审查文
+  if (gateStatus === 'approved') {
+    const reviewsDir = path.join(target, 'docs/harness/reviews');
+    fs.mkdirSync(reviewsDir, { recursive: true });
+    fs.writeFileSync(path.join(reviewsDir, 'task_demo_audit_R1_20260724.md'), '# review\n');
+  }
 }
 
 function writeSidecar(target, strategy) {

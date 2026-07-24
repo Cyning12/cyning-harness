@@ -31,6 +31,7 @@ description: 索引与背景 · 2026-07 机械化率审计思考系列 · 何时
 | 2026-07-24 | 矩阵聚合 + 缺口聚类 | 03 |
 | 2026-07-24 | 结论与立项建议 | 04 |
 | 2026-07-24 | **第一波落地**：G1+G3（task 部分）→ `task lint` v2.3.0（03 已勾 ✅）；dogfood 数据：17 个 active task 中 15 个存在真实结构缺口 | 03 更新 |
+| 2026-07-24 | **第二波落地**：G2 → verify/close reviews 闸 v2.5.0（03 已勾 ✅ · **P0 队列清零**）；期间帽定义 V2 拆分收编（v2.4.0） | 03 更新 |
 
 **机制编号约定**（02/03 引用）：M1 gate-check.sh · M2 verify · M3 audit · M4 task check · M5 task close · M6 task lint-done · M7 graph yaml · M8 graph HGM · M9 harness-sync · M10 package-scripts
 
