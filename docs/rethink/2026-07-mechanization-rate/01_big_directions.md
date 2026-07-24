@@ -28,6 +28,7 @@ v2.2 的故事（invoke 留档连续 4 任务失守 → `task close` 补闸）�
 
 CLI 今天是一袋动词，背后实际是**一个** task 生命周期：`draft → R1 → approved → 30 → 40 → done → archived`。`verify` 是 30 转移的前置检查，`close` 是 done→archived 转移——状态机是隐式的。
 显式化后（如 `lifecycle.yaml`：状态/转移/前置条件），方向一产出的每个新闸都有**天然挂点**；「这个 task 现在能做什么」一条命令可答（`verify --json` 的 handoff 是胚胎）。
+**落地（v2.7.0 · 文档先行）**：产品包真值 [`harness/lifecycle.yaml`](../../../harness/lifecycle.yaml) + `npx @cyning/harness lifecycle show [--json]`（只读 · **不做**转移引擎）；`verify --task` 已挂 `task_lint`（severity=warn）。
 **原则**：闸只挡实质、宽容形式（slug 事件教训：现实有两种命名惯例，闸太死就误伤）。
 
 ### 方向三 · Agent 一等公民接口（分发放大器）

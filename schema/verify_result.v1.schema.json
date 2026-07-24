@@ -35,6 +35,16 @@
           "type": "array",
           "items": { "type": "string" }
         },
+        "lint": {
+          "description": "v2.7+ · 仅 --task；不参与 may_start_30",
+          "type": ["object", "null"],
+          "properties": {
+            "ok": { "type": "boolean" },
+            "errors": { "type": "array" },
+            "warnings": { "type": "array" },
+            "suppressed": { "type": "boolean" }
+          }
+        },
         "gates": {
           "type": "array",
           "items": {

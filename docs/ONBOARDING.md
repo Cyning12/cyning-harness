@@ -45,10 +45,16 @@ cd your-project
 `npx @cyning/harness verify` 在 30 执行前聚合扫描人工闸与测试声明，确保 ICVO 公理可机械检查：
 
 ```bash
-# 30 前聚合验证（gate-check + audit D5 + S5 warn + 可选 --graph）
+# 30 前聚合验证（gate-check + audit D5 + reviews + S5 warn + 可选 --graph）
 npx @cyning/harness verify --target /path/to/your-repo
 npx @cyning/harness verify --target /path/to/your-repo \
   --task docs/tasks/active/task_xxx.md
+# --task 另跑 task lint（v2.7+ · E 级仅 WARN，不挡 may_start_30）
+# 抑制 lint WARN：加 --allow-lint-fail
+
+# 只读生命周期登记（方向二 · 非引擎）
+npx @cyning/harness lifecycle show
+npx @cyning/harness lifecycle show --json
 
 # 仅人工闸
 npx @cyning/harness gate-check --target /path/to/your-repo
@@ -67,6 +73,9 @@ npx @cyning/harness sync index --target /path/to/your-repo
 | **D3** | 30 前置人闸 | 复用 `gate-check.sh`，HG-AUDIT-R1 非 approved 时 verify 非 0 |
 | **D5** | 改码任务测试声明 | `test_strategy=required` 但无测试/CI 引用时 verify 非 0 |
 | **S5** | Git 工作区干净 | dirty 时 warn（不直接 fail verify，但 apply 须 `--force`） |
+| **lint** | task 结构（仅 `--task`） | v2.7+ E 级 → `WARN: task lint`（不改 exit / `may_start_30`） |
+
+生命周期真值：[`harness/lifecycle.yaml`](../harness/lifecycle.yaml)（`lifecycle show` 只读）。
 
 Audit **不替代** 维护者最终判断；Agent 首输出仍须人工复核。
 
