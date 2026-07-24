@@ -4,6 +4,25 @@
 
 ## [Unreleased]
 
+## [2.6.0] - 2026-07-24
+
+### Added
+
+- **task lint · 思考轮结构规则组（G4）**：条件触发（行首 `### R0` 或 `##/###` 标题含「思考轮」）后检查：
+  - **E8** R0–R5 槽位标题齐全（`^### R\d` 前缀宽容）
+  - **E9** 控制表字段 `actual_last_round` / `early_stop` / `residual_risks`
+  - **E10** `early_stop=yes` 时 `early_stop_reason` 非空
+  - **W4** 无思考轮节（SPEC 承载 / bugfix 合法豁免提示）
+  - **W5** 存在 `### R6+` 但缺 `round_extension_note`
+- 槽内容 `（待填）` / `（跳过 · 见思考轮控制）` 合法；**不**查思考内容质量（20 帽职责）。
+- SPEC：`docs/spec/SPEC-task-lint-thinking-rounds_v1.md`
+
+### Notes
+
+- 背景：机械化率审计 G4（rethink 矩阵 P1 · 第三波）；与 G1 同命令、分开交付。
+- minor · 无 verify 行为变更 · `npm test` 含既有回归全绿
+- **待发布**：`@cyning/harness@2.6.0`（维护者 CLOSE 后 npm publish + tag）
+
 ## [2.5.0] - 2026-07-24
 
 ### Changed
