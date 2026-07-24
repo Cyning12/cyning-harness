@@ -79,7 +79,7 @@
 ## 给执行帽的必读列表
 
 1. 本 task  
-2. `docs/harness/prompts/10-requirements.md` · `22-task-audit.md` · `30-execute-code.md`  
+2. `docs/harness/prompts/10-task-requirements.md` · `20-task-audit.md` · `30-execute-code.md`  
 3. [`examples/demo_checkout/ACCEPTANCE.md`](./ACCEPTANCE.md)  
 4. [`docs/methodology/product/DESIGN_ONTOLOGY_v1_zh.md`](../../docs/methodology/product/DESIGN_ONTOLOGY_v1_zh.md) §4（状态机 · 可选）
 

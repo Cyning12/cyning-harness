@@ -4,6 +4,32 @@
 
 ## [Unreleased]
 
+## [2.4.0] - 2026-07-24
+
+### Changed
+
+- **帽定义对齐 V2（拆分收编）**：
+  - `10-requirements.md` → **`10-task-requirements.md`**（+ 新增 **`10-spec-requirements.md`**）
+  - `22-task-audit.md` → **`20-task-audit.md`**（+ 新增 **`20-spec-audit.md`**）
+  - 旧 2 文件**彻底删除不留别名**；包内 Starter 集 = 6 帽 + FRAGMENT/TEMPLATE。
+  - 新增帽为工作区 V2 真值的 Starter 浓缩版（各文件修订记录注明来源）。
+
+### Added
+
+- **sync obsolete 检测**：`harness-sync.sh` 对 target `docs/harness/prompts/` 中已废弃帽文件（`OBSOLETE_HATS` 清单）输出 `warn: obsolete` 提示人工删除——sync 只写不删，避免升级后新旧帽双真值。
+- 测试：`test/hat-v2-split.test.js`（帽集合断言 · 旧名活引用零残留 grep · sync obsolete fixture）。
+
+### Fixed
+
+- `harness-sync.sh` 变量后紧跟全角字符时 bash 将变量名解析为多字节序列（`set -u` 下 unbound）——`${f}` 花括号保护（本 task dogfood 发现）。
+- `test/cli.integration.test.js` 旧帽名断言同步为新名。
+
+### Notes
+
+- **升级指引**：业务仓 `upgrade` 后若出现 `warn: obsolete`，按提示人工删除旧帽文件即可（sync 不会自动删）。
+- 背景：三方对比（后端仓=V1 手工快照 · 包内=半途状态 · V2 真值仅在工作区）· task `cyning-harness-hat-v2-split-sync`。
+- minor · 无 CLI breaking · `npm test` 111 全绿
+
 ## [2.3.0] - 2026-07-24
 
 ### Added

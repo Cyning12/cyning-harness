@@ -56,7 +56,7 @@
 
 ## 4. 思考轮次（改码前 · 默认 R0 + R1–R5）
 
-> **10 帽义务**：预置 **五槽思考轮**（C1–C3 实证）；见 [`docs/harness/prompts/10-requirements.md`](../../harness/prompts/10-requirements.md) OSS 阶段 C 节。  
+> **10 帽义务**：预置 **五槽思考轮**（C1–C3 实证）；见 [`docs/harness/prompts/10-task-requirements.md`](../../harness/prompts/10-task-requirements.md) OSS 阶段 C 节。  
 > **回填**：[`docs/harness/FRAGMENT_rethink_backfill_task_v1_zh.md`](../harness/FRAGMENT_rethink_backfill_task_v1_zh.md) — Agent **必须**写回 §4，禁止仅聊天输出。
 
 ### 思考轮控制（Agent 填 · 22 审）

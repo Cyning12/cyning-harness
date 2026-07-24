@@ -58,7 +58,7 @@ test('init 空目录写入 manifest 与 profile', () => {
   assert.deepEqual(manifest.ide, ['cursor', 'agents']);
   assert.equal(manifest.version, '0.3.0');
   assert.ok(fs.existsSync(path.join(target, '.cyning-harness/profile.json')));
-  assert.ok(fs.existsSync(path.join(target, 'docs/harness/prompts/10-requirements.md')));
+  assert.ok(fs.existsSync(path.join(target, 'docs/harness/prompts/10-task-requirements.md')));
 });
 
 test('upgrade --yes 等价 upgrade.sh 并更新 manifest', () => {
@@ -120,7 +120,7 @@ test('S5 git-clean 阻止 dirty apply', () => {
   spawnSync('git', ['add', '-A'], { cwd: target });
   spawnSync('git', ['commit', '-m', 'harness init'], { cwd: target });
   fs.appendFileSync(
-    path.join(target, 'docs/harness/prompts/10-requirements.md'),
+    path.join(target, 'docs/harness/prompts/10-task-requirements.md'),
     '\n<!-- dirty -->\n',
   );
   const sync = spawnSync(
