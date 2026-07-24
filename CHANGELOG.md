@@ -4,6 +4,20 @@
 
 ## [Unreleased]
 
+## [2.7.0] - 2026-07-24
+
+### Added
+
+- **`harness/lifecycle.yaml`（方向二 · 文档先行）**：登记 task 状态 / 转移 / 守卫（`to_30` · `close`）；`task_lint` severity=`warn`。Schema：`schema/lifecycle.v1.schema.json`。
+- **`harness lifecycle show [--json]`**：只读渲染包内 yaml（**不做**转移引擎、不写盘）。
+- **`verify --task` ↔ task lint（N2）**：E 级仅 `WARN: task lint FAIL`（不改 exit / 不改 `may_start_30`）；`--allow-lint-fail` 抑制 WARN；handoff JSON 增加 `lint: { ok, errors, warnings, suppressed? }`；无 `--task` 全量模式不跑 lint。
+
+### Notes
+
+- 背景：Post-G4 方案 N1+N2 · rethink 方向二骨架；dogfood active lint FAIL 率高故本波不做 block。
+- SPEC：`docs/spec/SPEC-lifecycle-and-verify-lint_v1.md`
+- minor · `npm test` 含 lifecycle + verify-lint-warn
+
 ## [2.6.0] - 2026-07-24
 
 ### Added
