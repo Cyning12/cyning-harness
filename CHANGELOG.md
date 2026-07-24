@@ -29,6 +29,7 @@
 - **升级指引**：业务仓 `upgrade` 后若出现 `warn: obsolete`，按提示人工删除旧帽文件即可（sync 不会自动删）。
 - 背景：三方对比（后端仓=V1 手工快照 · 包内=半途状态 · V2 真值仅在工作区）· task `cyning-harness-hat-v2-split-sync`。
 - minor · 无 CLI breaking · `npm test` 111 全绿
+- **已发布**：`@cyning/harness@2.4.0`（npm `latest` · 2026-07-24）· tag `v2.4.0` 已推送
 
 ## [2.3.0] - 2026-07-24
 
