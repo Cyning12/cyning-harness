@@ -5,6 +5,9 @@ set -euo pipefail
 MODE="${1:-}"
 TARGET="${TARGET:-$(pwd)}"
 SYNC_FORCE=0
+
+# V2 改名后已废弃的帽文件（只 warn 提示人工删除 · 永不自动删业务仓文件）
+OBSOLETE_HATS="10-requirements.md 22-task-audit.md"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=lib/common.sh
 source "$SCRIPT_DIR/lib/common.sh"
@@ -241,6 +244,13 @@ for op in "${OPS[@]}"; do
       mkdir -p "$(dirname "$dst")"
       cp "$src" "$dst"
     fi
+  fi
+done
+
+# obsolete 帽文件检测（V2 拆分改名遗留 · warn only）
+for f in $OBSOLETE_HATS; do
+  if [[ -f "$TARGET/docs/harness/prompts/$f" ]]; then
+    echo "warn: obsolete 帽文件残留 docs/harness/prompts/${f}（V2 已拆分改名 · 双真值风险）· 建议人工删除: rm \"$TARGET/docs/harness/prompts/${f}\""
   fi
 done
 

@@ -17,7 +17,7 @@
 
 ## 阶段 A · 10 需求帽
 
-- [x] `@` 金样 task + `docs/harness/prompts/10-requirements.md`
+- [x] `@` 金样 task + `docs/harness/prompts/10-task-requirements.md`
 - [x] task「背景与目标」「范围」已填（金样预填可微调）
 - [x] `HG-TASK-DRAFT` → `approved`（维护者 · 2026-06-15）
 - [x] commit task 变更
@@ -26,7 +26,7 @@
 
 ## 阶段 B · 22 审核帽（R1）
 
-- [x] `@` task + `docs/harness/prompts/22-task-audit.md`
+- [x] `@` task + `docs/harness/prompts/20-task-audit.md`
 - [x] 产出 `docs/harness/reviews/task_demo_p0_golden_audit_R1_20260615.md`
 - [x] 22 **未** 附 30 Prompt（签前 · D2）
 - [x] `HG-AUDIT-R1` → `approved`（维护者 · 2026-06-15）
