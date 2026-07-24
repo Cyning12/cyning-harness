@@ -4,6 +4,24 @@
 
 ## [Unreleased]
 
+## [2.3.0] - 2026-07-24
+
+### Added
+
+- **`harness task lint`**：task md 结构闸（G1）+ 文本规则包（G3）。E 级（exit 2）：E1 元信息/task_slug · E2 状态行 · E3 验收标准含勾选项 · E4 失败路径节 · E5 自检结论节 · E6 绝对本机路径（带行号）· E7 slug 一致性；W 级（仅 warn）：W1 状态词表外 token · W2 缺人工闸节 · W3 自检结论占位。`--json` 统一契约 `{ok, errors[], warnings[], file, slug}`（errors 元素 `{rule, message, line?}`）。
+- 独立命令 · 不接入 `verify`（不误伤存量在途 task）；10 帽交接物新增「产出 task 须 task lint PASS」。
+
+### Changed
+
+- `lib/task-meta.js` 上提共享规则（`STATUS_RE` / `PLACEHOLDER_RE` / `UNCHECKED_RE` / `CHECKBOX_RE` / 状态词表），`task-close.js` 改调共享层（行为不变）。
+- **`extractSection` 起始标记锚定行首**：修复表格/正文中「\`## 验收标准\`」式文本提及被误判为节（dogfood 自身 task 时发现；close 的检查 2/3 同享更稳）。
+
+### Notes
+
+- 背景：机械化率审计 `docs/rethink/2026-07-mechanization-rate/`（缺口 G1+G3 · 46% 规范零机械）。
+- dogfood：工作区 17 个 active task 全量 lint，15 个存在真实结构缺口（E5×13 · E4×9 · E1×8 · E6×6 · E3×6 · E7×3 · E2×3）——矩阵预言被数据证实。
+- minor · 无 CLI breaking · `npm test` 108 全绿 · SPEC `docs/spec/SPEC-task-lint-structure-gate_v1.md`
+
 ## [2.2.1] - 2026-07-22
 
 ### Fixed
