@@ -21,7 +21,7 @@
 
 - 背景：机械化率审计 G4（rethink 矩阵 P1 · 第三波）；与 G1 同命令、分开交付。
 - minor · 无 verify 行为变更 · `npm test` 含既有回归全绿
-- **待发布**：`@cyning/harness@2.6.0`（维护者 CLOSE 后 npm publish + tag）
+- **已发布**：`@cyning/harness@2.6.0`（npm `latest` · 2026-07-24）· tag `v2.6.0` 已推送
 
 ## [2.5.0] - 2026-07-24
 
