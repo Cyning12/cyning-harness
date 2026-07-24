@@ -40,12 +40,14 @@
 - 10-task 草稿 **须预置 R0 + R1–R5** 五槽 + **思考轮控制** 表（见 `wizard/templates/TASK_TEMPLATE_upstream_pr_v1.md`）。
 - **可提前停 / 可增 R6+**；须填 reason · residual_risks（无则 `none`）。
 - **20-task-audit 审思考是否充分**；不通过 → **退回 10-task** 补轮后再审 R+1。
+- **v2.6+ 机械检查结构**（条件触发）：`task lint` 在存在 `### R0` 或思考轮标题时查 E8–E10（槽位/控制表/`early_stop` 逻辑）；无节仅 W4（SPEC 承载 / bugfix 合法）；不查内容质量。
 
 ## 修订记录
 
 | 日期 | 摘要 |
 |------|------|
 | 2026-07-24 | V2 拆分收编：自 `10-requirements.md` 改名为 `10-task-requirements.md`（来源：工作区 `10-task-requirements.md` · 2026-06-12 v2） |
+| 2026-07-24 | G4：思考轮摘要节补 v2.6+ `task lint` 条件触发结构检查 |
 
 ## 给 Cursor
 
