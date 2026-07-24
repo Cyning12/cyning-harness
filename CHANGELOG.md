@@ -18,6 +18,7 @@
 - 背景：机械化率审计 G2（rethink 矩阵 P0 最后一块）；22/20 帽自此脱离「全帽零机械」。
 - dogfood：工作区 approved 任务全过（含版本后缀变体 ops_clarify · 恰好是 R1 审查抓出的案例）。
 - minor · verify 行为变更（本版核心 · 见上）· `npm test` 118 全绿 · SPEC `docs/spec/SPEC-reviews-retention-gate_v1.md`
+- **已发布**：`@cyning/harness@2.5.0`（npm `latest` · 2026-07-24）· tag `v2.5.0` 已推送
 
 ## [2.4.0] - 2026-07-24
 
