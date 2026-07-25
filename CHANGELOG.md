@@ -4,6 +4,23 @@
 
 ## [Unreleased]
 
+## [2.10.0] - 2026-07-25
+
+### Added
+
+- **`lifecycle dry-run`（方向二 · 转移引擎最小骨架 · Post-G4 Epic T2）**：消费 `harness/lifecycle.yaml` 做资格判定（结构 + 薄守卫 adapter）。
+  - CLI：`lifecycle dry-run --transition <id> --from <state> [--task PATH] [--json] [--allow-no-review]…`
+  - 本波接线（`--task` + `to_30`）：`HG-AUDIT-R1` · `reviews_retention`；其余守卫显式 `unevaluated`
+  - exit：`0` 无 block fail（允许 unevaluated）· `2` 结构非法或 block fail · `1` 用法/yaml
+  - **旁路报告**：不替代 `verify` / gate-check 作为 30 硬闸；**无** `--apply` / runner / G7
+- 语义护栏：yaml 头与 schema 注明「登记真值 · 由 dry-run 消费 · yaml ≠ 引擎」
+
+### Notes
+
+- SPEC：`docs/spec/SPEC-lifecycle-engine-min_v1.md`
+- Epic 统一发版窗；与 T3 discipline-coverage 同波复检后由维护者 publish
+- minor · `lifecycle show` 行为不变
+
 ## [2.9.0] - 2026-07-25
 
 ### Changed

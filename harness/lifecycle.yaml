@@ -1,7 +1,8 @@
-# Task lifecycle · 最小真值（方向二文档先行 · v1）
+# Task lifecycle · 最小真值（方向二 · v1）
 #
-# 只读登记：状态 / 转移 / 守卫。不由引擎执行。
-# CLI：npx @cyning/harness lifecycle show [--json]
+# 登记真值：状态 / 转移 / 守卫。yaml 本身不是引擎。
+# 由 `lifecycle dry-run` 引擎消费（v2.10+ · 资格判定旁路报告 · 不写盘）。
+# 只读展示：npx @cyning/harness lifecycle show [--json]
 # Schema：schema/lifecycle.v1.schema.json
 
 version: "1"

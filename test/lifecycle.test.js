@@ -6,6 +6,7 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 import {
+  dryRunTransition,
   formatLifecycleShow,
   loadLifecycle,
   validateLifecycle,
@@ -86,4 +87,154 @@ test('formatLifecycleShow 非空', () => {
   const { data } = loadLifecycle({ harnessRoot: repoRoot });
   const text = formatLifecycleShow(data);
   assert.match(text, /lifecycle v1/);
+});
+
+function makeDryRunFixture({ audit = 'approved', withReview = true } = {}) {
+  const target = fs.mkdtempSync(path.join(os.tmpdir(), 'cyning-harness-dryrun-'));
+  const activeDir = path.join(target, 'docs/tasks/active');
+  fs.mkdirSync(activeDir, { recursive: true });
+  const taskName = 'task_demo.md';
+  fs.writeFileSync(
+    path.join(activeDir, taskName),
+    `# Task
+
+### 人工闸
+
+| human_gate_id | status | blocks | 说明 |
+| --- | --- | --- | --- |
+| HG-TASK-DRAFT | approved | 22, 30 | ok |
+| HG-AUDIT-R1 | ${audit} | 30 | gate |
+`,
+  );
+  if (withReview) {
+    const reviews = path.join(target, 'docs/harness/reviews');
+    fs.mkdirSync(reviews, { recursive: true });
+    fs.writeFileSync(path.join(reviews, 'task_demo_audit_R1_20260725.md'), '# r\n');
+  }
+  return {
+    target,
+    taskRel: path.join('docs/tasks/active', taskName),
+    taskAbs: path.join(activeDir, taskName),
+  };
+}
+
+test('dryRunTransition：未知 transition → structure_ok false · exitCode 2', () => {
+  const r = dryRunTransition({
+    transitionId: 'nope',
+    fromState: 'draft',
+    harnessRoot: repoRoot,
+  });
+  assert.equal(r.structure_ok, false);
+  assert.equal(r.exitCode, 2);
+  assert.equal(r.blocked, true);
+});
+
+test('dryRunTransition：from 非法 → structure_ok false · exitCode 2', () => {
+  const r = dryRunTransition({
+    transitionId: 'to_30',
+    fromState: 'archived',
+    harnessRoot: repoRoot,
+  });
+  assert.equal(r.structure_ok, false);
+  assert.equal(r.exitCode, 2);
+});
+
+test('dryRunTransition：无 --task · 结构 ok · unevaluated_count > 0 · exit 0', () => {
+  const r = dryRunTransition({
+    transitionId: 'to_30',
+    fromState: 'draft',
+    harnessRoot: repoRoot,
+  });
+  assert.equal(r.structure_ok, true);
+  assert.ok(r.unevaluated_count > 0);
+  assert.equal(r.blocked, false);
+  assert.equal(r.exitCode, 0);
+  assert.equal(r.engine, 'lifecycle-dry-run');
+});
+
+test('dryRunTransition：to_30 + fixture · HG-AUDIT-R1/reviews 非 unevaluated', () => {
+  const { target, taskAbs } = makeDryRunFixture();
+  const r = dryRunTransition({
+    transitionId: 'to_30',
+    fromState: 'draft',
+    taskPath: taskAbs,
+    harnessRoot: repoRoot,
+    cwd: target,
+  });
+  assert.equal(r.structure_ok, true);
+  const audit = r.guards.find((g) => g.id === 'HG-AUDIT-R1');
+  const rev = r.guards.find((g) => g.id === 'reviews_retention');
+  assert.equal(audit.status, 'pass');
+  assert.equal(rev.status, 'pass');
+  assert.equal(r.blocked, false);
+  assert.equal(r.exitCode, 0);
+  assert.ok(r.guards.some((g) => g.status === 'unevaluated'));
+});
+
+test('dryRunTransition：HG-AUDIT-R1 pending → blocked · exitCode 2', () => {
+  const { taskAbs, target } = makeDryRunFixture({ audit: 'pending' });
+  const r = dryRunTransition({
+    transitionId: 'to_30',
+    fromState: 'draft',
+    taskPath: taskAbs,
+    harnessRoot: repoRoot,
+    cwd: target,
+  });
+  assert.equal(r.blocked, true);
+  assert.equal(r.exitCode, 2);
+  assert.equal(r.guards.find((g) => g.id === 'HG-AUDIT-R1').status, 'fail');
+});
+
+test('dryRunTransition：缺审查文 → reviews fail；--allow-no-review → warn', () => {
+  const { taskAbs, target } = makeDryRunFixture({ withReview: false });
+  const fail = dryRunTransition({
+    transitionId: 'to_30',
+    fromState: 'draft',
+    taskPath: taskAbs,
+    harnessRoot: repoRoot,
+    cwd: target,
+  });
+  assert.equal(fail.guards.find((g) => g.id === 'reviews_retention').status, 'fail');
+  assert.equal(fail.blocked, true);
+
+  const waived = dryRunTransition({
+    transitionId: 'to_30',
+    fromState: 'draft',
+    taskPath: taskAbs,
+    harnessRoot: repoRoot,
+    cwd: target,
+    flags: { allowNoReview: true },
+  });
+  assert.equal(waived.guards.find((g) => g.id === 'reviews_retention').status, 'warn');
+  assert.equal(waived.blocked, false);
+  assert.equal(waived.exitCode, 0);
+});
+
+test('lifecycle dry-run CLI --json · 非法 transition · exit 2', () => {
+  const r = runNode([
+    'lifecycle',
+    'dry-run',
+    '--transition',
+    'nope',
+    '--from',
+    'draft',
+    '--json',
+  ]);
+  assert.equal(r.status, 2, r.stderr || r.stdout);
+  const payload = JSON.parse(r.stdout.trim());
+  assert.equal(payload.structure_ok, false);
+});
+
+test('lifecycle dry-run CLI：无 task · exit 0 · unevaluated', () => {
+  const r = runNode([
+    'lifecycle',
+    'dry-run',
+    '--transition',
+    'to_30',
+    '--from',
+    'draft',
+  ]);
+  assert.equal(r.status, 0, r.stderr || r.stdout);
+  assert.match(r.stdout, /unevaluated/);
+  assert.match(r.stdout, /WARN/);
 });

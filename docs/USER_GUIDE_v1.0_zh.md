@@ -130,8 +130,11 @@ npx @cyning/harness verify --target . \
   [--json] [--agent-hint] \
   [--workspace-root /path/to/Projects]
 
-# 只读生命周期登记（方向二 · harness/lifecycle.yaml · 非引擎）
+# 只读生命周期登记（方向二 · harness/lifecycle.yaml · 登记真值）
 npx @cyning/harness lifecycle show [--json]
+# 转移资格 dry-run（v2.10+ · 引擎消费 yaml · 旁路报告 · 非 runner / 非 G7）
+npx @cyning/harness lifecycle dry-run --transition to_30 --from draft \
+  [--task docs/tasks/active/task_xxx.md] [--json] [--allow-no-review]
 
 # 仅人工闸
 npx @cyning/harness gate-check --target . --task docs/tasks/active/task_xxx.md
@@ -184,7 +187,8 @@ Schema：[`schema/verify_result.v1.schema.json`](../schema/verify_result.v1.sche
 | `npx @cyning/harness upgrade` | 同步产品包更新（可加 `--gate-check` 先 audit） |
 | `npx @cyning/harness check` | 检查是否有新版本 |
 | `npx @cyning/harness verify` | 全量：双路径 + reviews（v2.9+）；`--task`：30 前聚合；`--spec`：SPEC→00（v2.8+ · 互斥） |
-| `npx @cyning/harness lifecycle show` | 只读展示 `harness/lifecycle.yaml`（状态/转移/守卫 · v2.7+ · 非引擎） |
+| `npx @cyning/harness lifecycle show` | 只读展示 `harness/lifecycle.yaml`（登记 · v2.7+） |
+| `npx @cyning/harness lifecycle dry-run` | 转移资格判定（引擎消费 yaml · v2.10+ · 旁路 · 非 G7） |
 | `npx @cyning/harness gate-check` | 仅人工闸（`--graph` / `--json`） |
 | `npx @cyning/harness audit` | ICVO 机械审计（D3/D5/S5） |
 | `npx @cyning/harness sync index` | 生成 `.cyning-harness/invoke_index.json` |

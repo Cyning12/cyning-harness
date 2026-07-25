@@ -59,9 +59,14 @@ npx @cyning/harness verify --spec docs/spec/SPEC-xxx_v1.md \
   --workspace-root /path/to/Projects
 # 豁免：--allow-no-spec-review · 或 SPEC track=bugfix / skip_spec_audit
 
-# 只读生命周期登记（方向二 · 非引擎）
+# 只读生命周期登记（方向二 · harness/lifecycle.yaml · 非引擎）
 npx @cyning/harness lifecycle show
 npx @cyning/harness lifecycle show --json
+# 转移资格 dry-run（v2.10+ · 旁路报告 · 不替代 verify）
+npx @cyning/harness lifecycle dry-run --transition to_30 --from draft \
+  --task docs/tasks/active/task_xxx.md
+# 无 --task：仅结构 + 守卫清单 unevaluated
+npx @cyning/harness lifecycle dry-run --transition to_30 --from draft
 
 # 仅人工闸
 npx @cyning/harness gate-check --target /path/to/your-repo
