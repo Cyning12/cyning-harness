@@ -14,11 +14,12 @@
   - exit：`0` 无 block fail（允许 unevaluated）· `2` 结构非法或 block fail · `1` 用法/yaml
   - **旁路报告**：不替代 `verify` / gate-check 作为 30 硬闸；**无** `--apply` / runner / G7
 - 语义护栏：yaml 头与 schema 注明「登记真值 · 由 dry-run 消费 · yaml ≠ 引擎」
+- **`harness/discipline-coverage.yaml`（方向一 · 机械化率资产 · Post-G4 Epic T3）**：Starter 子集 statements + gaps；schema `discipline-coverage.v1`；`npm test` 锁形状。**无** `audit --discipline` UI。种子自 rethink 02/03 转录并刷新 G1–G4/N 闸状态；03 md 改为历史叙事，SoT=本 YAML。
 
 ### Notes
 
-- SPEC：`docs/spec/SPEC-lifecycle-engine-min_v1.md`
-- Epic 统一发版窗；与 T3 discipline-coverage 同波复检后由维护者 publish
+- SPEC：`docs/spec/SPEC-lifecycle-engine-min_v1.md` · `docs/spec/SPEC-discipline-coverage-yaml_v1.md`
+- Epic 统一发版窗 · 维护者 publish 前复检
 - minor · `lifecycle show` 行为不变
 
 ## [2.9.0] - 2026-07-25

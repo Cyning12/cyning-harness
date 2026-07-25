@@ -52,9 +52,10 @@ description: 结论与立项建议 · 缺口到 SPEC/task 的转化路径 + 与�
 
 ## 4. 机械化率矩阵的资产化
 
-- 把 03 的矩阵落成 `discipline-coverage.yaml`（语句 id / 出处 / 状态 / 机制 / 缺口 / 备注），随版本维护；
-- 每个新闸落地 = 矩阵里一行 ❌→✅——这就是方向一承诺的「改进路线自动生成」的实体；
-- 远期可给 `harness audit` 加 `--discipline` 视图直接渲染该 YAML（机制质量审计也挂这里）。
+- ✅ **已落地（v2.10.0 · Epic T3）**：[`harness/discipline-coverage.yaml`](../../harness/discipline-coverage.yaml) + [`schema/discipline-coverage.v1.schema.json`](../../schema/discipline-coverage.v1.schema.json) · SPEC [`SPEC-discipline-coverage-yaml_v1.md`](../spec/SPEC-discipline-coverage-yaml_v1.md)
+- 每个新闸落地 = 更新 YAML 对应 `statements[].status` / `gaps[]` / `as_of_package_version`
+- 远期可给 `harness audit` 加 `--discipline` 视图（**本波不做** UI）
+- 03 md 表保留为历史叙事；SoT = YAML
 
 ## 5. 不做什么（本轮明确排除）
 

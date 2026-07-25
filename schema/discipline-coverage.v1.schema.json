@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cyning.dev/schemas/cyning-harness/discipline-coverage.v1.json",
+  "title": "cyning-harness Discipline Coverage (mechanization matrix)",
+  "description": "Starter 子集机械化率资产 · 随包版本维护 · 非 audit UI（v2.10+）",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "as_of_package_version", "scope", "statements"],
+  "properties": {
+    "version": { "type": "string", "minLength": 1 },
+    "as_of_package_version": { "type": "string", "minLength": 1 },
+    "scope": { "type": "string", "minLength": 1 },
+    "source_audit": { "type": "string" },
+    "statements": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "source", "summary", "status"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "source": { "type": "string", "minLength": 1 },
+          "summary": { "type": "string", "minLength": 1 },
+          "status": {
+            "type": "string",
+            "enum": ["mechanical", "partial", "prompt-only"]
+          },
+          "mechanism": { "type": ["string", "null"] },
+          "gap": { "type": ["string", "null"] },
+          "notes": { "type": ["string", "null"] },
+          "mechanism_quality": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "title", "status"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "title": { "type": "string", "minLength": 1 },
+          "status": {
+            "type": "string",
+            "enum": ["open", "closed", "deferred"]
+          },
+          "closed_in": { "type": ["string", "null"] },
+          "note": { "type": ["string", "null"] }
+        }
+      }
+    }
+  }
+}

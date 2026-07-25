@@ -89,7 +89,9 @@ npx @cyning/harness sync index --target /path/to/your-repo
 | **S5** | Git 工作区干净 | dirty 时 warn（不直接 fail verify，但 apply 须 `--force`） |
 | **lint** | task 结构（仅 `--task`） | v2.7+ E 级 → `WARN: task lint`（不改 exit / `may_start_30`） |
 
-生命周期真值：[`harness/lifecycle.yaml`](../harness/lifecycle.yaml)（`lifecycle show` 只读）。
+生命周期真值：[`harness/lifecycle.yaml`](../harness/lifecycle.yaml)（`lifecycle show` 只读 · `lifecycle dry-run` 资格判定 v2.10+）。
+
+机械化率覆盖资产（Starter）：[`harness/discipline-coverage.yaml`](../harness/discipline-coverage.yaml)（SoT · 随版本改 statements/gaps；**无** audit UI）。
 
 Audit **不替代** 维护者最终判断；Agent 首输出仍须人工复核。
 

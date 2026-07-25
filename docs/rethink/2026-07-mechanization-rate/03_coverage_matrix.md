@@ -57,5 +57,7 @@ description: 机械化率统计矩阵 + 缺口聚类 + 候选闸优先级排序 
 
 ## 5. 数字的诚实边界
 
-- 26 条是**人工盘点**（2026-07-24），分类判断含主观成分（尤其 🟡/❌ 边界）；矩阵本身应落盘为 YAML 成为可维护资产，后续随版本更新（→ 04 建议）；
-- 「mechanical」只代表**存在**机制，不代表机制**有效**（如 D5 只探测测试文件存在而非真失败驱动）——下一层是机制质量审计，本轮不做。
+- **运行时真值（SoT）**：[`harness/discipline-coverage.yaml`](../../harness/discipline-coverage.yaml)（schema：[`schema/discipline-coverage.v1.schema.json`](../../schema/discipline-coverage.v1.schema.json) · 随 `@cyning/harness` 版本维护 · v2.10+）
+- 下文 26 条统计表是 **2026-07-24 人工盘点快照**（历史/叙事）；分类含主观成分。**勿再把本 md 表当唯一真值**——查覆盖请读 YAML（`as_of_package_version`）
+- 「mechanical」只代表**存在**机制，不代表机制**有效**（如 D5 只探测测试文件存在）——预留 `mechanism_quality`；本轮不做质量审计
+- SPEC：[`SPEC-discipline-coverage-yaml_v1.md`](../spec/SPEC-discipline-coverage-yaml_v1.md)
