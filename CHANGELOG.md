@@ -18,7 +18,7 @@
 - 与 `--task` 互斥；**不**改 task 侧 verify/close。
 - SPEC：`docs/spec/SPEC-spec-reviews-retention-gate_v1.md`
 - minor · 行为新增（新模式）
-- **已发布**：`@cyning/harness@2.8.0`（npm `latest` · 2026-07-25）· tag `v2.8.0`
+- **已发布**：`@cyning/harness@2.8.0`（npm `latest` · 2026-07-25）· tag `v2.8.0` 已推送
 
 ## [2.7.0] - 2026-07-24
 
