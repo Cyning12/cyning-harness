@@ -19,6 +19,7 @@
 - SPEC：`docs/spec/SPEC-lifecycle-guard-expand_v1.md` · `docs/spec/SPEC-discipline-show_v1.md`
 - minor · `lifecycle show` / verify 硬闸语义不变
 - `discipline-coverage.yaml` `as_of_package_version` → **2.11.0**
+- **已发布**：`@cyning/harness@2.11.0`（npm `latest` · 2026-07-25）· tag `v2.11.0` 已推送
 
 ## [2.10.0] - 2026-07-25
 
