@@ -115,6 +115,11 @@ npx @cyning/harness@1.0.1 init --preset harness-only --ide cursor,agents --yes
 npx @cyning/harness verify --target . --task docs/tasks/active/task_xxx.md
 # lint FAIL 仅 WARN（v2.7+ · 不挡 30）；抑制：--allow-lint-fail
 
+# SPEC→00：审查文存在性（v2.8+ · 与 --task 互斥）
+npx @cyning/harness verify --spec docs/spec/SPEC-xxx_v1.md \
+  --workspace-root /path/to/Projects
+# 豁免：--allow-no-spec-review
+
 # Agent handoff（v2.0.2+）：JSON 路由 + 下一帽提示
 npx @cyning/harness verify --target . \
   --task docs/tasks/active/task_xxx.md \
@@ -172,7 +177,7 @@ Schema：[`schema/verify_result.v1.schema.json`](../schema/verify_result.v1.sche
 | `npx @cyning/harness init` | 首次安装模板与 manifest（可选 `--with-scripts`） |
 | `npx @cyning/harness upgrade` | 同步产品包更新（可加 `--gate-check` 先 audit） |
 | `npx @cyning/harness check` | 检查是否有新版本 |
-| `npx @cyning/harness verify` | 30 前聚合：gate-check + audit D5 + reviews +（`--task`）lint WARN + S5 · 可选 `--graph` / `--json` / `--allow-lint-fail` |
+| `npx @cyning/harness verify` | `--task`：30 前聚合；`--spec`：SPEC→00 审查文闸（v2.8+ · 互斥）· `--allow-no-spec-review` |
 | `npx @cyning/harness lifecycle show` | 只读展示 `harness/lifecycle.yaml`（状态/转移/守卫 · v2.7+ · 非引擎） |
 | `npx @cyning/harness gate-check` | 仅人工闸（`--graph` / `--json`） |
 | `npx @cyning/harness audit` | ICVO 机械审计（D3/D5/S5） |
