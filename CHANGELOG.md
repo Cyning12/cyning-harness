@@ -4,6 +4,22 @@
 
 ## [Unreleased]
 
+## [2.8.0] - 2026-07-25
+
+### Added
+
+- **SPEC 审查文留档闸（N3 · G2 姊妹）**：`verify --spec FILE` 检查 `docs/harness/reviews/` 下 SPEC 审查文存在性（推荐 `spec_<slug>_audit_R*` · 兼容 `*_ACCEPT_*` / `task_*_spec_ACCEPT_*`）。缺失 → `VERIFY: BLOCKED · missing SPEC R<n> review` exit 2。
+- 豁免：`--allow-no-spec-review`；元信息 `track: bugfix` / `skip_spec_audit: true`。
+- `findSpecReview`（支持 `--workspace-root` 分仓）；handoff：`may_start_00` · `spec_review_found` · `spec_review_latest`。
+- `lifecycle.yaml` 转移 `to_00` + guard `spec_reviews_retention`（只登记）。
+
+### Notes
+
+- 与 `--task` 互斥；**不**改 task 侧 verify/close。
+- SPEC：`docs/spec/SPEC-spec-reviews-retention-gate_v1.md`
+- minor · 行为新增（新模式）
+- **已发布**：`@cyning/harness@2.8.0`（npm `latest` · 2026-07-25）· tag `v2.8.0`
+
 ## [2.7.0] - 2026-07-24
 
 ### Added

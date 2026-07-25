@@ -52,6 +52,11 @@ npx @cyning/harness verify --target /path/to/your-repo \
 # --task 另跑 task lint（v2.7+ · E 级仅 WARN，不挡 may_start_30）
 # 抑制 lint WARN：加 --allow-lint-fail
 
+# SPEC→00 前：审查文存在性（v2.8+ · 与 --task 互斥）
+npx @cyning/harness verify --spec docs/spec/SPEC-xxx_v1.md \
+  --workspace-root /path/to/Projects
+# 豁免：--allow-no-spec-review · 或 SPEC track=bugfix / skip_spec_audit
+
 # 只读生命周期登记（方向二 · 非引擎）
 npx @cyning/harness lifecycle show
 npx @cyning/harness lifecycle show --json

@@ -8,7 +8,9 @@ version: "1"
 
 states:
   - id: draft
-    note: "含 pending / active 等词表别名 · 见 KNOWN_STATUS_TOKENS"
+    note: "含 pending / active 等词表别名 · 见 KNOWN_STATUS_TOKENS；SPEC 侧亦用 draft"
+  - id: signed
+    note: "SPEC 人签 HG-SPEC-SIGNOFF 后 · 可起草 task"
   - id: in_progress
   - id: done
     note: "close 可接受 completed 别名"
@@ -16,6 +18,18 @@ states:
     note: "task close 归档后 · 物理上在 done/ 目录"
 
 transitions:
+  - id: to_00
+    from: ["draft", "signed"]
+    to: signed
+    hat: "00"
+    description: "SPEC 签收后起草 task（verify --spec 聚合 · v2.8+）"
+    guards:
+      - id: spec_reviews_retention
+        command_or_check: "verify --spec · findSpecReview（v2.8+）"
+        severity: block
+        allow_flag: "--allow-no-spec-review"
+        note: "bugfix / skip_spec_audit 元信息豁免 · 不挂 verify --task"
+
   - id: to_30
     from: ["draft", "in_progress"]
     to: in_progress
