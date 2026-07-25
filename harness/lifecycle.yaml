@@ -34,7 +34,7 @@ transitions:
     from: ["draft", "in_progress"]
     to: in_progress
     hat: "30"
-    description: "执行帽开工（verify --task 聚合）"
+    description: "执行帽开工（verify --task 与全量模式聚合 · v2.9+）"
     guards:
       - id: HG-AUDIT-R1
         command_or_check: "gate-check · human_gate HG-AUDIT-R1=approved"
@@ -46,9 +46,10 @@ transitions:
         command_or_check: "verify/audit · test_strategy vs 测试文件存在"
         severity: block
       - id: reviews_retention
-        command_or_check: "verify · findReview R<n> 存在性（v2.5+）"
+        command_or_check: "verify --task 与全量 · findReview R<n> 存在性（v2.5+ · 全量 v2.9+）"
         severity: block
         allow_flag: "--allow-no-review"
+        note: "全量模式扫描双路径 active；不跑 lint / D5"
       - id: task_lint
         command_or_check: "verify --task · lintTaskFile（v2.7+）"
         severity: warn

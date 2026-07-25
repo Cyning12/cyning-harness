@@ -174,6 +174,29 @@ if [[ "$JSON_MODE" != "1" ]]; then
   echo ""
 fi
 
+# N4 · v2.9+：双路径发现（Starter ∪ Extended）；同 basename 优先 Starter
+# 输出绝对路径列表到 TASK_LIST（bash 3.2 兼容 · 无关联数组）
+collect_active_tasks() {
+  TASK_LIST=()
+  local dir tf base existing already
+  for dir in "$TARGET/docs/tasks/active" "$TARGET/docs/harness/tasks/active"; do
+    [[ -d "$dir" ]] || continue
+    for tf in "$dir"/task_*.md; do
+      [[ -f "$tf" ]] || continue
+      base="$(basename "$tf")"
+      already=0
+      for existing in "${TASK_LIST[@]+"${TASK_LIST[@]}"}"; do
+        if [[ "$(basename "$existing")" == "$base" ]]; then
+          already=1
+          break
+        fi
+      done
+      [[ "$already" == "1" ]] && continue
+      TASK_LIST+=("$tf")
+    done
+  done
+}
+
 BLOCKED=0
 
 if [[ "$GRAPH_MODE" == "1" ]]; then
@@ -191,26 +214,16 @@ if [[ "$GRAPH_MODE" == "1" ]]; then
     fi
     graph_for_task "$TASK_FILE"
   else
-    ACTIVE_DIR="$TARGET/docs/tasks/active"
-    if [[ ! -d "$ACTIVE_DIR" ]]; then
+    collect_active_tasks
+    if [[ ${#TASK_LIST[@]} -eq 0 ]]; then
       if [[ "$JSON_MODE" == "1" ]]; then
         printf ']\n'
       else
-        echo "⚠️  无 $ACTIVE_DIR" >&2
+        echo "无 active task_*.md（docs/tasks/active ∪ docs/harness/tasks/active）"
       fi
       exit 0
     fi
-    TASK_FILES=("$ACTIVE_DIR"/task_*.md)
-    if [[ ! -e "${TASK_FILES[0]}" ]]; then
-      if [[ "$JSON_MODE" == "1" ]]; then
-        printf ']\n'
-      else
-        echo "无 active task_*.md"
-      fi
-      exit 0
-    fi
-    for tf in "$ACTIVE_DIR"/task_*.md; do
-      [[ -f "$tf" ]] || continue
+    for tf in "${TASK_LIST[@]}"; do
       if [[ "$JSON_MODE" == "1" ]]; then
         [[ "$local_first" == "1" ]] || printf ','
         local_first=0
@@ -234,15 +247,16 @@ if [[ -n "$TASK_FILE" ]]; then
   fi
   check_one_task "$TASK_FILE" || BLOCKED=1
 else
-  ACTIVE_DIR="$TARGET/docs/tasks/active"
-  [[ -d "$ACTIVE_DIR" ]] || { echo "无 $ACTIVE_DIR" >&2; exit 1; }
-  TASK_FILES=("$ACTIVE_DIR"/task_*.md)
-  if [[ ! -e "${TASK_FILES[0]}" ]]; then
+  collect_active_tasks
+  if [[ ${#TASK_LIST[@]} -eq 0 ]]; then
+    if [[ ! -d "$TARGET/docs/tasks/active" && ! -d "$TARGET/docs/harness/tasks/active" ]]; then
+      echo "无 docs/tasks/active 且无 docs/harness/tasks/active" >&2
+      exit 1
+    fi
     echo "无 active task_*.md"
     exit 0
   fi
-  for tf in "$ACTIVE_DIR"/task_*.md; do
-    [[ -f "$tf" ]] || continue
+  for tf in "${TASK_LIST[@]}"; do
     check_one_task "$tf" || BLOCKED=1
   done
 fi

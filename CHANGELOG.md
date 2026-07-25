@@ -4,6 +4,21 @@
 
 ## [Unreleased]
 
+## [2.9.0] - 2026-07-25
+
+### Changed
+
+- **⚠ 行为变更 · 裸 `verify`（无 `--task`/`--spec`）纳入 reviews 留档闸（N4 · G2 residual）**：gate-check 通过后对每个 active 跑 `findReview`；任一缺失 → `VERIFY: BLOCKED · missing R<n> review（n/m tasks · basename…）` exit 2。豁免：`--allow-no-review`（WARN 放行）。
+- **active 发现双路径**：`listActiveTasks` 与 `gate-check.sh` 同步扫描 `docs/tasks/active` ∪ `docs/harness/tasks/active`（同 basename 优先 Starter）。
+- 全量 `--json`：每 task 的 `may_start_30` / `verify_ok` 纳入 `review_found`（与 `--task` 同构）。
+- `lifecycle.yaml` `to_30` / `reviews_retention`：描述覆盖「`--task` 与全量」。
+
+### Notes
+
+- 全量模式仍**不**跑 task lint / audit D5（维持 N2）。
+- SPEC：`docs/spec/SPEC-verify-full-reviews-gate_v1.md`
+- minor · 行为更严 · 存量「闸表可 30 但无审查文」将被挡（可补审或 `--allow-no-review`）
+
 ## [2.8.0] - 2026-07-25
 
 ### Added

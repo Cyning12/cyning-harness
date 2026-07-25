@@ -45,11 +45,13 @@ cd your-project
 `npx @cyning/harness verify` 在 30 执行前聚合扫描人工闸与测试声明，确保 ICVO 公理可机械检查：
 
 ```bash
-# 30 前聚合验证（gate-check + audit D5 + reviews + S5 warn + 可选 --graph）
+# 30 前聚合验证（gate-check + reviews + S5 warn + 可选 --graph）
+# 无 --task：双路径 active（docs/tasks/active ∪ docs/harness/tasks/active）+ 全量 reviews（v2.9+）
 npx @cyning/harness verify --target /path/to/your-repo
+# 缺审查文豁免：--allow-no-review
 npx @cyning/harness verify --target /path/to/your-repo \
   --task docs/tasks/active/task_xxx.md
-# --task 另跑 task lint（v2.7+ · E 级仅 WARN，不挡 may_start_30）
+# --task 另跑 audit D5 + task lint（v2.7+ · E 级仅 WARN，不挡 may_start_30）
 # 抑制 lint WARN：加 --allow-lint-fail
 
 # SPEC→00 前：审查文存在性（v2.8+ · 与 --task 互斥）
@@ -76,7 +78,9 @@ npx @cyning/harness sync index --target /path/to/your-repo
 | 公理 | 检查项 | 行为 |
 |------|--------|------|
 | **D3** | 30 前置人闸 | 复用 `gate-check.sh`，HG-AUDIT-R1 非 approved 时 verify 非 0 |
-| **D5** | 改码任务测试声明 | `test_strategy=required` 但无测试/CI 引用时 verify 非 0 |
+| **D5** | 改码任务测试声明 | 仅 `--task`：`test_strategy=required` 但无测试/CI 引用时 verify 非 0 |
+| **reviews** | R&lt;n&gt; 审查文存在 | `--task` 与全量（v2.9+）· 缺文 BLOCKED · `--allow-no-review` |
+| **active** | 任务发现 | 双路径 `docs/tasks/active` ∪ `docs/harness/tasks/active`（v2.9+） |
 | **S5** | Git 工作区干净 | dirty 时 warn（不直接 fail verify，但 apply 须 `--force`） |
 | **lint** | task 结构（仅 `--task`） | v2.7+ E 级 → `WARN: task lint`（不改 exit / `may_start_30`） |
 
