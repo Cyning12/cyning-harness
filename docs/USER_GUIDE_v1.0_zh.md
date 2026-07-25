@@ -185,7 +185,7 @@ Schema：[`schema/verify_result.v1.schema.json`](../schema/verify_result.v1.sche
 | 命令 | 用途 |
 | --- | --- |
 | `npx @cyning/harness init` | 首次安装模板与 manifest（可选 `--with-scripts`） |
-| `npx @cyning/harness upgrade` | 同步产品包更新（可加 `--gate-check` 先 audit） |
+| `npx @cyning/harness upgrade` | 同步产品包更新（可加 `--gate-check`）；v2.11.1+：`local.json` 在 apply 后写入；manifest 重写前 WARN 非标准字段（2.3+ 仅五字段） |
 | `npx @cyning/harness check` | 检查是否有新版本 |
 | `npx @cyning/harness verify` | 全量：双路径 + reviews（v2.9+）；`--task`：30 前聚合；`--spec`：SPEC→00（v2.8+ · 互斥） |
 | `npx @cyning/harness lifecycle show` | 只读展示 `harness/lifecycle.yaml`（登记 · v2.7+） |

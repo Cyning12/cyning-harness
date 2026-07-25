@@ -86,6 +86,99 @@ test('upgrade --yes 等价 upgrade.sh 并更新 manifest', () => {
   assert.equal(after.from_version, before.version);
 });
 
+test('F1：upgrade 在已跟踪 local.json 路径变化时仍一把过（不因自身脏中止）', () => {
+  const target = mkTempProject();
+  let result = runNode([
+    'init',
+    '--target',
+    target,
+    '--preset',
+    'harness-only',
+    '--ide',
+    'cursor',
+    '--yes',
+  ]);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+
+  // 模拟历史 npx 路径已入库
+  const localPath = path.join(target, '.cyning-harness', 'local.json');
+  fs.writeFileSync(
+    localPath,
+    `${JSON.stringify({ cyning_harness_root: '/tmp/fake-npx-hash/@cyning/harness' })}\n`,
+  );
+  spawnSync('git', ['add', '-A'], { cwd: target });
+  spawnSync('git', ['commit', '-m', 'init harness'], { cwd: target });
+
+  result = runNode(['upgrade', '--target', target, '--yes'], {
+    HARNESS_VERSION: '0.3.1',
+  });
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.doesNotMatch(result.stderr + result.stdout, /错误\(S5\)/);
+
+  const local = JSON.parse(fs.readFileSync(localPath, 'utf8'));
+  assert.equal(local.cyning_harness_root, repoRoot);
+  assert.equal(readManifest(target).version, '0.3.1');
+});
+
+test('F2：upgrade 对 schema 外字段打 WARN · 干净五字段无非标准 WARN', () => {
+  const target = mkTempProject();
+  let result = runNode([
+    'init',
+    '--target',
+    target,
+    '--preset',
+    'harness-only',
+    '--ide',
+    'cursor',
+    '--yes',
+  ]);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+
+  const mf = path.join(target, '.cyning-harness', 'manifest.json');
+  const old = readManifest(target);
+  fs.writeFileSync(
+    mf,
+    JSON.stringify(
+      {
+        ...old,
+        name: 'ops-desk-web',
+        tech_graph_dir: 'docs/_tech_graph',
+        tasks_dir: 'docs/tasks',
+        hooks: { graph_compile: 'scripts/graph-compile.sh' },
+      },
+      null,
+      2,
+    ),
+  );
+  spawnSync('git', ['add', '-A'], { cwd: target });
+  spawnSync('git', ['commit', '-m', 'legacy manifest fields'], { cwd: target });
+
+  result = runNode(['upgrade', '--target', target, '--yes'], {
+    HARNESS_VERSION: '0.3.1',
+  });
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const out = result.stderr + result.stdout;
+  assert.match(out, /WARN:.*非标准字段将被移除/);
+  assert.match(out, /name/);
+  assert.match(out, /tech_graph_dir/);
+  assert.match(out, /tasks_dir/);
+  assert.match(out, /hooks/);
+
+  const after = readManifest(target);
+  assert.equal(after.version, '0.3.1');
+  assert.equal(after.name, undefined);
+  assert.equal(after.tech_graph_dir, undefined);
+
+  // 干净五字段再升：先提交首轮 upgrade 造成的簿记脏文件，再升
+  spawnSync('git', ['add', '-A'], { cwd: target });
+  spawnSync('git', ['commit', '-m', 'after first upgrade'], { cwd: target });
+  result = runNode(['upgrade', '--target', target, '--yes'], {
+    HARNESS_VERSION: '0.3.2',
+  });
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.doesNotMatch(result.stderr + result.stdout, /非标准字段将被移除/);
+});
+
 test('check 报告可升级状态', () => {
   const target = mkTempProject();
   runNode([

@@ -198,6 +198,23 @@ profile_ide_cursor_rel() {
   echo "$rel"
 }
 
+# 写入 .cyning-harness/local.json（compare-before-write · 内容不变则跳过）
+# 供 upgrade post-apply 簿记；避免在 sync apply 前改已跟踪文件触发 S5
+write_local_json_if_changed() {
+  local target="$1" root="$2"
+  local dir="$target/.cyning-harness"
+  local path="$dir/local.json"
+  local payload
+  payload="$(printf '%s\n' "{\"cyning_harness_root\":\"$root\"}")"
+  mkdir -p "$dir"
+  if [[ -f "$path" ]] && [[ "$(cat "$path")" == "$payload" ]]; then
+    echo "local.json 未变（跳过写入）→ cyning_harness_root=$root"
+    return 0
+  fi
+  printf '%s\n' "$payload" > "$path"
+  echo "已更新 local.json → cyning_harness_root=$root"
+}
+
 # 从 CLAUDE.md / AGENTS.md 剥离 Harness marker 块；若仅剩空文件则删除
 # S5 · sync/apply 前检测 Git 工作区干净（v0.3+）
 # 非 git 仓跳过；--force 或 HARNESS_SYNC_FORCE=1 跳过

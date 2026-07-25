@@ -26,6 +26,10 @@ npx @cyning/harness check    # 仅检查是否有新版本
 写入 `.cyning-harness/manifest.json`（钉版本 · preset · ide）与 `profile.json`。  
 Schema：[`schema/manifest.v1.schema.json`](../schema/manifest.v1.schema.json)
 
+**manifest（2.3+）仅五字段**：`version` / `preset` / `ide` / `from_version` / `upgraded_at`（`additionalProperties: false`）。  
+旧字段 `name` / `harness_version` / `tech_graph_dir` / `tasks_dir` / `hooks` 已废弃且无消费方；`upgrade` 会整体重写并（v2.11.1+）对将被移除的字段打 WARN，**不会**合并保留。  
+`upgrade` 的 `local.json` 簿记在 sync apply **成功之后**写入（v2.11.1+），避免自绊 S5 git-clean。
+
 **维护者 / 离线 · clone 路径：**
 
 ```bash

@@ -77,6 +77,38 @@ EOF
   echo "已写入 manifest: $mf"
 }
 
+# upgrade 重写前：对 schema 外字段 / ide 裁剪打 warning（知情而非静默）
+# 标准五字段：version / preset / ide / from_version / upgraded_at（additionalProperties: false）
+warn_manifest_upgrade_drops() {
+  local mf="$1" new_ide_json="$2"
+  [[ -f "$mf" ]] || return 0
+  if ! command -v node >/dev/null 2>&1; then
+    echo "WARN: 未找到 node，跳过 manifest 字段变更预检" >&2
+    return 0
+  fi
+  node -e '
+const fs = require("fs");
+const mf = process.argv[1];
+const newIde = JSON.parse(process.argv[2]);
+const schema = new Set(["version", "preset", "ide", "from_version", "upgraded_at"]);
+let old;
+try { old = JSON.parse(fs.readFileSync(mf, "utf8")); } catch { process.exit(0); }
+const extra = Object.keys(old).filter((k) => !schema.has(k));
+if (extra.length) {
+  console.log(
+    "WARN: manifest 以下非标准字段将被移除（2.3+ 仅五字段 · 见 ONBOARDING）: " +
+      extra.join(", "),
+  );
+}
+const oldIde = old.ide;
+const oldS = JSON.stringify(oldIde ?? null);
+const newS = JSON.stringify(newIde);
+if (oldS !== newS) {
+  console.log("WARN: manifest.ide 将从 profile 重算: " + oldS + " → " + newS);
+}
+' "$mf" "$new_ide_json"
+}
+
 # upgrade apply 后更新 manifest
 write_manifest_upgrade() {
   local target="$1" version="$2"
@@ -95,6 +127,8 @@ write_manifest_upgrade() {
     fi
     preset="$(grep '"preset"' "$mf" | head -1 | sed -E 's/.*:[[:space:]]*"([^"]+)".*/\1/' || echo "$preset")"
   fi
+
+  warn_manifest_upgrade_drops "$mf" "$ide_json"
 
   mkdir -p "$target/.cyning-harness"
   cat > "$mf" <<EOF

@@ -101,10 +101,8 @@ echo "preset: $(profile_preset_name "$PROFILE_FILE")"
 echo "当前 IDE: $(profile_ide_summary "$PROFILE_FILE")"
 echo ""
 
-# 始终刷新 local.json，避免路径漂移（如 Desktop → Projects）
-printf '%s\n' "{\"cyning_harness_root\":\"$CYNING_HARNESS\"}" > "$TARGET/.cyning-harness/local.json"
-echo "已更新 local.json → cyning_harness_root=$CYNING_HARNESS"
-echo ""
+# 注意：local.json / manifest 簿记放在 sync apply **成功之后**（F1）。
+# 勿在 apply 前改已跟踪的 .cyning-harness/local.json，否则 S5 git-clean 自绊。
 
 if [[ -z "$IDE_LIST" ]] && [[ "$ASSUME_YES" -eq 0 ]]; then
   if prompt_yes_no "是否更新 IDE 勾选（cursor / claude / agents）？" "n"; then
@@ -140,14 +138,16 @@ if [[ "$DO_APPLY" -eq 1 ]]; then
   SYNC_ARGS=(apply --target "$TARGET")
   [[ "$SYNC_FORCE" -eq 1 ]] && SYNC_ARGS+=(--force)
   "$SCRIPT_DIR/harness-sync.sh" "${SYNC_ARGS[@]}"
+  # post-sync 簿记：apply 失败则不落（set -e 已中止）
+  write_local_json_if_changed "$TARGET" "$CYNING_HARNESS"
   write_manifest_upgrade "$TARGET" "$VERSION"
   cp "$CYNING_HARNESS/harness/templates/QUICKREF_v1_zh.md" "$TARGET/.cyning-harness/QUICKREF.md"
-echo ""
-echo "升级完成。"
-echo "常用命令:"
-echo "  npx @cyning/harness verify --target $TARGET"
-echo "  npx @cyning/harness gate-check --target $TARGET"
-echo "  npx @cyning/harness upgrade --target $TARGET --yes"
+  echo ""
+  echo "升级完成。"
+  echo "常用命令:"
+  echo "  npx @cyning/harness verify --target $TARGET"
+  echo "  npx @cyning/harness gate-check --target $TARGET"
+  echo "  npx @cyning/harness upgrade --target $TARGET --yes"
 else
   echo "已取消 apply（仅预览）。"
   exit 0

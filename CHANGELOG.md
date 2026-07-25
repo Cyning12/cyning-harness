@@ -4,6 +4,18 @@
 
 ## [Unreleased]
 
+## [2.11.1] - 2026-07-25
+
+### Fixed
+
+- **F1 · `upgrade` 自绊 S5（ops-desk-web dogfood）**：`local.json` 改为 **sync apply 成功后** 写入（compare-before-write）。避免 npx 缓存路径变化时先脏工作区再被 git-clean 中止。
+- **F2 · manifest 静默丢字段**：`write_manifest_upgrade` 重写前对 schema 外字段与 `ide` 裁剪打 **WARN** 清单（知情）；**仍不**合并保留（`additionalProperties: false`）。
+
+### Notes
+
+- 摩擦报告：`Projects/docs/harness/guides/ANALYSIS_upgrade_wizard_friction_20260725_v1_zh.md`
+- patch · 2.3+ manifest 仅五字段：`version` / `preset` / `ide` / `from_version` / `upgraded_at`（`name` / `tech_graph_dir` / `tasks_dir` / `hooks` 等已废弃）
+
 ## [2.11.0] - 2026-07-25
 
 ### Added
