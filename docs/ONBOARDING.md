@@ -69,6 +69,10 @@ npx @cyning/harness lifecycle dry-run --transition to_30 --from draft \
 # 无 --task：仅结构 + 守卫清单 unevaluated
 npx @cyning/harness lifecycle dry-run --transition to_30 --from draft
 
+# 机械化率资产只读（v2.11+ · SoT=discipline-coverage.yaml）
+npx @cyning/harness discipline show
+npx @cyning/harness discipline show --json
+
 # 仅人工闸
 npx @cyning/harness gate-check --target /path/to/your-repo
 npx @cyning/harness gate-check --graph --target /path/to/your-repo
@@ -91,6 +95,7 @@ npx @cyning/harness sync index --target /path/to/your-repo
 | **lint** | task 结构（仅 `--task`） | v2.7+ E 级 → `WARN: task lint`（不改 exit / `may_start_30`） |
 
 生命周期真值：[`harness/lifecycle.yaml`](../harness/lifecycle.yaml)（`lifecycle show` 只读 · `lifecycle dry-run` 资格判定 v2.10+）。
+机械化率资产：[`harness/discipline-coverage.yaml`](../harness/discipline-coverage.yaml)（`discipline show` 只读 · v2.11+）。
 
 机械化率覆盖资产（Starter）：[`harness/discipline-coverage.yaml`](../harness/discipline-coverage.yaml)（SoT · 随版本改 statements/gaps；**无** audit UI）。
 

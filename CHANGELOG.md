@@ -6,14 +6,19 @@
 
 ## [2.11.0] - 2026-07-25
 
+### Added
+
+- **`discipline show [--json]`（Post-2.10 Epic E）**：只读展示 `harness/discipline-coverage.yaml`（镜像 `lifecycle show`）。**无** `audit --discipline` UI。
+
 ### Changed
 
 - **`lifecycle dry-run` 守卫扩面（Post-2.10 Epic A）**：`--task` + `to_30` 增接 `HG-TASK-DRAFT` · `audit_D5` · `task_lint`（与既有 `HG-AUDIT-R1` / `reviews_retention`）。`task_lint` 仍为 yaml **warn**；`--allow-lint-fail` 可将 fail 豁免为 warn。`close_*` 仍 `unevaluated`。**无** `--apply` / G7 / N2-C。
 
 ### Notes
 
-- SPEC：`docs/spec/SPEC-lifecycle-guard-expand_v1.md`
+- SPEC：`docs/spec/SPEC-lifecycle-guard-expand_v1.md` · `docs/spec/SPEC-discipline-show_v1.md`
 - minor · `lifecycle show` / verify 硬闸语义不变
+- `discipline-coverage.yaml` `as_of_package_version` → **2.11.0**
 
 ## [2.10.0] - 2026-07-25
 

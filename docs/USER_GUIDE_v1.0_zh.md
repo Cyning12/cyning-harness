@@ -190,7 +190,7 @@ Schema：[`schema/verify_result.v1.schema.json`](../schema/verify_result.v1.sche
 | `npx @cyning/harness verify` | 全量：双路径 + reviews（v2.9+）；`--task`：30 前聚合；`--spec`：SPEC→00（v2.8+ · 互斥） |
 | `npx @cyning/harness lifecycle show` | 只读展示 `harness/lifecycle.yaml`（登记 · v2.7+） |
 | `npx @cyning/harness lifecycle dry-run` | 转移资格判定（引擎消费 yaml · v2.10+ · 旁路 · 非 G7） |
-| 机械化率资产 | 包内 `harness/discipline-coverage.yaml`（SoT · v2.10+ · 无 audit UI） |
+| `npx @cyning/harness discipline show` | 只读展示 `harness/discipline-coverage.yaml`（v2.11+ · 非 audit UI） |
 | `npx @cyning/harness gate-check` | 仅人工闸（`--graph` / `--json`） |
 | `npx @cyning/harness audit` | ICVO 机械审计（D3/D5/S5） |
 | `npx @cyning/harness sync index` | 生成 `.cyning-harness/invoke_index.json` |

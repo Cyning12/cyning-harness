@@ -2,20 +2,31 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 import {
+  formatDisciplineShow,
   loadDisciplineCoverage,
   validateDisciplineCoverage,
 } from '../lib/discipline-coverage.js';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const harnessBin = path.join(repoRoot, 'bin', 'harness.js');
+
+function runNode(args, cwd = repoRoot) {
+  return spawnSync(process.execPath, [harnessBin, ...args], {
+    cwd,
+    encoding: 'utf8',
+    env: { ...process.env },
+  });
+}
 
 test('包内 discipline-coverage.yaml 通过校验', () => {
   const { data, filePath } = loadDisciplineCoverage({ harnessRoot: repoRoot });
   assert.ok(filePath.endsWith('discipline-coverage.yaml'));
   assert.equal(data.version, '1');
-  assert.equal(data.as_of_package_version, '2.10.0');
+  assert.equal(data.as_of_package_version, '2.11.0');
   assert.ok(data.statements.length >= 20);
 });
 
@@ -72,4 +83,27 @@ test('非法 fixture 文件 → loadDisciplineCoverage 抛错', () => {
     () => loadDisciplineCoverage({ filePath: bad }),
     (e) => /校验失败|statements/.test(e.message),
   );
+});
+
+test('formatDisciplineShow 含 version / as_of / 计数', () => {
+  const { data } = loadDisciplineCoverage({ harnessRoot: repoRoot });
+  const text = formatDisciplineShow(data);
+  assert.match(text, /discipline-coverage v1/);
+  assert.match(text, /as_of: 2\.11\.0/);
+  assert.match(text, /## statements/);
+  assert.match(text, /## gaps/);
+});
+
+test('discipline show CLI · exit 0 · 含 as_of', () => {
+  const r = runNode(['discipline', 'show']);
+  assert.equal(r.status, 0, r.stderr || r.stdout);
+  assert.match(r.stdout, /as_of: 2\.11\.0/);
+});
+
+test('discipline show --json · 可 parse · version', () => {
+  const r = runNode(['discipline', 'show', '--json']);
+  assert.equal(r.status, 0, r.stderr || r.stdout);
+  const data = JSON.parse(r.stdout);
+  assert.equal(data.version, '1');
+  assert.ok(Array.isArray(data.statements));
 });
