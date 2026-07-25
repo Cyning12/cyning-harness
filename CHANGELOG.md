@@ -19,8 +19,8 @@
 ### Notes
 
 - SPEC：`docs/spec/SPEC-lifecycle-engine-min_v1.md` · `docs/spec/SPEC-discipline-coverage-yaml_v1.md`
-- Epic 统一发版窗 · 维护者 publish 前复检
 - minor · `lifecycle show` 行为不变
+- **已发布**：`@cyning/harness@2.10.0`（npm `latest` · 2026-07-25）· tag `v2.10.0` 已推送
 
 ## [2.9.0] - 2026-07-25
 
