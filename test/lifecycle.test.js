@@ -152,7 +152,7 @@ test('dryRunTransition：无 --task · 结构 ok · unevaluated_count > 0 · exi
   assert.equal(r.engine, 'lifecycle-dry-run');
 });
 
-test('dryRunTransition：to_30 + fixture · HG-AUDIT-R1/reviews 非 unevaluated', () => {
+test('dryRunTransition：to_30 + fixture · to_30 守卫均非 unevaluated', () => {
   const { target, taskAbs } = makeDryRunFixture();
   const r = dryRunTransition({
     transitionId: 'to_30',
@@ -163,12 +163,57 @@ test('dryRunTransition：to_30 + fixture · HG-AUDIT-R1/reviews 非 unevaluated'
   });
   assert.equal(r.structure_ok, true);
   const audit = r.guards.find((g) => g.id === 'HG-AUDIT-R1');
+  const draft = r.guards.find((g) => g.id === 'HG-TASK-DRAFT');
   const rev = r.guards.find((g) => g.id === 'reviews_retention');
+  const d5 = r.guards.find((g) => g.id === 'audit_D5');
+  const lint = r.guards.find((g) => g.id === 'task_lint');
   assert.equal(audit.status, 'pass');
+  assert.equal(draft.status, 'pass');
   assert.equal(rev.status, 'pass');
+  assert.equal(d5.status, 'pass'); // 无 sidecar → D5 skipped → pass
+  assert.notEqual(lint.status, 'unevaluated');
+  assert.equal(r.unevaluated_count, 0);
   assert.equal(r.blocked, false);
   assert.equal(r.exitCode, 0);
-  assert.ok(r.guards.some((g) => g.status === 'unevaluated'));
+});
+
+test('dryRunTransition：task_lint fail + --allow-lint-fail → warn（不 block）', () => {
+  const { target, taskAbs } = makeDryRunFixture();
+  const fail = dryRunTransition({
+    transitionId: 'to_30',
+    fromState: 'draft',
+    taskPath: taskAbs,
+    harnessRoot: repoRoot,
+    cwd: target,
+  });
+  assert.equal(fail.guards.find((g) => g.id === 'task_lint').status, 'fail');
+  assert.equal(fail.guards.find((g) => g.id === 'task_lint').severity, 'warn');
+  assert.equal(fail.blocked, false); // warn severity 不挡
+
+  const waived = dryRunTransition({
+    transitionId: 'to_30',
+    fromState: 'draft',
+    taskPath: taskAbs,
+    harnessRoot: repoRoot,
+    cwd: target,
+    flags: { allowLintFail: true },
+  });
+  assert.equal(waived.guards.find((g) => g.id === 'task_lint').status, 'warn');
+  assert.equal(waived.exitCode, 0);
+});
+
+test('dryRunTransition：close 转移 · close_* 仍 unevaluated', () => {
+  const { target, taskAbs } = makeDryRunFixture();
+  const r = dryRunTransition({
+    transitionId: 'close',
+    fromState: 'done',
+    taskPath: taskAbs,
+    harnessRoot: repoRoot,
+    cwd: target,
+  });
+  assert.equal(r.structure_ok, true);
+  assert.ok(r.unevaluated_count > 0);
+  assert.ok(r.guards.every((g) => g.status === 'unevaluated'));
 });
 
 test('dryRunTransition：HG-AUDIT-R1 pending → blocked · exitCode 2', () => {

@@ -133,6 +133,7 @@ npx @cyning/harness verify --target . \
 # 只读生命周期登记（方向二 · harness/lifecycle.yaml · 登记真值）
 npx @cyning/harness lifecycle show [--json]
 # 转移资格 dry-run（v2.10+ · 引擎消费 yaml · 旁路报告 · 非 runner / 非 G7）
+# v2.11+ to_30 已接线 HG-* / reviews / audit_D5 / task_lint（close_* 仍可 unevaluated）
 npx @cyning/harness lifecycle dry-run --transition to_30 --from draft \
   [--task docs/tasks/active/task_xxx.md] [--json] [--allow-no-review]
 

@@ -63,6 +63,7 @@ npx @cyning/harness verify --spec docs/spec/SPEC-xxx_v1.md \
 npx @cyning/harness lifecycle show
 npx @cyning/harness lifecycle show --json
 # 转移资格 dry-run（v2.10+ · 旁路报告 · 不替代 verify）
+# v2.11+ to_30 已接线：HG-* · reviews · audit_D5 · task_lint（close_* 仍可 unevaluated）
 npx @cyning/harness lifecycle dry-run --transition to_30 --from draft \
   --task docs/tasks/active/task_xxx.md
 # 无 --task：仅结构 + 守卫清单 unevaluated
