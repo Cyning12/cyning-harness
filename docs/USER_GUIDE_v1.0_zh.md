@@ -111,7 +111,11 @@ npx @cyning/harness@1.0.1 init --preset harness-only --ide cursor,agents --yes
 **原则**：Agent 可以写 task 和 review，**人工闸只有维护者能签**。
 
 ```bash
-# 30 前聚合验证（gate-check + audit D5 + reviews + task lint WARN + S5 · 可选 --graph）
+# 全量（无 --task）：双路径 active + 闸表 + reviews（v2.9+ · 不跑 lint/D5）
+npx @cyning/harness verify --target .
+# 缺审查文豁免：--allow-no-review
+
+# 单 task：gate-check + audit D5 + reviews + task lint WARN + S5 · 可选 --graph
 npx @cyning/harness verify --target . --task docs/tasks/active/task_xxx.md
 # lint FAIL 仅 WARN（v2.7+ · 不挡 30）；抑制：--allow-lint-fail
 
@@ -146,6 +150,7 @@ npx @cyning/harness gate-check --graph --target .    # Inform 图谱闸
 | `HG-GRAPH-MODULES` | 架构模块表人签 | pending → 拒改码 30 |
 | `HG-RELEASE` | 发版闸（产品仓） | 一般业务仓不涉及 |
 | `task_lint`（v2.7+） | `verify --task` 结构检查 | **仅 WARN** · 不改 `may_start_30` |
+| `reviews`（全量 v2.9+） | 裸 verify 亦查 R&lt;n&gt; 文 | 缺文 → BLOCKED · `--allow-no-review` |
 
 ### 5.1 Agent handoff（v2.0.2+）
 
@@ -153,7 +158,8 @@ npx @cyning/harness gate-check --graph --target .    # Inform 图谱闸
 
 | JSON 字段 | 含义 |
 | --- | --- |
-| `may_start_30` | 等价 gate-check「可 30」 |
+| `may_start_30` | 闸表可 30 **且** `review_found`（或豁免） |
+| `review_found` | R&lt;n&gt; 审查文是否存在（全量与 `--task` 同构 · v2.9+） |
 | `blocked_reason` | 阻塞时 D2/D3 文案 |
 | `review_path` | 最新 `*_audit_R1_*.md`（相对 target） |
 | `entry_invoke_30` | task 表原始路径 |
@@ -177,7 +183,7 @@ Schema：[`schema/verify_result.v1.schema.json`](../schema/verify_result.v1.sche
 | `npx @cyning/harness init` | 首次安装模板与 manifest（可选 `--with-scripts`） |
 | `npx @cyning/harness upgrade` | 同步产品包更新（可加 `--gate-check` 先 audit） |
 | `npx @cyning/harness check` | 检查是否有新版本 |
-| `npx @cyning/harness verify` | `--task`：30 前聚合；`--spec`：SPEC→00 审查文闸（v2.8+ · 互斥）· `--allow-no-spec-review` |
+| `npx @cyning/harness verify` | 全量：双路径 + reviews（v2.9+）；`--task`：30 前聚合；`--spec`：SPEC→00（v2.8+ · 互斥） |
 | `npx @cyning/harness lifecycle show` | 只读展示 `harness/lifecycle.yaml`（状态/转移/守卫 · v2.7+ · 非引擎） |
 | `npx @cyning/harness gate-check` | 仅人工闸（`--graph` / `--json`） |
 | `npx @cyning/harness audit` | ICVO 机械审计（D3/D5/S5） |
