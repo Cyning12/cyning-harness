@@ -18,7 +18,7 @@
 - 全量模式仍**不**跑 task lint / audit D5（维持 N2）。
 - SPEC：`docs/spec/SPEC-verify-full-reviews-gate_v1.md`
 - minor · 行为更严 · 存量「闸表可 30 但无审查文」将被挡（可补审或 `--allow-no-review`）
-- **已发布**：`@cyning/harness@2.9.0`（npm `latest` · 2026-07-25）
+- **已发布**：`@cyning/harness@2.9.0`（npm `latest` · 2026-07-25）· tag `v2.9.0`（本地；待推送）
 
 ## [2.8.0] - 2026-07-25
 

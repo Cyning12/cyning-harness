@@ -5,7 +5,7 @@
 > **关联图谱**：无（纯 Harness 工具链）  
 > **上游**：[`PLAN_post_g4_next_mechanization_v1_zh.md`](../../../docs/harness/guides/PLAN_post_g4_next_mechanization_v1_zh.md) · N4 · G2 residual  
 > **前置**：G2 `@cyning/harness@2.5.0`（`--task` 已查 reviews）· N3 `@2.8.0`  
-> **下游**：30/40 已完成（分支 `task/cyning-harness-verify-full-reviews-gate` · package **2.9.0** · 待 publish）
+> **下游**：CLOSE ✅ · `@cyning/harness@2.9.0` published · 合入 `main` · tag `v2.9.0`
 
 ---
 
