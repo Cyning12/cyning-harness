@@ -207,6 +207,20 @@ Schema：[`schema/verify_result.v1.schema.json`](../schema/verify_result.v1.sche
 
 Audit **不替代** 维护者判断；22 内容质量仍须人读 review。详见 [`ONBOARDING.md`](./ONBOARDING.md) §2.2。
 
+### 6.0 多帽 invoke 留档（v2.12+）
+
+`task close` 按 task 元信息校验 `by-task/<slug>/` 下 invoke 文件名所覆盖的 **hat 集合**（缺省要求 `10,30,40`）。
+
+| 字段 / 手段 | 说明 |
+| --- | --- |
+| `invoke_retention_profile` | `default`=`10,30,40` · `minimal`=`30` · `full`=`00,10,20,30,40,CLOSE` |
+| `required_invoke_hats` | 显式列表，**优先于** profile |
+| 命名 | `invoke_YYYYMMDD_<hat>[_<hat>...]_<slug>.md`；hat 只在日期后连续前缀（例 `30_40` 可双计）；**slug 段勿夹** `10`/`40` 等（v2.12.1 起不误计） |
+| `--allow-invoke-gap` | close / `verify --task` 缺帽豁免并留痕 |
+| 存量仅 30 | upgrade 后：补 `10`/`40` 档、或改 `minimal`、或显式 `--allow-invoke-gap` |
+
+`verify --task` 对缺口仅 **WARN**，不挡 `may_start_30`；硬闸在 close。
+
 ### 6.1 SDD-Compliance bench（维护者 · 可选）
 
 > **业务仓日常不必跑**；用于验证 `gate-check` / `sync` 公理行为，或对照 README「试点证据」中的 bench 数字。

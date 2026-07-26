@@ -95,8 +95,21 @@ test('extractHatsFromInvokeFilename · 30_40 合并 + CLOSE', () => {
   const h = extractHatsFromInvokeFilename('invoke_20260726_30_40_demo.md');
   assert.ok(h.has('30'));
   assert.ok(h.has('40'));
+  assert.equal(h.size, 2);
   const c = extractHatsFromInvokeFilename('invoke_20260726_CLOSE_demo.md');
   assert.ok(c.has('CLOSE'));
+  assert.equal(c.size, 1);
+});
+
+test('extractHatsFromInvokeFilename · slug 含 40 不误计（前缀 run）', () => {
+  const h = extractHatsFromInvokeFilename('invoke_20260726_30_fix_40_issue.md');
+  assert.ok(h.has('30'));
+  assert.equal(h.has('40'), false);
+  assert.equal(h.size, 1);
+  // enclosure 整名不再因 /CLOSE/i 误计
+  const enc = extractHatsFromInvokeFilename('invoke_20260726_30_enclosure_demo.md');
+  assert.ok(enc.has('30'));
+  assert.equal(enc.has('CLOSE'), false);
 });
 
 test('evaluateInvokeHatsRetention · 仅 30 → 缺 10,40', () => {
@@ -210,7 +223,49 @@ pending。
     ['verify', '--target', target, '--task', 'docs/tasks/active/task_demo_v1.md'],
     target,
   );
-  // gate/audit may still pass; we care about WARN line
+  assert.equal(result.status, 0, result.stdout);
   assert.match(result.stdout, /WARN: invoke hats gap/);
   assert.match(result.stdout, /缺 10,40|缺 10.*40|10.*40/);
+  assert.match(result.stdout, /VERIFY: PASS/);
+});
+
+test('task lint W6：缺 invoke 留档字段 → WARN', async () => {
+  const { lintTaskFile } = await import('../lib/task-lint.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'lint-w6-'));
+  const file = path.join(dir, 'task_demo_v1.md');
+  fs.writeFileSync(
+    file,
+    `# Task
+
+> **状态**：\`draft\`
+
+## Harness 元信息
+
+| 字段 | 值 |
+| --- | --- |
+| **task_slug** | \`demo\` |
+| **test_strategy** | \`not_applicable\` |
+| **test_strategy_note** | docs
+
+## 验收标准
+
+- [ ] a
+
+## 失败路径
+
+| 触发 | 行为 |
+| --- | --- |
+| x | y |
+
+### 自检结论（执行者）
+
+pending。
+`,
+  );
+  const lint = lintTaskFile(file);
+  assert.equal(lint.ok, true);
+  assert.ok(
+    lint.warnings.some((w) => w.rule === 'W6'),
+    JSON.stringify(lint.warnings),
+  );
 });

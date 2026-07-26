@@ -6,7 +6,7 @@
 # 禁止：把本文件当「每周全量重盘」流程；不做 audit --discipline UI（本波）
 
 version: "1"
-as_of_package_version: "2.12.0"
+as_of_package_version: "2.12.1"
 scope: "Starter · harness/prompts （10/22/30/40 + FRAGMENT）+ TEMPLATE_invoke"
 source_audit: "rethink/2026-07-mechanization-rate · 02 转录 + 03 聚合 · 状态已按 G1–G4/N1–N4 刷新（非第二轮通读盘点）"
 
@@ -114,7 +114,7 @@ statements:
     status: mechanical
     mechanism: "M5 close evaluateInvokeHatsRetention + M6 lint-done"
     gap: null
-    notes: "v2.12.0 默认 10,30,40；profile minimal/full；--allow-invoke-gap"
+    notes: "v2.12.0 默认 10,30,40；profile minimal/full；--allow-invoke-gap；v2.12.1 前缀 hat run"
     mechanism_quality: null
   - id: A7
     source: 30-execute-code.md
@@ -274,7 +274,7 @@ statements:
     status: mechanical
     mechanism: "M5 evaluateInvokeHatsRetention / M6"
     gap: null
-    notes: "v2.12.0 文件名 hat token · 合并 30_40 可双计"
+    notes: "v2.12.0+ 文件名 hat token · 合并 30_40 可双计 · v2.12.1 前缀 run 防 slug 误计"
     mechanism_quality: null
   - id: F2
     source: TEMPLATE_invoke.md

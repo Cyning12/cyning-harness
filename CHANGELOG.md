@@ -4,6 +4,24 @@
 
 ## [Unreleased]
 
+## [2.12.1] - 2026-07-26
+
+### Fixed
+
+- **invoke 文件名 hat 扫描**：改为日期后的**前缀 hat run**；slug 中的 `10`/`40` 等不再误计为已覆盖；去掉整名 `/CLOSE/i` 裸匹配。
+- `lifecycle.yaml`：删除 `invoke_hats_retention` 别名守卫，仅保留 `close_invoke`。
+
+### Changed
+
+- `verify` / 单测收紧：缺口 WARN 用例断言 exit 0；补误计负例与 lint **W6**。
+- USER_GUIDE §6.0 · TEMPLATE_invoke 命名约束 · 10-task 提及 W6。
+- `discipline-coverage.yaml` `as_of` → **2.12.1**。
+
+### Notes
+
+- patch · 对规范命名无影响；依赖 slug 误计的畸形文件名 close 可能新 BLOCK
+- 迁移指引：[`docs/USER_GUIDE_v1.0_zh.md`](docs/USER_GUIDE_v1.0_zh.md) §6.0（不另造 RUNBOOK）
+
 ## [2.12.0] - 2026-07-26
 
 ### Added
@@ -15,14 +33,15 @@
 
 ### Changed
 
-- `lifecycle.yaml` close 守卫登记 `invoke_hats_retention`；`discipline-coverage.yaml` `as_of` → **2.12.0** · gaps `INVOKE-HATS`。
+- `lifecycle.yaml` close 守卫升级 `close_invoke`（集合覆盖）；`discipline-coverage.yaml` `as_of` → **2.12.0** · gaps `INVOKE-HATS`。
 - TASK_TEMPLATE / TEMPLATE_invoke / 10·20·30 帽文同步字段与纪律。
 
 ### Notes
 
 - SPEC：`docs/spec/SPEC-invoke-hats-retention-gate_v1.md`
 - **破坏性（close）**：无字段时按 default 要求 10+30+40；存量仅 30 的 active 须补档、改 `minimal` 或 `--allow-invoke-gap`
-- minor · 建议业务仓 upgrade 后按 RUNBOOK 勾选 invoke 集合
+- minor · 建议业务仓 upgrade 后按 [`USER_GUIDE` §6.0](docs/USER_GUIDE_v1.0_zh.md) 勾选 invoke 集合
+- **已发布**：`@cyning/harness@2.12.0`（npm `latest` · 2026-07-26）· tag `v2.12.0` 已推送
 
 ## [2.11.1] - 2026-07-25
 

@@ -33,7 +33,7 @@
 ## 交接物
 
 - 可粘贴进 `docs/tasks/active/task_*.md` 的正文块；并注明建议 `test_strategy`。
-- 产出 task 须 `npx @cyning/harness task lint --file <task>` PASS（v2.3+ · 结构闸 E1–E7 / W1–W3）。
+- 产出 task 须 `npx @cyning/harness task lint --file <task>` PASS（v2.3+ · 结构闸 E1–E7 / W1+；v2.12+ 含 **W6** invoke 留档字段提醒）。
 - 承接 **20-task-audit 审查**：按 `docs/harness/reviews/*_audit_*.md` 回填 task。
 
 ## OSS 阶段 C · 思考轮（Starter 摘要）

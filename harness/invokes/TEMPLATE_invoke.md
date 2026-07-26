@@ -45,7 +45,7 @@
 | 打回重开 | 新文件或 `_r2` 后缀 |
 | 与 reviews 分工 | reviews = 结论；invoke = **当时指令** |
 | close 机械闸 | `harness task close` 按 task 元信息 `required_invoke_hats` / `invoke_retention_profile` 校验帽集合覆盖（v2.12+；缺省 `10,30,40`；文件名含 `30_40` 可双计；`--allow-invoke-gap` 豁免） |
-| 命名 | `invoke_YYYYMMDD_<hat>_<slug>.md` 或 `invoke_YYYYMMDD_30_40_<slug>.md` |
+| 命名 | `invoke_YYYYMMDD_<hat>[_<hat>...]_<slug>.md`（hat token **仅**在日期后、slug 前连续段；slug 勿夹 `10`/`40` 等白名单段 · v2.12.1） |
 | commit | 落盘 + task 回填后再 commit（见 HANDOFF） |
 
 ---
