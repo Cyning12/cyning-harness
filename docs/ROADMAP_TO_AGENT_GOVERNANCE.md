@@ -31,23 +31,23 @@ cyning-harness 已经通过 HumanGate、AuditReview、InvokeSnapshot 等实体�
 
 ## 2. 三阶段演进路径
 
-### 阶段 0：当前状态（v0.2 – v0.4）
+### 阶段 0：当前状态（纪律包 · npm 2.x）
 
 | 项 | 内容 |
 | --- | --- |
 | **形态** | 项目纪律包，需手动绑定到仓库，要求开发者遵循 SDD 帽链 |
+| **当前包** | `@cyning/harness@2.13+`（以 npm / CHANGELOG 为准；本文档为愿景，非 semver 承诺） |
 
-**能力**：
+**能力**（摘要）：
 
-- ProcessTrack + StarterHat（10/22/30/40）
-- HumanGate 与 AuditReview 落盘
-- Sync 机制（S1–S6）
-- 基础 ICVO 映射
+- ProcessTrack + StarterHat（10/20/30/40）+ HumanGate / AuditReview / InvokeSnapshot
+- Sync（S1–S6）· ICVO verify / audit · lifecycle dry-run（to_30 · close_*）
+- 多帽 invoke 留档硬闸（close · v2.12+）
 
 **限制**：
 
 - 必须有人参与闸门审批（HumanGate）
-- 未与 Agent 运行时集成
+- 未与 Agent 运行时集成；dry-run **无** `--apply` / G7 runner
 
 ---
 

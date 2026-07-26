@@ -4,6 +4,24 @@
 
 ## [Unreleased]
 
+## [2.13.0] - 2026-07-26
+
+### Added
+
+- **`lifecycle dry-run` 接线 `close_*`**：`--task` + `close` + `from=done` 时求值 `close_invoke` / `close_self_check` / `close_acceptance` / `close_slug` / `close_status` / `close_review`（与 `task close` 同语义 · 旁路 · 不 mv）。
+- `evaluateCloseChecks`（`lib/task-close.js`）：close 与 dry-run 共用检查；CLI 透传 `--allow-invoke-gap` / `--allow-unchecked`。
+
+### Changed
+
+- README / USER_GUIDE / ONBOARDING / docs 索引：对齐 **2.12–2.13**（invoke hats · dry-run close）。
+- `discipline-coverage.yaml` `as_of` → **2.13.0**。
+
+### Notes
+
+- SPEC：`docs/spec/SPEC-lifecycle-dry-run-close_v1.md`
+- minor · 仍无 `--apply` / G7；`to_00` 仍可 unevaluated
+- dry-run **不替代** `task close` 硬闸
+
 ## [2.12.1] - 2026-07-26
 
 ### Fixed

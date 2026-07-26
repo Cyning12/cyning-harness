@@ -190,7 +190,7 @@ Schema：[`schema/verify_result.v1.schema.json`](../schema/verify_result.v1.sche
 | `npx @cyning/harness verify` | 全量：双路径 + reviews（v2.9+）；`--task`：30 前聚合 + invoke hats WARN（v2.12+）；`--spec`：SPEC→00（v2.8+ · 互斥） |
 | `npx @cyning/harness task close` | 受闸归档；v2.12+ 按 `required_invoke_hats` / `invoke_retention_profile` 校验多帽 invoke（缺省 `10,30,40`；`--allow-invoke-gap`） |
 | `npx @cyning/harness lifecycle show` | 只读展示 `harness/lifecycle.yaml`（登记 · v2.7+） |
-| `npx @cyning/harness lifecycle dry-run` | 转移资格判定（引擎消费 yaml · v2.10+ · 旁路 · 非 G7） |
+| `npx @cyning/harness lifecycle dry-run` | 转移资格判定（v2.10+ · `to_30` v2.11 · **`close_*` v2.13** · 旁路 · 非 G7） |
 | `npx @cyning/harness discipline show` | 只读展示 `harness/discipline-coverage.yaml`（v2.11+ · 非 audit UI） |
 | `npx @cyning/harness gate-check` | 仅人工闸（`--graph` / `--json`） |
 | `npx @cyning/harness audit` | ICVO 机械审计（D3/D5/S5） |
@@ -220,6 +220,13 @@ Audit **不替代** 维护者判断；22 内容质量仍须人读 review。详�
 | 存量仅 30 | upgrade 后：补 `10`/`40` 档、或改 `minimal`、或显式 `--allow-invoke-gap` |
 
 `verify --task` 对缺口仅 **WARN**，不挡 `may_start_30`；硬闸在 close。
+
+归档前可用旁路资格报告（**不** mv、**不**替代 `task close`）：
+
+```bash
+npx @cyning/harness lifecycle dry-run --transition close --from done --task docs/tasks/active/task_xxx.md
+# 可选：--allow-invoke-gap · --allow-unchecked · --allow-no-review
+```
 
 ### 6.1 SDD-Compliance bench（维护者 · 可选）
 

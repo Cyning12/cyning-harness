@@ -202,8 +202,8 @@ test('dryRunTransition：task_lint fail + --allow-lint-fail → warn（不 block
   assert.equal(waived.exitCode, 0);
 });
 
-test('dryRunTransition：close 转移 · close_* 仍 unevaluated', () => {
-  const { target, taskAbs } = makeDryRunFixture();
+test('dryRunTransition：close + 齐全 fixture · close_* 均非 unevaluated', () => {
+  const { target, taskAbs } = makeCloseDryRunFixture();
   const r = dryRunTransition({
     transitionId: 'close',
     fromState: 'done',
@@ -211,10 +211,114 @@ test('dryRunTransition：close 转移 · close_* 仍 unevaluated', () => {
     harnessRoot: repoRoot,
     cwd: target,
   });
+  assert.equal(r.structure_ok, true, r.detail);
+  assert.equal(r.unevaluated_count, 0, JSON.stringify(r.guards));
+  for (const g of r.guards) {
+    assert.notEqual(g.status, 'unevaluated', g.id);
+    assert.equal(g.status, 'pass', `${g.id}: ${g.detail}`);
+  }
+  assert.equal(r.blocked, false);
+  assert.equal(r.exitCode, 0);
+});
+
+test('dryRunTransition：close · 缺 invoke hats → close_invoke fail · blocked', () => {
+  const { target, taskAbs } = makeCloseDryRunFixture({ invokeMode: 'minimal30' });
+  const r = dryRunTransition({
+    transitionId: 'close',
+    fromState: 'done',
+    taskPath: taskAbs,
+    harnessRoot: repoRoot,
+    cwd: target,
+  });
+  assert.equal(r.guards.find((g) => g.id === 'close_invoke').status, 'fail');
+  assert.equal(r.blocked, true);
+  assert.equal(r.exitCode, 2);
+
+  const waived = dryRunTransition({
+    transitionId: 'close',
+    fromState: 'done',
+    taskPath: taskAbs,
+    harnessRoot: repoRoot,
+    cwd: target,
+    flags: { allowInvokeGap: true },
+  });
+  assert.equal(waived.guards.find((g) => g.id === 'close_invoke').status, 'warn');
+  assert.equal(waived.blocked, false);
+  assert.equal(waived.exitCode, 0);
+});
+
+test('dryRunTransition：close · 状态非 done → close_status fail', () => {
+  const { target, taskAbs } = makeCloseDryRunFixture({ status: 'in_progress' });
+  const r = dryRunTransition({
+    transitionId: 'close',
+    fromState: 'done',
+    taskPath: taskAbs,
+    harnessRoot: repoRoot,
+    cwd: target,
+  });
+  assert.equal(r.guards.find((g) => g.id === 'close_status').status, 'fail');
+  assert.equal(r.blocked, true);
+});
+
+test('dryRunTransition：close 无 --task · close_* unevaluated', () => {
+  const r = dryRunTransition({
+    transitionId: 'close',
+    fromState: 'done',
+    harnessRoot: repoRoot,
+  });
   assert.equal(r.structure_ok, true);
   assert.ok(r.unevaluated_count > 0);
   assert.ok(r.guards.every((g) => g.status === 'unevaluated'));
 });
+
+function makeCloseDryRunFixture({
+  status = 'done',
+  invokeMode = 'default',
+  withReview = true,
+} = {}) {
+  const target = fs.mkdtempSync(path.join(os.tmpdir(), 'cyning-harness-close-dry-'));
+  const activeDir = path.join(target, 'docs/tasks/active');
+  fs.mkdirSync(activeDir, { recursive: true });
+  const taskName = 'task_demo_v1.md';
+  fs.writeFileSync(
+    path.join(activeDir, taskName),
+    `# Task
+
+> **状态**：\`${status}\`
+
+## Harness 元信息
+
+| 字段 | 值 |
+| --- | --- |
+| **task_slug** | \`demo\` |
+
+## 验收标准
+
+- [x] a
+
+### 自检结论（执行者）
+
+ok。
+`,
+  );
+  const invokeDir = path.join(target, 'docs/harness/invokes/by-task/demo');
+  fs.mkdirSync(invokeDir, { recursive: true });
+  if (invokeMode === 'minimal30') {
+    fs.writeFileSync(path.join(invokeDir, 'invoke_20260726_30_demo.md'), '#\n');
+  } else {
+    fs.writeFileSync(path.join(invokeDir, 'invoke_20260726_10_demo.md'), '#\n');
+    fs.writeFileSync(path.join(invokeDir, 'invoke_20260726_30_40_demo.md'), '#\n');
+  }
+  if (withReview) {
+    const reviews = path.join(target, 'docs/harness/reviews');
+    fs.mkdirSync(reviews, { recursive: true });
+    fs.writeFileSync(path.join(reviews, 'task_demo_audit_R1_20260726.md'), '# r\n');
+  }
+  return {
+    target,
+    taskAbs: path.join(activeDir, taskName),
+  };
+}
 
 test('dryRunTransition：HG-AUDIT-R1 pending → blocked · exitCode 2', () => {
   const { taskAbs, target } = makeDryRunFixture({ audit: 'pending' });

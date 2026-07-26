@@ -97,6 +97,22 @@ Inform-YAML：`npx @cyning/harness graph yaml compile|check --input docs/_tech_g
 HGM 过程轨：`npx @cyning/harness graph ingest|snapshot|axioms check --target /path/to/your-repo`（v2.0+）  
 Invoke 索引：`npx @cyning/harness sync index --target /path/to/your-repo`（不覆盖 S2 域）
 
+### 近期纪律闸（v2.5–2.13）
+
+| 能力 | 版本 | 命令 / 要点 |
+|------|------|-------------|
+| reviews 留档 | 2.5+ / 全量 2.9 | `verify` · `task close` 查 R\<n\> 审查文 |
+| `task lint` | 2.3+ · W6=2.12 | 结构闸；缺 `required_invoke_hats` / profile 提醒 |
+| `lifecycle show` / `dry-run` | 2.7 / 2.10+ | 登记真值；旁路资格报告（**不**替代 verify/close） |
+| dry-run `to_30` 守卫 | 2.11 | HG · reviews · D5 · lint |
+| 多帽 invoke 留档 | **2.12+** | close 硬闸缺省 `10,30,40`；`--allow-invoke-gap`；见 USER_GUIDE §6.0 |
+| dry-run `close_*` | **2.13** | 与 `task close` 同语义求值；仍无 `--apply` |
+
+```bash
+npx @cyning/harness lifecycle dry-run --transition close --from done --task docs/tasks/active/task_xxx.md
+npx @cyning/harness task close --file docs/tasks/active/task_xxx.md   # 硬闸归档
+```
+
 Node 仓可选：`npx @cyning/harness init --with-scripts` → `pnpm harness:verify`。  
 详见 [`docs/USER_GUIDE_v1.0_zh.md`](docs/USER_GUIDE_v1.0_zh.md) · [`docs/ONBOARDING.md`](docs/ONBOARDING.md) §2.2。
 
@@ -171,9 +187,11 @@ cyning-harness/
 
 | 项 | 值 |
 |----|-----|
-| 当前 | **v2.0.0** — HGM G1 · `graph ingest|snapshot|axioms` · Inform-YAML · ICVO audit · invoke_index · gate-check --graph · B2 证据 |
-| 上一档 | v1.1.0 — Inform-YAML · `graph yaml compile|check` · ICVO audit · invoke_index · gate-check --graph · B2 证据 |
-| 许可 | **MIT** · [`LICENSE`](LICENSE) · Release [`docs/RELEASE_v1.0.0.md`](docs/RELEASE_v1.0.0.md) |
+| 当前 npm | **`@cyning/harness@2.13.0`** — dry-run `close_*` · invoke hats 硬闸（2.12）· lifecycle / verify 扩面（2.9–2.11） |
+| 里程碑 | v2.0 — HGM G1 · Inform-YAML · ICVO audit · invoke_index |
+| 许可 | **MIT** · [`LICENSE`](LICENSE) · 变更 [`CHANGELOG.md`](CHANGELOG.md) |
+
+> README 历史「v2.0.0」表述为 HGM 里程碑标签；**以 `package.json` / npm `latest` / CHANGELOG 为准**。
 
 ---
 
@@ -183,7 +201,7 @@ cyning-harness/
 | --- | --- |
 | **总指引** | [`methodology/README.md`](docs/methodology/README.md) · [关系图](docs/methodology/DOCUMENT_MAP_v1_zh.md) · [路线 ROADMAP](docs/methodology/ROADMAP_v1_zh.md) |
 | **本体** | [DESIGN_ONTOLOGY v1.2](docs/methodology/product/DESIGN_ONTOLOGY_v1_zh.md) |
-| **使用** | [**USER_GUIDE v1.0**](docs/USER_GUIDE_v1.0_zh.md) · [P0 差距](docs/methodology/execution/P0_V0.2_GAP.md) · [金样验收](examples/demo_checkout/ACCEPTANCE.md) · [ETCLOVG 映射](docs/ETCLOVG_MAPPING_v1_zh.md) |
+| **使用** | [**USER_GUIDE v1.0**](docs/USER_GUIDE_v1.0_zh.md)（§6.0 invoke 留档 · lifecycle dry-run）· [金样验收](examples/demo_checkout/ACCEPTANCE.md) |
 | **远期** | [HGM 草案](docs/methodology/graph/HARNESS_GRAPH_MODEL_design_v0_zh.md) |
 | **接入** | [ONBOARDING](docs/ONBOARDING.md) · [ARCHITECTURE](docs/ARCHITECTURE.md) |
 

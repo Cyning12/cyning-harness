@@ -3,7 +3,8 @@
 # 登记真值：状态 / 转移 / 守卫。yaml 本身不是引擎。
 # 由 `lifecycle dry-run` 引擎消费（v2.10+ · 资格判定旁路报告 · 不写盘）。
 # v2.11+ to_30 已接线：HG-AUDIT-R1 · HG-TASK-DRAFT · reviews_retention · audit_D5 · task_lint
-#   （close_* / 可选 to_00 仍可 unevaluated）
+# v2.13+ close 已接线：close_invoke · close_self_check · close_acceptance · close_slug · close_status · close_review
+#   （to_00 / spec_reviews_retention 仍可 unevaluated）
 # 只读展示：npx @cyning/harness lifecycle show [--json]
 # Schema：schema/lifecycle.v1.schema.json
 

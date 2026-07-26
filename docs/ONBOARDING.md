@@ -66,12 +66,19 @@ npx @cyning/harness verify --spec docs/spec/SPEC-xxx_v1.md \
 # 只读生命周期登记（方向二 · harness/lifecycle.yaml · 非引擎）
 npx @cyning/harness lifecycle show
 npx @cyning/harness lifecycle show --json
-# 转移资格 dry-run（v2.10+ · 旁路报告 · 不替代 verify）
-# v2.11+ to_30 已接线：HG-* · reviews · audit_D5 · task_lint（close_* 仍可 unevaluated）
+# 转移资格 dry-run（v2.10+ · 旁路报告 · 不替代 verify / task close）
+# v2.11+ to_30 已接线：HG-* · reviews · audit_D5 · task_lint
+# v2.13+ close_* 已接线（与 task close 同语义 · 仍无 --apply）
 npx @cyning/harness lifecycle dry-run --transition to_30 --from draft \
+  --task docs/tasks/active/task_xxx.md
+npx @cyning/harness lifecycle dry-run --transition close --from done \
   --task docs/tasks/active/task_xxx.md
 # 无 --task：仅结构 + 守卫清单 unevaluated
 npx @cyning/harness lifecycle dry-run --transition to_30 --from draft
+
+# 受闸归档（v2.12+ 多帽 invoke 集合 · 缺省 10,30,40 · 见 USER_GUIDE §6.0）
+npx @cyning/harness task close --file docs/tasks/active/task_xxx.md
+# 豁免示例：--allow-invoke-gap · --allow-unchecked · --allow-no-review
 
 # 机械化率资产只读（v2.11+ · SoT=discipline-coverage.yaml）
 npx @cyning/harness discipline show
@@ -94,6 +101,7 @@ npx @cyning/harness sync index --target /path/to/your-repo
 | **D3** | 30 前置人闸 | 复用 `gate-check.sh`，HG-AUDIT-R1 非 approved 时 verify 非 0 |
 | **D5** | 改码任务测试声明 | 仅 `--task`：`test_strategy=required` 但无测试/CI 引用时 verify 非 0 |
 | **reviews** | R&lt;n&gt; 审查文存在 | `--task` 与全量（v2.9+）· 缺文 BLOCKED · `--allow-no-review` |
+| **invoke hats** | 多帽 invoke 集合 | `task close` 硬闸（v2.12+）· `verify --task` 仅 WARN · `lifecycle dry-run close` 旁路（v2.13） |
 | **active** | 任务发现 | 双路径 `docs/tasks/active` ∪ `docs/harness/tasks/active`（v2.9+） |
 | **S5** | Git 工作区干净 | dirty 时 warn（不直接 fail verify，但 apply 须 `--force`） |
 | **lint** | task 结构（仅 `--task`） | v2.7+ E 级 → `WARN: task lint`（不改 exit / `may_start_30`） |
