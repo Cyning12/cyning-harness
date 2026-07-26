@@ -19,6 +19,8 @@
 | **chain_prompt** | `docs/harness/prompts/PROMPT_cursor_task_chain_serial_v1.md`（嵌入后路径） |
 | **semi_auto** | **`false`**（禁止作总闸） |
 | **audit_profile** | `full` / `post_close` / `human_only` |
+| **invoke_retention_profile** | `default` / `minimal` / `full`（10 起草时选定） |
+| **required_invoke_hats** | `10,30,40`（显式列表优先于 profile；缺省=default） |
 | **git_branch** | `task/<slug>` |
 | **worktree_root** | （并行时填独立 worktree 目录） |
 | **experience_capture** | `required` / `recommended` / `not_applicable` |

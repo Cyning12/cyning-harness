@@ -41,20 +41,41 @@ function makeTarget() {
   return fs.mkdtempSync(path.join(os.tmpdir(), 'cyning-harness-close-'));
 }
 
-/** 标准 fixture：active task + invoke + R1 审查文齐全；overrides 可改 task 正文 */
-function writeFixture(target, { taskContent = TASK_OK, taskName = 'task_demo_v1.md', invoke = true, review = true } = {}) {
+/**
+ * 标准 fixture：active task + invoke hats（默认 10 + 30_40）+ R1 审查文。
+ * invokeMode: 'default' | 'minimal30' | false（配合 invoke:false）
+ */
+function writeFixture(
+  target,
+  {
+    taskContent = TASK_OK,
+    taskName = 'task_demo_v1.md',
+    invoke = true,
+    review = true,
+    invokeMode = 'default',
+    invokeSlug = 'demo',
+  } = {},
+) {
   const activeDir = path.join(target, 'docs/tasks/active');
   fs.mkdirSync(activeDir, { recursive: true });
   fs.writeFileSync(path.join(activeDir, taskName), taskContent);
   if (invoke) {
-    const invokeDir = path.join(target, 'docs/harness/invokes/by-task/demo');
+    const invokeDir = path.join(target, 'docs/harness/invokes/by-task', invokeSlug);
     fs.mkdirSync(invokeDir, { recursive: true });
-    fs.writeFileSync(path.join(invokeDir, 'invoke_20260722_30_demo.md'), '# invoke\n');
+    if (invokeMode === 'minimal30') {
+      fs.writeFileSync(path.join(invokeDir, 'invoke_20260722_30_demo.md'), '# invoke 30\n');
+    } else {
+      fs.writeFileSync(path.join(invokeDir, 'invoke_20260722_10_demo.md'), '# invoke 10\n');
+      fs.writeFileSync(path.join(invokeDir, 'invoke_20260722_30_40_demo.md'), '# invoke 30+40\n');
+    }
   }
   if (review) {
     const reviewsDir = path.join(target, 'docs/harness/reviews');
     fs.mkdirSync(reviewsDir, { recursive: true });
-    fs.writeFileSync(path.join(reviewsDir, 'task_demo_audit_R1_20260724.md'), '# review\n');
+    const reviewBase = taskName.replace(/\.md$/, '').replace(/^task_/, 'task_');
+    // task_demo_v1 → task_demo_audit；strip _v1 for findReview stripVer
+    const reviewName = `${reviewBase.replace(/_v\d+$/, '')}_audit_R1_20260724.md`;
+    fs.writeFileSync(path.join(reviewsDir, reviewName), '# review\n');
   }
   return path.join('docs/tasks/active', taskName);
 }
@@ -179,15 +200,11 @@ test('close BLOCKED：文件名 slug ≠ 元信息 task_slug', () => {
 test('close PASS：文件名下划线 ↔ task_slug 连字符惯例等价（工作区实测惯例）', () => {
   const target = makeTarget();
   const content = TASK_OK.replace('**task_slug** | `demo`', '**task_slug** | `demo-task`');
-  const activeDir = path.join(target, 'docs/tasks/active');
-  fs.mkdirSync(activeDir, { recursive: true });
-  fs.writeFileSync(path.join(activeDir, 'task_demo_task_v1.md'), content);
-  const invokeDir = path.join(target, 'docs/harness/invokes/by-task/demo-task');
-  fs.mkdirSync(invokeDir, { recursive: true });
-  fs.writeFileSync(path.join(invokeDir, 'invoke.md'), '# invoke\n');
-  const reviewsDir = path.join(target, 'docs/harness/reviews');
-  fs.mkdirSync(reviewsDir, { recursive: true });
-  fs.writeFileSync(path.join(reviewsDir, 'task_demo_task_audit_R1_20260724.md'), '# review\n');
+  writeFixture(target, {
+    taskContent: content,
+    taskName: 'task_demo_task_v1.md',
+    invokeSlug: 'demo-task',
+  });
 
   const result = runNode(['task', 'close', '--file', 'docs/tasks/active/task_demo_task_v1.md', '--yes'], target);
   assert.equal(result.status, 0, result.stderr || result.stdout);
@@ -235,7 +252,8 @@ test('close：源文件不在 */active/ · 无 --target 拒绝；有 --target �
   fs.writeFileSync(path.join(doneDir, 'task_demo_v1.md'), TASK_OK);
   const invokeDir = path.join(target, 'docs/harness/invokes/by-task/demo');
   fs.mkdirSync(invokeDir, { recursive: true });
-  fs.writeFileSync(path.join(invokeDir, 'invoke.md'), '# invoke\n');
+  fs.writeFileSync(path.join(invokeDir, 'invoke_20260722_10_demo.md'), '# invoke 10\n');
+  fs.writeFileSync(path.join(invokeDir, 'invoke_20260722_30_40_demo.md'), '# invoke 30+40\n');
   const reviewsDir = path.join(target, 'docs/harness/reviews');
   fs.mkdirSync(reviewsDir, { recursive: true });
   fs.writeFileSync(path.join(reviewsDir, 'task_demo_audit_R1_20260724.md'), '# review\n');
@@ -276,7 +294,8 @@ test('close：编排仓布局 docs/harness/tasks/active → 同级 done', () => 
   fs.writeFileSync(path.join(activeDir, 'task_demo_v1.md'), TASK_OK);
   const invokeDir = path.join(target, 'docs/harness/invokes/by-task/demo');
   fs.mkdirSync(invokeDir, { recursive: true });
-  fs.writeFileSync(path.join(invokeDir, 'invoke.md'), '# invoke\n');
+  fs.writeFileSync(path.join(invokeDir, 'invoke_20260722_10_demo.md'), '# invoke 10\n');
+  fs.writeFileSync(path.join(invokeDir, 'invoke_20260722_30_40_demo.md'), '# invoke 30+40\n');
   const reviewsDir = path.join(target, 'docs/harness/reviews');
   fs.mkdirSync(reviewsDir, { recursive: true });
   fs.writeFileSync(path.join(reviewsDir, 'task_demo_audit_R1_20260724.md'), '# review\n');

@@ -6,7 +6,7 @@
 # 禁止：把本文件当「每周全量重盘」流程；不做 audit --discipline UI（本波）
 
 version: "1"
-as_of_package_version: "2.11.0"
+as_of_package_version: "2.12.0"
 scope: "Starter · harness/prompts （10/22/30/40 + FRAGMENT）+ TEMPLATE_invoke"
 source_audit: "rethink/2026-07-mechanization-rate · 02 转录 + 03 聚合 · 状态已按 G1–G4/N1–N4 刷新（非第二轮通读盘点）"
 
@@ -61,6 +61,11 @@ gaps:
     status: closed
     closed_in: "2.10.0"
     note: "Epic T2 · 旁路报告"
+  - id: INVOKE-HATS
+    title: 多帽 invoke 留档集合闸
+    status: closed
+    closed_in: "2.12.0"
+    note: "close evaluateInvokeHatsRetention · default 10,30,40"
 
 statements:
   - id: A1
@@ -105,11 +110,11 @@ statements:
     mechanism_quality: null
   - id: A6
     source: 30-execute-code.md
-    summary: invoke 快照落盘 by-task/<slug>/
+    summary: invoke 快照落盘 by-task/<slug>/（按 required_invoke_hats 集合）
     status: mechanical
-    mechanism: "M5 close + M6 lint-done"
+    mechanism: "M5 close evaluateInvokeHatsRetention + M6 lint-done"
     gap: null
-    notes: null
+    notes: "v2.12.0 默认 10,30,40；profile minimal/full；--allow-invoke-gap"
     mechanism_quality: null
   - id: A7
     source: 30-execute-code.md
@@ -265,11 +270,11 @@ statements:
     mechanism_quality: null
   - id: F1
     source: TEMPLATE_invoke.md
-    summary: 落盘路径 by-task/<task_slug>/
+    summary: 落盘路径 by-task/<task_slug>/ 且帽子集合覆盖
     status: mechanical
-    mechanism: "M5/M6"
+    mechanism: "M5 evaluateInvokeHatsRetention / M6"
     gap: null
-    notes: null
+    notes: "v2.12.0 文件名 hat token · 合并 30_40 可双计"
     mechanism_quality: null
   - id: F2
     source: TEMPLATE_invoke.md

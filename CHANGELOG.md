@@ -4,6 +4,26 @@
 
 ## [Unreleased]
 
+## [2.12.0] - 2026-07-26
+
+### Added
+
+- **多帽 invoke 留档硬闸**：task 元信息 `required_invoke_hats` / `invoke_retention_profile`（`default`=`10,30,40` · `minimal`=`30` · `full`=`00,10,20,30,40,CLOSE`）。
+- `task close` 检查 1 按集合覆盖校验；文件名 `30_40` 可同时满足 30 与 40；`--allow-invoke-gap` 豁免留痕。
+- `verify --task` 对 invoke hats 缺口 **WARN**（不挡 30）；`task lint` **W6** 提醒未设字段。
+- `lib/task-meta.js`：`resolveRequiredInvokeHats` · `scanInvokeHats` · `evaluateInvokeHatsRetention` · `extractHatsFromInvokeFilename`。
+
+### Changed
+
+- `lifecycle.yaml` close 守卫登记 `invoke_hats_retention`；`discipline-coverage.yaml` `as_of` → **2.12.0** · gaps `INVOKE-HATS`。
+- TASK_TEMPLATE / TEMPLATE_invoke / 10·20·30 帽文同步字段与纪律。
+
+### Notes
+
+- SPEC：`docs/spec/SPEC-invoke-hats-retention-gate_v1.md`
+- **破坏性（close）**：无字段时按 default 要求 10+30+40；存量仅 30 的 active 须补档、改 `minimal` 或 `--allow-invoke-gap`
+- minor · 建议业务仓 upgrade 后按 RUNBOOK 勾选 invoke 集合
+
 ## [2.11.1] - 2026-07-25
 
 ### Fixed

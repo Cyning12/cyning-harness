@@ -66,8 +66,14 @@ transitions:
     description: "task close · active→done 归档"
     guards:
       - id: close_invoke
-        command_or_check: "task close 检查1 · invoke 快照存在"
+        command_or_check: "task close 检查1 · invoke hats 集合覆盖（required_invoke_hats / profile · v2.12+）"
         severity: block
+        allow_flag: "--allow-invoke-gap"
+        note: "缺省 default=10,30,40；minimal=30；full 含 CLOSE；40 可与 30 合并文件名"
+      - id: invoke_hats_retention
+        command_or_check: "evaluateInvokeHatsRetention · 同 close_invoke（登记别名）"
+        severity: block
+        allow_flag: "--allow-invoke-gap"
       - id: close_self_check
         command_or_check: "task close 检查2 · 自检结论已回填"
         severity: block
