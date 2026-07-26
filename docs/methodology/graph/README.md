@@ -2,7 +2,7 @@
 
 > **对外名**：PIP（过程实例投影）。对内历史文件名可含 `HGM` / `hgm_*`（路径兼容，正文不用曾称括注）。
 
-> **Track G · G1 / v2.0+**：PIP（过程实例投影）为 **v1.0 公理稳定后的可选增强**（proposal · 未实现）· 详见 [`../ROADMAP_v1_zh.md`](../ROADMAP_v1_zh.md) §2.0 · §2.2。
+> **Track G · G1 / v2.0+**：PIP（过程实例投影）本地 JSONL + `graph ingest|snapshot|axioms` **已实现**；Neo4j / 远端同步仍提案 · 详见 [`../ROADMAP_v1_zh.md`](../ROADMAP_v1_zh.md) §2.0 · §2.2。
 
 | 文档 | 状态 | 说明 |
 | --- | --- | --- |

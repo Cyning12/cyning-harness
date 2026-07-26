@@ -15,6 +15,7 @@
 
 - 摩擦报告：`Projects/docs/harness/guides/ANALYSIS_upgrade_wizard_friction_20260725_v1_zh.md`
 - patch · 2.3+ manifest 仅五字段：`version` / `preset` / `ide` / `from_version` / `upgraded_at`（`name` / `tech_graph_dir` / `tasks_dir` / `hooks` 等已废弃）
+- **已发布**：`@cyning/harness@2.11.1`（npm `latest` · 2026-07-26）· tag `v2.11.1` 已推送
 
 ## [2.11.0] - 2026-07-25
 
