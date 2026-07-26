@@ -21,7 +21,7 @@
 
 - patch · 对规范命名无影响；依赖 slug 误计的畸形文件名 close 可能新 BLOCK
 - 迁移指引：[`docs/USER_GUIDE_v1.0_zh.md`](docs/USER_GUIDE_v1.0_zh.md) §6.0（不另造 RUNBOOK）
-- **已发布**：tag `v2.12.1` 已推送（2026-07-26）· npm publish 后将 `@cyning/harness@2.12.1` 标为 `latest`
+- **已发布**：`@cyning/harness@2.12.1`（npm `latest` · 2026-07-26）· tag `v2.12.1` 已推送
 
 ## [2.12.0] - 2026-07-26
 
