@@ -284,9 +284,9 @@ npm run harness -- check --target /tmp/foo
 | --- | --- | --- | --- |
 | **MD 人类轨** | `docs/_tech_graph/*.md` | 代码审阅、README 引用、Mermaid 渲染 | v1.0+ |
 | **YAML 编辑源** | `docs/_tech_graph/*.graph.yaml` | 结构化编辑、diff、CI 校验 | **v1.1+** |
-| **HGM 过程轨** | `.cyning-harness/events/*.jsonl` | Task / Gate / Review 实例与事件史 | **v2.0+** |
+| **PIP（过程实例投影）过程轨** | `.cyning-harness/events/*.jsonl` | Task / Gate / Review 实例与事件史 | **v2.0+** |
 
-**原则**：YAML 为 Inform 编辑源，HGM 为过程事件图；YAML **不替代** task/review 真值，HGM **不替代** YAML/MD Inform 正文。
+**原则**：YAML 为 Inform 编辑源，PIP（过程实例投影）为过程事件图；YAML **不替代** task/review 真值，PIP（过程实例投影）**不替代** YAML/MD Inform 正文。
 
 ### 10.2 最小工作流
 
@@ -327,9 +327,9 @@ npx @cyning/harness graph yaml check --all --input docs/_tech_graph
 | bench `100` | [SDD-Compliance](../examples/compliance_bench/README.md) 五场景合规率 · 见上文 §6.1 |
 | Extended 帽 | 00/50/链式 PROMPT 不在 Starter 默认包 · 见 [`harness/prompts/README.md`](../harness/prompts/README.md) |
 | Inform-YAML | **v1.1+** · 可选编辑源 · 须 `graph yaml check` 与 `graph.json` 一致 |
-| HGM / 图数据库 | **v2.0+ 已实现** `graph ingest|snapshot|axioms` · 本地 JSONL + snapshot；Neo4j / 远端同步 **仍提案** |
+| PIP（过程实例投影）/ 图数据库 | **v2.0+ 已实现** `graph ingest|snapshot|axioms` · 本地 JSONL + snapshot；Neo4j / 远端同步 **仍提案** |
 | Agent-shell | 研究轨 #9，非 npm 功能 |
-| rejected→draft | **v2.0.1+** bench S5 + HGM axioms 事件流精确匹配 |
+| rejected→draft | **v2.0.1+** bench S5 + PIP（过程实例投影）axioms 事件流精确匹配 |
 
 ---
 
@@ -350,21 +350,21 @@ A：不会（S2 域）。若 prompts 模板有更新，apply 会更新 **模板�
 **Q：如何编辑 Inform 架构图？**  
 A：v1.1+ 可选 `docs/_tech_graph/*.graph.yaml` 作为编辑源，运行 `npx @cyning/harness graph yaml compile|check` 生成 MD / 校验 graph.json。
 
-**Q：HGM 与 Inform-YAML 是什么关系？**  
-A：Inform-YAML 是 **架构图谱** 的编辑源；HGM（v2.0+）是 **过程协作** 的事件图。二者并列，HGM 通过 `InformArtifact` 节点引用 Inform 产物，但不覆盖其正文。
+**Q：PIP（过程实例投影）与 Inform-YAML 是什么关系？**  
+A：Inform-YAML 是 **架构图谱** 的编辑源；PIP（过程实例投影，v2.0+）是 **过程协作** 的事件图。二者并列，PIP（过程实例投影）通过 `InformArtifact` 节点引用 Inform 产物，但不覆盖其正文。
 
 **Q：如何贡献或报 issue？**  
 A：GitHub [Cyning12/cyning-harness](https://github.com/Cyning12/cyning-harness) · MIT。
 
 ---
 
-## 13. HGM 过程轨（v2.0+）
+## 13. PIP（过程实例投影）过程轨（v2.0+）
 
-Harness Graph Model（HGM）把 task、gate、review、invoke、sync 等过程实例变成 **append-only 事件流** 与 **可重放图快照**，用于机械检查 SDD 公理。
+PIP（过程实例投影；Process Instance Projection）把 task、gate、review、invoke、sync 等过程实例变成 **append-only 事件流** 与 **可重放图快照**，用于机械检查 SDD 公理。
 
 ### 13.1 事件文件
 
-HGM 事件写入 `.cyning-harness/events/YYYY-MM.jsonl`，修正 = 追加 `CorrectionEvent`，**禁止删改历史**。
+PIP（过程实例投影） 事件写入 `.cyning-harness/events/YYYY-MM.jsonl`，修正 = 追加 `CorrectionEvent`，**禁止删改历史**。
 
 ### 13.2 CLI
 
@@ -397,7 +397,7 @@ chmod +x .git/hooks/pre-commit
 
 - `InformArtifact` 节点 ID：`inform:{repo_rel_path}`
 - Task → InformArtifact 边：`MUST_READ`
-- HGM **不存储** Inform 正文，只存路径指针与 schema 版本
+- PIP（过程实例投影）**不存储** Inform 正文，只存路径指针与 schema 版本
 
 ### 13.5 局限
 
@@ -432,4 +432,4 @@ chmod +x .git/hooks/pre-commit
 | 2026-06-16 | v1.0.1：verify / gate-check / sync index CLI · `--with-scripts` · QUICKREF |
 | 2026-06-17 | v1.1.0：新增 §10 Inform-YAML · `graph yaml compile|check` · 三轨边界说明 |
 | 2026-06-17 | v2.0.1：D4-a axioms · rejected→draft 精确化 · S5 bench · optional pre-commit hook |
-| 2026-06-17 | v2.0.0：新增 §13 HGM 过程轨 · `graph ingest|snapshot|axioms` · InformArtifact 与 MUST_READ 边 |
+| 2026-06-17 | v2.0.0：新增 §13 PIP（过程实例投影）过程轨 · `graph ingest|snapshot|axioms` · InformArtifact 与 MUST_READ 边 |

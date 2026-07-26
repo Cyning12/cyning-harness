@@ -1,4 +1,6 @@
-# Harness Graph Model (HGM) · 设计草案 v0
+# PIP（过程实例投影；Process Instance Projection）· 设计草案 v0
+
+> 文件名历史：`HARNESS_GRAPH_MODEL_*`（路径兼容）。
 
 
 | 项        | 内容                                                                                                                               |
@@ -20,7 +22,7 @@
 ### 0.1 一句话
 
 ```text
-Harness Graph Model (HGM)
+PIP（过程实例投影）
   = OOP 的结构化对象（本体 Class 的实例）
   + 显式带类型的边（ObjectProperty · HatRef · 基数）
   + 不可变事件历史（append-only · 可重放投影）
