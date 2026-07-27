@@ -22,10 +22,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
+      # npx-only：关闭 setup-node@v5 默认 packageManager 缓存
+      # （package.json 若声明 packageManager=pnpm 且未装 pnpm → Unable to locate executable file: pnpm）
       - name: Setup Node
         uses: actions/setup-node@v5
         with:
           node-version: "24"
+          package-manager-cache: false
 
       - name: graph ingest（幂等）
         continue-on-error: true

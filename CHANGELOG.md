@@ -4,6 +4,15 @@
 
 ## [Unreleased]
 
+### Added
+
+- **CI 样例**：`ci/samples/tech-graph.yml.example`（`docs/_tech_graph` + `graph-compile.sh` · `package-manager-cache: false`）。
+
+### Fixed
+
+- `ci/samples/hgm-ingest.yml.example`：setup-node@v5 显式 `package-manager-cache: false`（npx-only job 遇 `packageManager=pnpm` 不再误找 pnpm）。
+- `ci/samples/README.md`：登记 tech-graph；专节摩擦（setup-node × pnpm cache × npx-only vs quality 先 action-setup）。
+
 ## [2.16.1] - 2026-07-27
 
 ### Added
