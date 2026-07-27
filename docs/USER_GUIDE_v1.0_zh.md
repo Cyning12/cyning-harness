@@ -188,6 +188,7 @@ Schema：[`schema/verify_result.v1.schema.json`](../schema/verify_result.v1.sche
 | `npx @cyning/harness upgrade` | 同步产品包更新（可加 `--gate-check`）；v2.11.1+：`local.json` 在 apply 后写入；manifest 重写前 WARN 非标准字段（2.3+ 仅五字段） |
 | `npx @cyning/harness check` | 检查是否有新版本 |
 | `npx @cyning/harness verify` | 全量：双路径 + reviews（v2.9+）；`--task`：30 前聚合 + invoke hats WARN（v2.12+）；`--spec`：SPEC→00（v2.8+ · 互斥） |
+| `npx @cyning/harness status` | 过程可观测一屏投影（v2.14+ · 闸/invoke/review/`verify_preview`；**不替代** verify） |
 | `npx @cyning/harness task close` | 受闸归档；v2.12+ 按 `required_invoke_hats` / `invoke_retention_profile` 校验多帽 invoke（缺省 `10,30,40`；`--allow-invoke-gap`） |
 | `npx @cyning/harness lifecycle show` | 只读展示 `harness/lifecycle.yaml`（登记 · v2.7+） |
 | `npx @cyning/harness lifecycle dry-run` | 转移资格判定（v2.10+ · `to_30` v2.11 · **`close_*` v2.13** · 旁路 · 非 G7） |
@@ -206,6 +207,30 @@ Schema：[`schema/verify_result.v1.schema.json`](../schema/verify_result.v1.sche
 | **S5** | 工作区 dirty 时 warn；`sync apply` 须 `--force` 明示 |
 
 Audit **不替代** 维护者判断；22 内容质量仍须人读 review。详见 [`ONBOARDING.md`](./ONBOARDING.md) §2.2。
+
+### 6.0a 过程可观测 · `status`（v2.14+）
+
+一屏回答「这个 task 现在能不能进 30？卡在哪？」——聚合闸表、invoke/review 存在性、以及 **`verify` 只读预览**。
+
+```bash
+# 列出 active 摘要
+npx @cyning/harness status --target /path/to/repo
+
+# 单 task 详表（人读）
+npx @cyning/harness status --target /path/to/repo --task docs/harness/tasks/active/task_xxx.md
+
+# 机读（obs_status.v1）
+npx @cyning/harness status --target /path/to/repo --task docs/harness/tasks/active/task_xxx.md --json
+```
+
+| 要点 | 说明 |
+| --- | --- |
+| **≠ verify** | `verify_preview` 仅为投影；**30 前仍须**正式 `harness verify --task …` |
+| `--check` | P0 仅 stderr WARN；硬失败 exit 属后续版 |
+| HGM | 只读事件计数；无匹配事件时 `event_count=null`；**不会**自动 `ingest` |
+| JSON | 字段只加不删语义（`schema_version: obs_status.v1`） |
+
+完整字段见产品 SPEC：`docs/spec/SPEC-process-observability_status_timeline_v1.md`。
 
 ### 6.0 多帽 invoke 留档（v2.12+）
 

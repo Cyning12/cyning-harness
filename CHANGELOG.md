@@ -4,6 +4,25 @@
 
 ## [Unreleased]
 
+## [2.14.0] - 2026-07-27
+
+### Added
+
+- **`harness status`**：过程可观测一屏投影（`--target` / `--task` / `--json` / `--check` WARN stub）。
+- JSON 契约 `obs_status.v1`：闸表 · `may_start_30` · blockers · last_invoke · reviews(R1/CLOSE) · `verify_preview`（只读）· HGM 计数 · KPI 节存在性 · `next_hint`。
+- `lib/status.js` + `test/status.test.js`。
+
+### Changed
+
+- USER_GUIDE：新增「过程可观测」小节；CLI 速查表登记 `status`。
+- 明确纪律：**status 不替代** 正式 `harness verify`（30 前仍须跑 verify）。
+
+### Notes
+
+- SPEC：`docs/spec/SPEC-process-observability_status_timeline_v1.md` · Epic P0
+- minor · `timeline` / `--check` 硬失败属后续棒；本版 `--check` 仅 WARN
+- status **禁止**偷偷 `graph ingest` 写盘
+
 ## [2.13.0] - 2026-07-26
 
 ### Added
