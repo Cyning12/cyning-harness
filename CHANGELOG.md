@@ -18,7 +18,7 @@
 ### Notes
 
 - patch · 仅 CI 样例 / 文档；不改变 CLI 行为
-- 待维护者 `npm publish`（本 tag 不自动发 npm）
+- **已发布**：`@cyning/harness@2.16.2`（npm `latest` · 2026-07-27）· tag `v2.16.2` 已推送
 
 ## [2.16.1] - 2026-07-27
 
