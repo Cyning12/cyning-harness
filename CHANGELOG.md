@@ -4,6 +4,25 @@
 
 ## [Unreleased]
 
+## [2.15.0] - 2026-07-27
+
+### Added
+
+- **`harness timeline`**：按 task 投影 HGM 事件时间线（`--task` / `--json` / `--limit` / 可选 `--ingest`）。
+- JSON 契约 `obs_timeline.v1`；无匹配事件时 exit 0 + WARN，提示 `graph ingest`（默认不写盘）。
+- `lib/timeline.js` · `lib/obs-hgm.js`（与 `status.hgm` **同一** task 匹配规则）· `test/timeline.test.js`。
+
+### Changed
+
+- USER_GUIDE §6.0a 扩写 timeline；`status` 经 `obs-hgm` 复用过滤。
+- `discipline-coverage.yaml` `as_of` → **2.15.0**。
+
+### Notes
+
+- SPEC：`docs/spec/SPEC-process-observability_status_timeline_v1.md` · Epic P1
+- minor · 与 P0 `status`（2.14）同窗过程可观测；`--ingest` 为显式开关
+- 禁止 Neo4j；不改 verify / status 退出语义
+
 ## [2.14.0] - 2026-07-27
 
 ### Added

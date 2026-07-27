@@ -189,6 +189,7 @@ Schema：[`schema/verify_result.v1.schema.json`](../schema/verify_result.v1.sche
 | `npx @cyning/harness check` | 检查是否有新版本 |
 | `npx @cyning/harness verify` | 全量：双路径 + reviews（v2.9+）；`--task`：30 前聚合 + invoke hats WARN（v2.12+）；`--spec`：SPEC→00（v2.8+ · 互斥） |
 | `npx @cyning/harness status` | 过程可观测一屏投影（v2.14+ · 闸/invoke/review/`verify_preview`；**不替代** verify） |
+| `npx @cyning/harness timeline` | 过程时间线（v2.15+ · HGM 事件投影；默认不 ingest；可选 `--ingest`） |
 | `npx @cyning/harness task close` | 受闸归档；v2.12+ 按 `required_invoke_hats` / `invoke_retention_profile` 校验多帽 invoke（缺省 `10,30,40`；`--allow-invoke-gap`） |
 | `npx @cyning/harness lifecycle show` | 只读展示 `harness/lifecycle.yaml`（登记 · v2.7+） |
 | `npx @cyning/harness lifecycle dry-run` | 转移资格判定（v2.10+ · `to_30` v2.11 · **`close_*` v2.13** · 旁路 · 非 G7） |
@@ -208,7 +209,9 @@ Schema：[`schema/verify_result.v1.schema.json`](../schema/verify_result.v1.sche
 
 Audit **不替代** 维护者判断；22 内容质量仍须人读 review。详见 [`ONBOARDING.md`](./ONBOARDING.md) §2.2。
 
-### 6.0a 过程可观测 · `status`（v2.14+）
+### 6.0a 过程可观测 · `status` / `timeline`（v2.14+ / v2.15+）
+
+#### status（一屏）
 
 一屏回答「这个 task 现在能不能进 30？卡在哪？」——聚合闸表、invoke/review 存在性、以及 **`verify` 只读预览**。
 
@@ -229,6 +232,23 @@ npx @cyning/harness status --target /path/to/repo --task docs/harness/tasks/acti
 | `--check` | P0 仅 stderr WARN；硬失败 exit 属后续版 |
 | HGM | 只读事件计数；无匹配事件时 `event_count=null`；**不会**自动 `ingest` |
 | JSON | 字段只加不删语义（`schema_version: obs_status.v1`） |
+
+#### timeline（时间线 · v2.15+）
+
+按时间升序列出与该 task 相关的 HGM 事件（与 `status.hgm` **同一匹配规则**）。
+
+```bash
+npx @cyning/harness timeline --target /path/to/repo --task docs/harness/tasks/active/task_xxx.md
+npx @cyning/harness timeline --target /path/to/repo --task docs/…/task_xxx.md --json --limit 20
+# 显式写盘后再投影（默认不会偷偷 ingest）
+npx @cyning/harness timeline --target /path/to/repo --task docs/…/task_xxx.md --ingest
+```
+
+| 要点 | 说明 |
+| --- | --- |
+| 无事件 | exit 0 · stderr WARN · 提示先 `graph ingest` 或加 `--ingest` |
+| `--ingest` | **显式**调用 ingest；非默认 |
+| JSON | `obs_timeline.v1` · 每行含 `occurred_at` / `type` / `subject` / `summary` |
 
 完整字段见产品 SPEC：`docs/spec/SPEC-process-observability_status_timeline_v1.md`。
 
