@@ -229,7 +229,7 @@ npx @cyning/harness status --target /path/to/repo --task docs/harness/tasks/acti
 | 要点 | 说明 |
 | --- | --- |
 | **≠ verify** | `verify_preview` 仅为投影；**30 前仍须**正式 `harness verify --task …` |
-| `--check` | P0 仅 stderr WARN；硬失败 exit 属后续版 |
+| `--check` | 须 `--task`。缺 R1 或 `may_start_30=false` → **exit 2**（v2.16+）；**仍 ≠** 替代 verify |
 | HGM | 只读事件计数；无匹配事件时 `event_count=null`；**不会**自动 `ingest` |
 | JSON | 字段只加不删语义（`schema_version: obs_status.v1`） |
 
@@ -251,6 +251,20 @@ npx @cyning/harness timeline --target /path/to/repo --task docs/…/task_xxx.md 
 | JSON | `obs_timeline.v1` · 每行含 `occurred_at` / `type` / `subject` / `summary` |
 
 完整字段见产品 SPEC：`docs/spec/SPEC-process-observability_status_timeline_v1.md`。
+
+#### 可选 · commit 后 ingest hook（v2.16+ / 既有 §13.3）
+
+`init` **默认不安装** hook。随包样例：
+
+```bash
+# 从 npm 包 / clone
+cp node_modules/@cyning/harness/examples/hooks/pre-commit.graph-ingest.sample \
+  .cyning-harness/hooks/pre-commit.sample
+cp .cyning-harness/hooks/pre-commit.sample .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
+```
+
+失败默认 **WARN 不挡 commit**。CI 可选步骤见 [`ci/samples/hgm-ingest.yml.example`](../ci/samples/hgm-ingest.yml.example)。
 
 ### 6.0 多帽 invoke 留档（v2.12+）
 
@@ -451,9 +465,12 @@ npx @cyning/harness graph axioms check --target /path/to/your-repo --json
 
 ### 13.3 可选 · Git hooks
 
-`init` **默认不安装** pre-commit。维护者可手动复制：
+`init` **默认不安装** pre-commit。维护者可手动复制（随包样例优先）：
 
 ```bash
+cp node_modules/@cyning/harness/examples/hooks/pre-commit.graph-ingest.sample \
+  .cyning-harness/hooks/pre-commit.sample
+# 或本地 clone：examples/hooks/pre-commit.graph-ingest.sample
 cp .cyning-harness/hooks/pre-commit.sample .git/hooks/pre-commit
 chmod +x .git/hooks/pre-commit
 ```

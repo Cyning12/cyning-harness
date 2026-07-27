@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Optional pre-commit hook · NOT installed by default（须手动 cp 至 .git/hooks/pre-commit）
+# 真值样例（随 npm 包）：examples/hooks/pre-commit.graph-ingest.sample
 # 纪律：只 append HGM events · 不改 task/review 正文（S2 域）
 set -euo pipefail
 
@@ -7,7 +8,7 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "$REPO_ROOT"
 
 # 幂等增量 ingest（ingestRepoIdempotent · 跳过已存在事件）
-if ! npx @cyning/harness graph ingest --target "$REPO_ROOT"; then
+if ! npx --yes @cyning/harness graph ingest --target "$REPO_ROOT"; then
   echo "WARN: graph ingest 失败 · 未阻断 commit（可取消下行注释以 block）" >&2
   # exit 1
 fi

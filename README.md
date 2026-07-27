@@ -187,7 +187,7 @@ cyning-harness/
 
 | 项 | 值 |
 |----|-----|
-| 当前 npm | **`@cyning/harness@2.15.0`**（待 publish）— `timeline` + `status` 过程可观测 · dry-run close（2.13） |
+| 当前 npm | **`@cyning/harness@2.16.0`**（待 publish）— `status --check` · timeline · status 过程可观测 |
 | 里程碑 | v2.0 — HGM G1 · Inform-YAML · ICVO audit · invoke_index |
 | 许可 | **MIT** · [`LICENSE`](LICENSE) · 变更 [`CHANGELOG.md`](CHANGELOG.md) |
 

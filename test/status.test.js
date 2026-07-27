@@ -178,3 +178,64 @@ test('next_hint：done/CLOSE 提示复盘', async () => {
   });
   assert.match(hint, /已关账|复盘/);
 });
+
+test('status --check：缺 review → exit 2', () => {
+  const target = makeTarget();
+  const rel = writeTask(target, { gateStatus: 'approved', withReview: false });
+  const result = runNode([
+    'status',
+    '--target',
+    target,
+    '--task',
+    rel,
+    '--check',
+  ]);
+  assert.equal(result.status, 2, result.stderr || result.stdout);
+  assert.match(result.stderr, /FAIL: status --check/);
+  assert.match(result.stderr, /missing R/);
+});
+
+test('status --check：闸 pending → exit 2', () => {
+  const target = makeTarget();
+  const rel = writeTask(target, {
+    gateStatus: 'pending',
+    withReview: true,
+  });
+  const result = runNode([
+    'status',
+    '--target',
+    target,
+    '--task',
+    rel,
+    '--check',
+  ]);
+  assert.equal(result.status, 2, result.stderr || result.stdout);
+  assert.match(result.stderr, /may_start_30=false/);
+});
+
+test('status --check：闸齐 + R1 → exit 0', () => {
+  const target = makeTarget();
+  const rel = writeTask(target, {
+    gateStatus: 'approved',
+    withReview: true,
+  });
+  fs.mkdirSync(path.join(target, 'test'), { recursive: true });
+  fs.writeFileSync(path.join(target, 'test/demo.test.js'), '');
+  const result = runNode([
+    'status',
+    '--target',
+    target,
+    '--task',
+    rel,
+    '--check',
+  ]);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stderr, /OK: status --check passed/);
+});
+
+test('status --check 无 --task → exit 1', () => {
+  const target = makeTarget();
+  const result = runNode(['status', '--target', target, '--check']);
+  assert.equal(result.status, 1);
+  assert.match(result.stderr || result.stdout, /须配合 --task/);
+});

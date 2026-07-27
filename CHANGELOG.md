@@ -4,6 +4,24 @@
 
 ## [Unreleased]
 
+## [2.16.0] - 2026-07-27
+
+### Added
+
+- **`status --check` 硬语义**：缺 R1 review 或 `may_start_30=false` → **exit 2**（须 `--task`）。
+- **hook 样例（随包）**：`examples/hooks/pre-commit.graph-ingest.sample`（默认 warn 不挡 commit · init 不装）。
+- **CI 样例**：`ci/samples/hgm-ingest.yml.example`（可选 · `continue-on-error`）。
+
+### Changed
+
+- USER_GUIDE §6.0a / §13.3：交叉链 hook + CI；`--check` 说明升级。
+- `discipline-coverage.yaml` `as_of` → **2.16.0**。
+
+### Notes
+
+- SPEC / Epic P2 · **不**强制装 hook · **不**替代 verify
+- minor · 相对 2.15：`--check` 从 WARN 升为可失败 exit
+
 ## [2.15.0] - 2026-07-27
 
 ### Added

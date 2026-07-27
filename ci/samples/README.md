@@ -8,6 +8,7 @@
 |------|------|--------|--------|
 | [`quality.yml.example`](./quality.yml.example) | ✅ | Node/TS · Next 等 | install → lint → test → build |
 | [`pytest.yml.example`](./pytest.yml.example) | ✅ | Python · FastAPI 等 | install → pytest |
+| [`hgm-ingest.yml.example`](./hgm-ingest.yml.example) | ✅ · **可选** | 任意已接入 Harness 的仓 | `graph ingest`（默认 continue-on-error） |
 
 ## 嵌入步骤
 
@@ -16,6 +17,8 @@ mkdir -p .github/workflows
 cp cyning-harness/ci/samples/quality.yml.example .github/workflows/quality.yml
 # 或
 cp cyning-harness/ci/samples/pytest.yml.example .github/workflows/pytest.yml
+# 过程可观测（可选 · 非三门禁必绿）
+cp cyning-harness/ci/samples/hgm-ingest.yml.example .github/workflows/hgm-ingest.yml
 ```
 
 按 `package.json` / `requirements.txt` / Node 版本 / env 变量 **裁剪注释块**。
@@ -39,4 +42,5 @@ Ink workflow 含图谱 export、跨仓 checkout 等 **业务专有** 步骤；St
 
 | 日期 | 说明 |
 |------|------|
+| 2026-07-27 | 增 `hgm-ingest.yml.example`（过程可观测 P2 · 可选） |
 | 2026-06-09 | T4 M2 首版样例 |
