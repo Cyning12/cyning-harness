@@ -149,3 +149,32 @@ test('buildTaskStatus：库函数直接覆盖 pending', () => {
   assert.equal(payload.may_start_30, false);
   assert.equal(payload.schema_version, 'obs_status.v1');
 });
+
+test('next_hint：已过 30 不提示「开 30」', async () => {
+  const { buildNextHint } = await import('../lib/status.js');
+  const hint = buildNextHint({
+    mayStart30: true,
+    blockers: [],
+    reviewFound: true,
+    closeFound: false,
+    verifyOk: true,
+    status: 'in_progress',
+    lastHat: '30',
+  });
+  assert.match(hint, /30 已执行/);
+  assert.doesNotMatch(hint, /后开 30/);
+});
+
+test('next_hint：done/CLOSE 提示复盘', async () => {
+  const { buildNextHint } = await import('../lib/status.js');
+  const hint = buildNextHint({
+    mayStart30: true,
+    blockers: [],
+    reviewFound: true,
+    closeFound: true,
+    verifyOk: true,
+    status: 'done',
+    lastHat: '40',
+  });
+  assert.match(hint, /已关账|复盘/);
+});

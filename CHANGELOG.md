@@ -22,6 +22,7 @@
 - SPEC：`docs/spec/SPEC-process-observability_status_timeline_v1.md` · Epic P0
 - minor · `timeline` / `--check` 硬失败属后续棒；本版 `--check` 仅 WARN
 - status **禁止**偷偷 `graph ingest` 写盘
+- **fix**：`next_hint` 识别 post-30（last_invoke hat≥30）与 done/CLOSE，不再误提示「开 30」
 
 ## [2.13.0] - 2026-07-26
 
