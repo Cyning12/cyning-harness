@@ -4,6 +4,17 @@
 
 ## [Unreleased]
 
+## [2.16.1] - 2026-07-27
+
+### Added
+
+- USER_GUIDE §6.0a：**跨壳过程观测边界** POINTER（工作区 `GUIDANCE_harness_process_observability_shell_boundary_v1_zh.md` · Epic P3a）。
+
+### Notes
+
+- patch · 产品仓仅文档指针；边界真值在工作区 Guides
+- 不改变 CLI 行为
+
 ## [2.16.0] - 2026-07-27
 
 ### Added

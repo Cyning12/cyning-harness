@@ -266,6 +266,14 @@ chmod +x .git/hooks/pre-commit
 
 失败默认 **WARN 不挡 commit**。CI 可选步骤见 [`ci/samples/hgm-ingest.yml.example`](../ci/samples/hgm-ingest.yml.example)。
 
+#### 跨壳边界（工作区 GUIDANCE · P3a）
+
+结束态认**落盘**；飞行中属各 ExecutionShell，**禁止**升格为签收真值。完整边界表：
+
+- 工作区（Open `Projects/`）：`docs/harness/guides/GUIDANCE_harness_process_observability_shell_boundary_v1_zh.md`
+- Kimi 壳专章（链）：同目录 `GUIDANCE_kimi_code_00_observability_v1_zh.md`
+- Ops Desk 只读 JSON 消费者：**P3b**（可选 · 不阻塞 Epic）
+
 ### 6.0 多帽 invoke 留档（v2.12+）
 
 `task close` 按 task 元信息校验 `by-task/<slug>/` 下 invoke 文件名所覆盖的 **hat 集合**（缺省要求 `10,30,40`）。
