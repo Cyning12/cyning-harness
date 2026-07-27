@@ -2,7 +2,7 @@
 
 | 项 | 内容 |
 | --- | --- |
-| **状态** | `draft_spec` · 待 HG-SPEC-SIGNOFF / 实现 Agent 接手 |
+| **状态** | `signed` · 实现完成 · 待发版 v2.14.0 |
 | **日期** | 2026-07-27 |
 | **track** | `feature` · 行为变更（verify） |
 | **上游** | [`SPEC-invoke-hats-retention-gate_v1.md`](./SPEC-invoke-hats-retention-gate_v1.md)（v2.12 · close 硬 / verify WARN） |
@@ -90,14 +90,14 @@ v2.12 将 invoke 集合硬闸放在 **`task close`**：`verify --task` 对缺帽
 
 ## 5. 验收标准
 
-- [ ] default profile：仅有 `invoke_*_30_*`、闸全 approved、R1 文在 → **VERIFY BLOCKED** · `may_start_30=false` · 文案含 pre-30 / 缺 `10`
-- [ ] 补上 `invoke_*_10_*` 后（仍可无 40）→ verify **PASS**（40 可仍 WARN）
-- [ ] `invoke_retention_profile: minimal`：无 10 → verify **不因 pre-30 挡**（行为与「无 preRequired」一致）
-- [ ] `--allow-invoke-gap`：缺 10 → WARN 放行 · 留痕
-- [ ] `invoke_*_30_40_*` 双计规则不变；close 行为回归绿
-- [ ] `npm test` 全绿；旧「WARN 不挡」用例已按新语义更新
-- [ ] FRAGMENT_30 / USER_GUIDE / CHANGELOG 已写行为变更
-- [ ] `--json` handoff 可区分：`invoke_pre30_ok`（或等价）与既有字段
+- [x] default profile：仅有 `invoke_*_30_*`、闸全 approved、R1 文在 → **VERIFY BLOCKED** · `may_start_30=false` · 文案含 pre-30 / 缺 `10`
+- [x] 补上 `invoke_*_10_*` 后（仍可无 40）→ verify **PASS**（40 可仍 WARN）
+- [x] `invoke_retention_profile: minimal`：无 10 → verify **不因 pre-30 挡**（行为与「无 preRequired」一致）
+- [x] `--allow-invoke-gap`：缺 10 → WARN 放行 · 留痕
+- [x] `invoke_*_30_40_*` 双计规则不变；close 行为回归绿
+- [x] `npm test` 全绿；旧「WARN 不挡」用例已按新语义更新
+- [x] FRAGMENT_30 / USER_GUIDE / CHANGELOG 已写行为变更
+- [x] `--json` handoff 可区分：`invoke_pre30_ok`（或等价）与既有字段
 
 ---
 

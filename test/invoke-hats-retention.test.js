@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 import {
   evaluateInvokeHatsRetention,
+  evaluatePre30InvokeHats,
   extractHatsFromInvokeFilename,
   resolveRequiredInvokeHats,
 } from '../lib/task-meta.js';
@@ -122,6 +123,31 @@ test('evaluateInvokeHatsRetention · 仅 30 → 缺 10,40', () => {
   assert.deepEqual(ev.missing.sort(), ['10', '40']);
 });
 
+test('evaluatePre30InvokeHats · default 仅 30 → 缺 pre-30=10', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pre30-'));
+  const invokeDir = path.join(dir, 'by-task');
+  fs.mkdirSync(invokeDir);
+  fs.writeFileSync(path.join(invokeDir, 'invoke_20260727_30_x.md'), '#\n');
+  const ev = evaluatePre30InvokeHats({}, invokeDir);
+  assert.equal(ev.skipped, false);
+  assert.equal(ev.ok, false);
+  assert.deepEqual(ev.preRequired, ['10']);
+  assert.deepEqual(ev.preMissing, ['10']);
+  assert.deepEqual(ev.postMissing.sort(), ['40']);
+});
+
+test('evaluatePre30InvokeHats · minimal → skipped/ok', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pre30-min-'));
+  const invokeDir = path.join(dir, 'by-task');
+  fs.mkdirSync(invokeDir);
+  fs.writeFileSync(path.join(invokeDir, 'invoke_20260727_30_x.md'), '#\n');
+  const ev = evaluatePre30InvokeHats({ invoke_retention_profile: 'minimal' }, invokeDir);
+  assert.equal(ev.skipped, true);
+  assert.equal(ev.ok, true);
+  assert.deepEqual(ev.preRequired, []);
+  assert.deepEqual(ev.preMissing, []);
+});
+
 test('close BLOCKED：default 仅有 30 → missing invoke hats', () => {
   const target = fs.mkdtempSync(path.join(os.tmpdir(), 'close-hats-'));
   const rel = writeCloseFixture(target, {
@@ -172,11 +198,9 @@ test('close：--allow-invoke-gap 豁免缺帽并留痕', () => {
   assert.equal(lastLine(result.stdout), 'CLOSE: PASS · demo');
 });
 
-test('verify --task：invoke hats gap WARN 不挡 PASS', () => {
-  const target = fs.mkdtempSync(path.join(os.tmpdir(), 'verify-hats-'));
+function writeVerifyFixture(target, { metaExtra = '', invokeFiles = ['invoke_20260727_30_demo.md'] } = {}) {
   const activeDir = path.join(target, 'docs/tasks/active');
   fs.mkdirSync(activeDir, { recursive: true });
-  // in_progress + gates approved so verify can run gate-check
   const task = `# Task
 
 > **状态**：\`in_progress\`
@@ -188,7 +212,7 @@ test('verify --task：invoke hats gap WARN 不挡 PASS', () => {
 | **task_slug** | \`demo\` |
 | **test_strategy** | \`not_applicable\` |
 | **test_strategy_note** | docs only |
-
+${metaExtra}
 ### 人工闸
 
 | human_gate_id | status | blocks_hats | 说明 |
@@ -214,19 +238,84 @@ pending。
   const reviewsDir = path.join(target, 'docs/harness/reviews');
   fs.mkdirSync(reviewsDir, { recursive: true });
   fs.writeFileSync(path.join(reviewsDir, 'task_demo_audit_R1_20260726.md'), '# r\n');
-  // only 30
-  const invokeDir = path.join(target, 'docs/harness/invokes/by-task/demo');
-  fs.mkdirSync(invokeDir, { recursive: true });
-  fs.writeFileSync(path.join(invokeDir, 'invoke_20260726_30_demo.md'), '#\n');
+  if (invokeFiles.length) {
+    const invokeDir = path.join(target, 'docs/harness/invokes/by-task/demo');
+    fs.mkdirSync(invokeDir, { recursive: true });
+    for (const f of invokeFiles) {
+      fs.writeFileSync(path.join(invokeDir, f), `# ${f}\n`);
+    }
+  }
+  return 'docs/tasks/active/task_demo_v1.md';
+}
 
+test('verify --task：缺 pre-30(10) → BLOCKED · may_start_30 不可', () => {
+  const target = fs.mkdtempSync(path.join(os.tmpdir(), 'verify-pre30-'));
+  const rel = writeVerifyFixture(target, {
+    invokeFiles: ['invoke_20260727_30_demo.md'],
+  });
+  const result = runNode(['verify', '--target', target, '--task', rel], target);
+  assert.equal(result.status, 2, result.stdout);
+  assert.match(result.stdout, /VERIFY: BLOCKED/);
+  assert.match(result.stdout, /missing pre-30 invoke hats/);
+  assert.match(result.stdout, /10/);
+});
+
+test('verify --task：有 10 无 40 → PASS（40 WARN）', () => {
+  const target = fs.mkdtempSync(path.join(os.tmpdir(), 'verify-pre30-ok-'));
+  const rel = writeVerifyFixture(target, {
+    invokeFiles: [
+      'invoke_20260727_10_demo.md',
+      'invoke_20260727_30_demo.md',
+    ],
+  });
+  const result = runNode(['verify', '--target', target, '--task', rel], target);
+  assert.equal(result.status, 0, result.stdout);
+  assert.match(result.stdout, /WARN: invoke hats gap/);
+  assert.match(result.stdout, /40/);
+  assert.match(result.stdout, /VERIFY: PASS/);
+});
+
+test('verify --task：minimal 无 10 → 不因 pre-30 挡', () => {
+  const target = fs.mkdtempSync(path.join(os.tmpdir(), 'verify-pre30-min-'));
+  const rel = writeVerifyFixture(target, {
+    metaExtra: '| **invoke_retention_profile** | `minimal` |\n',
+    invokeFiles: ['invoke_20260727_30_demo.md'],
+  });
+  const result = runNode(['verify', '--target', target, '--task', rel], target);
+  assert.equal(result.status, 0, result.stdout);
+  assert.match(result.stdout, /VERIFY: PASS/);
+  assert.doesNotMatch(result.stdout, /missing pre-30/);
+});
+
+test('verify --task：--allow-invoke-gap 缺 10 → WARN 放行', () => {
+  const target = fs.mkdtempSync(path.join(os.tmpdir(), 'verify-pre30-gap-'));
+  const rel = writeVerifyFixture(target, {
+    invokeFiles: ['invoke_20260727_30_demo.md'],
+  });
   const result = runNode(
-    ['verify', '--target', target, '--task', 'docs/tasks/active/task_demo_v1.md'],
+    ['verify', '--target', target, '--task', rel, '--allow-invoke-gap'],
     target,
   );
   assert.equal(result.status, 0, result.stdout);
-  assert.match(result.stdout, /WARN: invoke hats gap/);
-  assert.match(result.stdout, /缺 10,40|缺 10.*40|10.*40/);
+  assert.match(result.stdout, /missing pre-30 invoke hats suppressed|--allow-invoke-gap/);
   assert.match(result.stdout, /VERIFY: PASS/);
+});
+
+test('verify --task --json：handoff 含 invoke_pre30_ok', () => {
+  const target = fs.mkdtempSync(path.join(os.tmpdir(), 'verify-pre30-json-'));
+  const rel = writeVerifyFixture(target, {
+    invokeFiles: ['invoke_20260727_30_demo.md'],
+  });
+  const result = runNode(
+    ['verify', '--target', target, '--task', rel, '--json'],
+    target,
+  );
+  assert.equal(result.status, 2, result.stderr + result.stdout);
+  const payload = JSON.parse(result.stdout);
+  assert.equal(payload.invoke_pre30_ok, false);
+  assert.equal(payload.may_start_30, false);
+  assert.ok(payload.invoke_pre30_missing.includes('10'));
+  assert.match(String(payload.blocked_reason), /pre-30|missing/);
 });
 
 test('task lint W6：缺 invoke 留档字段 → WARN', async () => {
