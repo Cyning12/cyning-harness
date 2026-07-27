@@ -22,6 +22,7 @@
 - SPEC：`docs/spec/SPEC-process-observability_status_timeline_v1.md` · Epic P1
 - minor · 与 P0 `status`（2.14）同窗过程可观测；`--ingest` 为显式开关
 - 禁止 Neo4j；不改 verify / status 退出语义
+- **UX**：`--ingest` 先剥再解析，避免 `--task --ingest path` 误吞；帮助文含正确示例
 
 ## [2.14.0] - 2026-07-27
 

@@ -171,3 +171,38 @@ test('filterEventsForTask 与 summarizeTaskHgm 语义一致', () => {
   );
   assert.equal(filtered.length, 1);
 });
+
+test('timeline：--task --ingest path 误序仍可用（先剥布尔旗标）', () => {
+  const target = makeTarget();
+  const rel = writeTask(target);
+  const result = runNode([
+    'timeline',
+    '--target',
+    target,
+    '--task',
+    '--ingest',
+    rel,
+  ]);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+});
+
+test('timeline：--ingest 在 --task 之前可用', () => {
+  const target = makeTarget();
+  const rel = writeTask(target);
+  const result = runNode([
+    'timeline',
+    '--ingest',
+    '--target',
+    target,
+    '--task',
+    rel,
+  ]);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+});
+
+test('timeline：位置参数可作为 task 路径', () => {
+  const target = makeTarget();
+  const rel = writeTask(target);
+  const result = runNode(['timeline', '--target', target, '--ingest', rel]);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+});
