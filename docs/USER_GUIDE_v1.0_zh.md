@@ -187,7 +187,7 @@ Schema：[`schema/verify_result.v1.schema.json`](../schema/verify_result.v1.sche
 | `npx @cyning/harness init` | 首次安装模板与 manifest（可选 `--with-scripts`） |
 | `npx @cyning/harness upgrade` | 同步产品包更新（可加 `--gate-check`）；v2.11.1+：`local.json` 在 apply 后写入；manifest 重写前 WARN 非标准字段（2.3+ 仅五字段） |
 | `npx @cyning/harness check` | 检查是否有新版本 |
-| `npx @cyning/harness verify` | 全量：双路径 + reviews（v2.9+）；`--task`：30 前聚合 + invoke hats WARN（v2.12+）；`--spec`：SPEC→00（v2.8+ · 互斥） |
+| `npx @cyning/harness verify` | 全量：双路径 + reviews（v2.9+）；`--task`：30 前聚合 + **pre-30 invoke 硬闸**（v2.14+；缺 40 仍 WARN）；`--spec`：SPEC→00（v2.8+ · 互斥） |
 | `npx @cyning/harness task close` | 受闸归档；v2.12+ 按 `required_invoke_hats` / `invoke_retention_profile` 校验多帽 invoke（缺省 `10,30,40`；`--allow-invoke-gap`） |
 | `npx @cyning/harness lifecycle show` | 只读展示 `harness/lifecycle.yaml`（登记 · v2.7+） |
 | `npx @cyning/harness lifecycle dry-run` | 转移资格判定（v2.10+ · `to_30` v2.11 · **`close_*` v2.13** · 旁路 · 非 G7） |
@@ -207,7 +207,7 @@ Schema：[`schema/verify_result.v1.schema.json`](../schema/verify_result.v1.sche
 
 Audit **不替代** 维护者判断；22 内容质量仍须人读 review。详见 [`ONBOARDING.md`](./ONBOARDING.md) §2.2。
 
-### 6.0 多帽 invoke 留档（v2.12+）
+### 6.0 多帽 invoke 留档（v2.12+ · verify pre-30 硬闸 v2.14+）
 
 `task close` 按 task 元信息校验 `by-task/<slug>/` 下 invoke 文件名所覆盖的 **hat 集合**（缺省要求 `10,30,40`）。
 
@@ -216,10 +216,10 @@ Audit **不替代** 维护者判断；22 内容质量仍须人读 review。详�
 | `invoke_retention_profile` | `default`=`10,30,40` · `minimal`=`30` · `full`=`00,10,20,30,40,CLOSE` |
 | `required_invoke_hats` | 显式列表，**优先于** profile |
 | 命名 | `invoke_YYYYMMDD_<hat>[_<hat>...]_<slug>.md`；hat 只在日期后连续前缀（例 `30_40` 可双计）；**slug 段勿夹** `10`/`40` 等（v2.12.1 起不误计） |
-| `--allow-invoke-gap` | close / `verify --task` 缺帽豁免并留痕 |
+| `--allow-invoke-gap` | close / `verify --task` 缺帽豁免并留痕（verify 对 **pre-30** 硬闸亦适用） |
 | 存量仅 30 | upgrade 后：补 `10`/`40` 档、或改 `minimal`、或显式 `--allow-invoke-gap` |
 
-`verify --task` 对缺口仅 **WARN**，不挡 `may_start_30`；硬闸在 close。
+**verify `--task`（v2.14+）**：`required ∩ {10,20,00}`（**pre-30**）缺失 → **VERIFY BLOCKED** · `may_start_30=false`（用户口头「开工」≠ 闸）。缺 **40** / 缺 30 文件本身 **不挡** 30（仍可 WARN）；`minimal`（无 preRequired）不挡。硬闸 close 仍覆盖全量 required（含 40）。
 
 归档前可用旁路资格报告（**不** mv、**不**替代 `task close`）：
 

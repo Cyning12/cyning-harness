@@ -4,6 +4,23 @@
 
 ## [Unreleased]
 
+## [2.14.0] - 2026-07-27
+
+### Changed
+
+- **`verify --task` · pre-30 invoke 硬闸**：`required ∩ {10,20,00}` 缺失 → `VERIFY: BLOCKED · missing pre-30 invoke hats` · `may_start_30=false`（v2.12 仅 WARN 的语义升格）。
+- 缺 **40** / 缺 30 文件本身 **不挡** 30（仍 WARN）；`invoke_retention_profile: minimal`（无 preRequired）不挡。
+- `--allow-invoke-gap`：pre-30 BLOCK **豁免为 WARN 放行**并留痕；`--json` handoff 增加 `invoke_pre30_ok` / `invoke_pre30_missing` 等。
+- `lib/task-meta.js`：新增 `evaluatePre30InvokeHats`。
+- FRAGMENT_30 / 30-execute / TEMPLATE_30_gate_stop · USER_GUIDE §6.0：写明「用户『开工』≠ 闸」。
+
+### Notes
+
+- SPEC：`docs/spec/SPEC-verify-pre30-invoke-hats-gate_v1.md`（修订上游 `SPEC-invoke-hats-retention-gate` verify 语义）
+- **破坏性（verify）**：存量业务仓 **default + 仅有 30 invoke** → upgrade 到 2.14 后 **verify 将挡 30**。补救：补 `invoke_*_10_*`、改 `minimal` / 显式 `required_invoke_hats: 30`、或 `--allow-invoke-gap`
+- minor · close 全量 hats 硬闸不变
+- `discipline-coverage.yaml` `as_of` → **2.14.0**
+
 ## [2.13.0] - 2026-07-26
 
 ### Added

@@ -207,6 +207,10 @@ test('verify --json · approved → may_start_30 true', () => {
   writeSidecar(target, 'required');
   fs.mkdirSync(path.join(target, 'test'), { recursive: true });
   fs.writeFileSync(path.join(target, 'test/demo.test.js'), '');
+  const invokeDir = path.join(target, 'docs/harness/invokes/by-task/demo');
+  fs.mkdirSync(invokeDir, { recursive: true });
+  fs.writeFileSync(path.join(invokeDir, 'invoke_20260727_10_demo.md'), '# 10\n');
+  fs.writeFileSync(path.join(invokeDir, 'invoke_20260727_30_demo.md'), '# 30\n');
 
   const result = runNode([
     'verify',
@@ -221,6 +225,7 @@ test('verify --json · approved → may_start_30 true', () => {
   assert.equal(payload.may_start_30, true);
   assert.equal(payload.next_hat, '30');
   assert.equal(payload.entry_invoke_30, 'docs/harness/prompts/30.md');
+  assert.equal(payload.invoke_pre30_ok, true);
 });
 
 test('verify --json · HG-AUDIT-R1 pending → may_start_30 false', () => {
