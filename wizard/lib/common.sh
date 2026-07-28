@@ -3,6 +3,9 @@
 
 MARKER_BEGIN='<!-- cyning-harness:begin -->'
 MARKER_END='<!-- cyning-harness:end -->'
+# 仓内定制块（须在产品 marker 外；sync 永不改写此块）
+LOCAL_MARKER_BEGIN='<!-- cyning-harness-local:begin -->'
+LOCAL_MARKER_END='<!-- cyning-harness-local:end -->'
 
 # 规范化绝对路径
 abs_path() {
