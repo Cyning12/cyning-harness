@@ -1,6 +1,6 @@
 # Task · Consumer ontology bootstrap（G2 P0）
 
-> **状态**：`draft`  
+> **状态**：`in_progress`  
 > **SPEC**：[`../spec/SPEC-close-loop-hard-gates_v1.md`](../spec/SPEC-close-loop-hard-gates_v1.md) §2.4  
 > **依赖**：建议 U1（G1/G3/G4）合入后或同窗串行  
 
@@ -30,7 +30,7 @@
 | human_gate_id | status | blocks_hats | 说明 |
 |---------------|--------|-------------|------|
 | HG-TASK-DRAFT | approved | 22-R1, 30 | 同 U1 列车授权 |
-| HG-AUDIT-R1 | pending | 30 | 文档向；可书面 skip |
+| HG-AUDIT-R1 | approved | 30 | 同 U1 列车 · maintainer skip_review 2026-07-28 |
 
 ---
 
