@@ -62,7 +62,7 @@
 
 - [x] 可跑命令列出缺 `wiki_delta` 文件（exit 2）
 - [x] docs 防踩坑 + upgrade≠迁目录
-- [x] `npm test` 全绿 · PR URL
+- [x] `npm test` 全绿 · PR URL · https://github.com/Cyning12/cyning-harness/pull/11
 
 ### 自检结论（执行者）
 
