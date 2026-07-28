@@ -7,6 +7,7 @@
 - 读序总览：[[README]]
 - 项目指针：[[context]]
 - 本 task 易变上下文：[[volatile]]
+- 主题样例（两层）：[[topics/wiki_layout]]
 
 ## 编码底线（L1 摘要占位）
 
