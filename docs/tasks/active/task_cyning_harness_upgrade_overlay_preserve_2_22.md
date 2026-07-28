@@ -66,7 +66,7 @@ ops dogfood：每次 `upgrade` 冲 AGENTS marker 内定制与 FRAGMENT `l1/01_mo
 ### 自检结论（执行者）
 
 - `npm test` → 253 pass（含 sync.overlay ×4）
-- PR：（填）
+- PR：https://github.com/Cyning12/cyning-harness/pull/15（base=#14 / 2.21）
 
 ### 经验总结
 
