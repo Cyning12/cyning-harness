@@ -2,6 +2,28 @@
 
 本仓库遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [2.22.0] - 2026-07-28
+
+### Added
+
+- **upgrade overlay 部分根治（ops U2）**：
+  - 仓内定制块 `<!-- cyning-harness-local:begin/end -->`（产品 marker **外**；sync 不改写）
+  - 误嵌在产品 marker 内的 local 块 → merge 时 **salvage** 到块外
+  - `profile.json` 可选 `"graph_modules_path"`（默认 `01_struct`）→ 替换 FRAGMENT `__HARNESS_GRAPH_MODULES_PATH__`
+  - sync apply 结束打印 `hint · overlay` +（git）相关路径 `diff --stat`
+- SPEC：[`docs/spec/SPEC-upgrade-overlay-preserve_v1.md`](docs/spec/SPEC-upgrade-overlay-preserve_v1.md)
+
+### Changed
+
+- RUNBOOK §1.2 / ide adapters README：从「必手恢复」改为契约 + 自检；产品 fragment POINTER。
+
+### Notes
+
+- **不能**保证「同文件双边改行」永远零人工；裸写在产品 marker 内的定制仍会被冲。
+- **不**削弱 S2/S5 / close / wiki_delta / pre-30；无定制仓默认仍全量 sync（占位展开为 `01_struct`）。
+- **待发布**：合入后维护者 `npm publish` + tag `v2.22.0`（本 PR 不擅自发版）。
+- 建议叠在 **2.21.0**（PR #14）之上。
+
 ## [2.21.0] - 2026-07-28
 
 ### Added

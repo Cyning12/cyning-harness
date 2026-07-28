@@ -29,7 +29,9 @@ profile 字段：`tracks.ide_cursor` · `tracks.ide_claude` · `tracks.ide_agent
 ## marker merge 纪律（D3）
 
 - 块标记：`<!-- cyning-harness:begin -->` … `<!-- cyning-harness:end -->`
-- **不覆盖**用户仓已有 `CLAUDE.md` / `AGENTS.md` 全文；块外手写保持不变
+- **不覆盖**用户仓已有 `CLAUDE.md` / `AGENTS.md` 全文；**产品块外**手写保持不变
+- **仓内定制（v2.22+）**：使用 `<!-- cyning-harness-local:begin -->` … `<!-- cyning-harness-local:end -->`，且须在产品 begin/end **之外**。sync **永不**改写 local 块；若误写在产品块内，apply 会尝试 **salvage** 到产品块外。
+- G-L / 图谱模块页路径：在 `.cyning-harness/profile.json` 设可选 `"graph_modules_path": "l1/01_modules"`（默认 `01_struct`），由 sync 写入 `FRAGMENT_30_gate_verify_v1_zh.md` 占位。
 - 由 [`wizard/install.sh`](../install.sh) + [`harness-sync.sh`](../harness-sync.sh) 执行
 
 ## 手工嵌入（备查）

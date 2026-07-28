@@ -13,8 +13,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/lib/common.sh"
 HARNESS_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-MARKER_BEGIN='<!-- cyning-harness:begin -->'
-MARKER_END='<!-- cyning-harness:end -->'
+# MARKER_* / LOCAL_MARKER_* 来自 lib/common.sh
 
 usage() {
   cat <<'EOF'
@@ -126,9 +125,22 @@ add_merge() {
   OPS+=("merge|$src|$dst|$note|$action")
 }
 
+# 若产品 marker 内误嵌 local 块，抽出其正文（不含 local 标记行）
+extract_nested_local_body() {
+  local file="$1"
+  awk -v pbegin="$MARKER_BEGIN" -v pend="$MARKER_END" \
+      -v lbegin="$LOCAL_MARKER_BEGIN" -v lend="$LOCAL_MARKER_END" '
+    index($0, pbegin) { in_product = 1; next }
+    in_product && index($0, pend) { in_product = 0; next }
+    in_product && index($0, lbegin) { in_local = 1; next }
+    in_product && in_local && index($0, lend) { in_local = 0; next }
+    in_product && in_local { print }
+  ' "$file"
+}
+
 merge_fragment_apply() {
   local src="$1" dst="$2"
-  local tmp_block tmp_out
+  local tmp_block tmp_out salvage nested
 
   tmp_block="$(mktemp)"
   {
@@ -143,7 +155,19 @@ merge_fragment_apply() {
     return
   fi
 
+  salvage=""
   if grep -qF "$MARKER_BEGIN" "$dst"; then
+    nested="$(extract_nested_local_body "$dst" || true)"
+    if [[ -n "${nested// }" ]]; then
+      salvage="$(mktemp)"
+      {
+        printf '%s\n' "$LOCAL_MARKER_BEGIN"
+        printf '%s\n' "$nested"
+        printf '%s\n' "$LOCAL_MARKER_END"
+      } > "$salvage"
+      echo "warn: overlay · 产品 marker 内发现 local 块，已 salvage 到块外: $dst"
+    fi
+
     tmp_out="$(mktemp)"
     awk -v begin="$MARKER_BEGIN" -v end="$MARKER_END" -v blockfile="$tmp_block" '
       BEGIN {
@@ -165,11 +189,61 @@ merge_fragment_apply() {
       { print }
     ' "$dst" > "$tmp_out"
     mv "$tmp_out" "$dst"
+
+    # 块外已有完整 local 标记则不再追加 salvage（避免重复）
+    if [[ -n "$salvage" ]]; then
+      if grep -qF "$LOCAL_MARKER_BEGIN" "$dst"; then
+        echo "warn: overlay · 目标已有 local 块，跳过追加 salvage（请人工核对）: $dst"
+      else
+        printf '\n' >> "$dst"
+        cat "$salvage" >> "$dst"
+      fi
+      rm -f "$salvage"
+    fi
   else
     printf '\n' >> "$dst"
     cat "$tmp_block" >> "$dst"
   fi
   rm -f "$tmp_block"
+}
+
+# profile.graph_modules_path → FRAGMENT 占位（缺省 01_struct）
+apply_graph_modules_substitution() {
+  local fragment="$TARGET/docs/harness/prompts/FRAGMENT_30_gate_verify_v1_zh.md"
+  local path token='__HARNESS_GRAPH_MODULES_PATH__'
+  local tmp
+
+  [[ -f "$fragment" ]] || return 0
+  grep -qF "$token" "$fragment" || return 0
+
+  path="$(json_str graph_modules_path 01_struct)"
+  if [[ ! "$path" =~ ^[A-Za-z0-9._/-]+$ ]]; then
+    echo "warn: overlay · graph_modules_path 非法（仅允许 [A-Za-z0-9._/-]），跳过替换: $path" >&2
+    return 0
+  fi
+
+  tmp="$(mktemp)"
+  sed "s|$token|$path|g" "$fragment" > "$tmp"
+  mv "$tmp" "$fragment"
+  echo "overlay · FRAGMENT graph_modules_path → $path"
+}
+
+print_overlay_hint() {
+  local rels=(
+    AGENTS.md
+    CLAUDE.md
+    "$IDE_REL"
+    docs/harness/prompts/FRAGMENT_30_gate_verify_v1_zh.md
+  )
+  echo ""
+  echo "hint · overlay（v2.22+）:"
+  echo "  · 仓内定制 → <!-- cyning-harness-local:begin/end -->（产品 cyning-harness:begin/end **外**）"
+  echo "  · G-L 布局 → .cyning-harness/profile.json 可选 \"graph_modules_path\": \"l1/01_modules\"（默认 01_struct）"
+  echo "  · 自检: git diff HEAD -- AGENTS.md CLAUDE.md ${IDE_REL} docs/harness/prompts/FRAGMENT_30_gate_verify_v1_zh.md"
+  if git -C "$TARGET" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    echo "  · 本波 diff --stat:"
+    git -C "$TARGET" --no-pager diff --stat HEAD -- "${rels[@]}" 2>/dev/null | sed 's/^/      /' || true
+  fi
 }
 
 if track_enabled harness_prompts false; then
@@ -255,6 +329,8 @@ for f in $OBSOLETE_HATS; do
 done
 
 if [[ "$MODE" == "apply" ]]; then
+  apply_graph_modules_substitution
+  print_overlay_hint
   echo ""
   echo "完成。建议: $CYNING_HARNESS/wizard/gate-check.sh --target $TARGET"
 fi

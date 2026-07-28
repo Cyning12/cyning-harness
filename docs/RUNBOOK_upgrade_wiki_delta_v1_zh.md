@@ -50,15 +50,22 @@ npx @cyning/harness@2.21.0 check
 `upgrade` **只**更新 `.cyning-harness/manifest.json` 等纪律层，**不会**自动 bump 消费者自管文件（如 `harness.pin.json`）。  
 有 pin 时须在 upgrade 后**额外**同步（本仓自有脚本 / 手改），再跑本仓 `check-harness-pin`（若有）。无 pin 可跳过。
 
-### 1.2 overlay 自检（ops dogfood · 必做）
+### 1.2 overlay（v2.22+ · 部分根治）
 
-marker merge / prompts sync 可能冲掉仓内定制。upgrade 后立刻：
+**根因**：产品 marker 整块 replace + prompts/`cp`。定制写在产品同步面内 → 每次 upgrade 必冲。
+
+| 做法 | 说明 |
+|------|------|
+| **local 块** | 仓特异词写在 `<!-- cyning-harness-local:begin/end -->`，且在产品 `cyning-harness:begin/end` **外** |
+| **G-L 路径** | `.cyning-harness/profile.json` 增加 `"graph_modules_path": "l1/01_modules"`（默认 `01_struct`） |
+| **自检** | apply 结束会打印 `hint · overlay`；仍建议看 diff |
 
 ```bash
-git diff -- AGENTS.md CLAUDE.md .cursor/rules/05-harness-starter.mdc \
+git diff HEAD -- AGENTS.md CLAUDE.md .cursor/rules/05-harness-starter.mdc \
   docs/harness/prompts/FRAGMENT_30_gate_verify_v1_zh.md
-# 路径按仓裁剪；有定制则从 backup/历史恢复关键词与 G-L 占位
 ```
+
+若定制仍裸写在产品 marker 内（无 local 包裹），**仍会被冲** — 迁到 local 块或改 profile 占位。误把 local 嵌在产品块内时，sync 会尝试 **salvage** 到块外（见 stdout warn）。
 
 ### 1.3 local.json（建议）
 
@@ -157,4 +164,5 @@ curl -fsSL -o .github/workflows/lint-wiki-delta.yml \
 | 2026-07-28 | v2.19.1 · 首版 |
 | 2026-07-28 | v2.19.2 · §0 硬失败 |
 | 2026-07-28 | v2.20.0 · `--strict` |
+| 2026-07-28 | v2.22.0 · overlay 部分根治（local 块 · graph_modules_path · hint） |
 | 2026-07-28 | v2.21.0 · 快速路径 · pin/overlay · cp 三法 · Python 交叉链 · export 旗标/伪链（web+ops FEEDBACK） |
