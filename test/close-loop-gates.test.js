@@ -9,6 +9,8 @@ import {
   evaluateExperienceCapture,
   evaluateGraphDelta,
   evaluateKpiCloseScore,
+  evaluateWikiDelta,
+  evaluateWikiPromotionPointer,
   hasParsableKpiScore,
 } from '../lib/close-loop-gates.js';
 import { parseHarnessMeta } from '../lib/task-meta.js';
@@ -168,4 +170,51 @@ test('verify --task：graph_delta 缺省 WARN；--strict-graph-delta 可 BLOCK',
   assert.equal(blocked.status, 2, blocked.stdout);
   assert.match(blocked.stdout, /graph_delta/);
   assert.match(blocked.stdout, /VERIFY: BLOCKED/);
+});
+
+test('evaluateWikiDelta · 缺字段 fail · none 须 note · path 存在性', () => {
+  assert.equal(evaluateWikiDelta({}).status, 'fail');
+  assert.equal(
+    evaluateWikiDelta({ wiki_delta: 'none', wiki_delta_note: 'x' }).status,
+    'pass',
+  );
+  assert.equal(evaluateWikiDelta({ wiki_delta: 'n/a' }).status, 'fail');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'wiki-gd-'));
+  fs.mkdirSync(path.join(dir, 'docs/coding_wiki'), { recursive: true });
+  fs.writeFileSync(path.join(dir, 'docs/coding_wiki/a.md'), '#\n');
+  assert.equal(
+    evaluateWikiDelta({ wiki_delta: 'docs/coding_wiki/a.md' }, { repoRoot: dir }).status,
+    'pass',
+  );
+  assert.equal(
+    evaluateWikiDelta({ wiki_delta: 'docs/coding_wiki/missing.md' }, { repoRoot: dir })
+      .status,
+    'fail',
+  );
+});
+
+test('evaluateWikiPromotionPointer · required+path 须指针', () => {
+  const meta = {
+    experience_capture: 'required',
+    wiki_delta: 'docs/coding_wiki/a.md',
+  };
+  assert.equal(
+    evaluateWikiPromotionPointer('### 经验总结\n\n- a\n- b\n- c\n', meta).status,
+    'fail',
+  );
+  assert.equal(
+    evaluateWikiPromotionPointer(
+      '### 经验总结\n\n- a\n- b\n- Wiki: docs/coding_wiki/a.md\n',
+      meta,
+    ).status,
+    'pass',
+  );
+  assert.equal(
+    evaluateWikiPromotionPointer('### 经验总结\n\n- a\n- b\n- c\n', {
+      experience_capture: 'required',
+      wiki_delta: 'none',
+      wiki_delta_note: 'x',
+    }).status,
+    'pass',
+  );
 });

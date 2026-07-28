@@ -6,11 +6,16 @@
 # 禁止：把本文件当「每周全量重盘」流程；不做 audit --discipline UI（本波）
 
 version: "1"
-as_of_package_version: "2.17.0"
+as_of_package_version: "2.18.0"
 scope: "Starter · harness/prompts （10/22/30/40 + FRAGMENT）+ TEMPLATE_invoke"
 source_audit: "rethink/2026-07-mechanization-rate · 02 转录 + 03 聚合 · 状态已按 G1–G4/N1–N4 刷新（非第二轮通读盘点）"
 
 gaps:
+  - id: WIKI-DELTA
+    title: wiki_delta close 闸 + 晋升指针 + wiki export
+    status: closed
+    closed_in: "2.18.0"
+    note: "SPEC-experience-wiki-feedback_loop · 缺字段 BLOCK"
   - id: G1
     title: task md 结构 lint
     status: closed

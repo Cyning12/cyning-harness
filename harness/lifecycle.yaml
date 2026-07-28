@@ -5,6 +5,7 @@
 # v2.11+ to_30 已接线：HG-AUDIT-R1 · HG-TASK-DRAFT · reviews_retention · audit_D5 · task_lint
 # v2.13+ close 已接线：close_invoke · close_self_check · close_acceptance · close_slug · close_status · close_review
 # v2.17+ close 增补：close_graph_delta · close_kpi · close_experience
+# v2.18+ close 增补：close_wiki_delta · close_wiki_promotion
 #   （to_00 / spec_reviews_retention 仍可 unevaluated）
 # 只读展示：npx @cyning/harness lifecycle show [--json]
 # Schema：schema/lifecycle.v1.schema.json
@@ -101,3 +102,11 @@ transitions:
         command_or_check: "task close · experience_capture（required 硬闸 · v2.17+）"
         severity: block
         allow_flag: "--allow-experience-gap"
+      - id: close_wiki_delta
+        command_or_check: "task close · wiki_delta（缺字段 BLOCK；none|n/a 无 note / 路径不存在 BLOCK · v2.18+）"
+        severity: block
+        allow_flag: "--allow-wiki-gap"
+      - id: close_wiki_promotion
+        command_or_check: "task close · wiki 晋升指针（experience=required 且 wiki_delta=path · v2.18+）"
+        severity: block
+        allow_flag: "--allow-wiki-gap"

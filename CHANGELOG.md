@@ -2,6 +2,26 @@
 
 本仓库遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [2.18.0] - 2026-07-28
+
+### Added
+
+- **Wiki 反馈闭环 P0 · `wiki_delta`**：`TASK_TEMPLATE` / epic / graph_bootstrap 增加 `wiki_delta` / `wiki_delta_note`（可选 `wiki_promotion`）。`task close`：**缺字段 BLOCK**；`none`/`n/a` 无 note → BLOCK；path 须相对仓根存在。`--allow-wiki-gap` 豁免留痕。`verify --task` 默认 WARN；`--strict-wiki-delta` → BLOCK。
+- **P1 · wiki 晋升指针**：`experience_capture=required` 且 `wiki_delta=path` 时，经验节须含 `coding_wiki` / `Wiki:` / `wiki_promoted:`（或与 path 相同子串）；否则 close BLOCK（同 `--allow-wiki-gap`）。
+- **P2 · `wiki export --json`**：扫描 `docs/coding_wiki`（`--root` 可改）→ `{ schema: harness.wiki_graph.v1, nodes, edges }`（`[[wikilink]]` + 相对 `.md` 链）。供 harness-web / Obsidian 对照消费；本包不渲染。
+- `lifecycle` close 增补 `close_wiki_delta` / `close_wiki_promotion`；`lib/wiki-export.js` · fixture `test/fixtures/wiki_graph_mini/`。
+
+### Changed
+
+- 30/40 Prompt · coding_wiki README/volatile · USER_GUIDE：关账前答 wiki_delta / 晋升指针。
+- `discipline-coverage.yaml` `as_of_package_version` → **2.18.0**。
+
+### Notes
+
+- SPEC：`docs/spec/SPEC-experience-wiki-feedback_loop_v1.md`（signed · 缺字段 BLOCK · P0–P2 同窗）
+- **破坏性（close）**：存量 task **必须**补 `wiki_delta`（无 wiki 轨填 `n/a` + note）。勿默认依赖 `--allow-wiki-gap`
+- **发版**：维护者 `npm publish`
+
 ## [2.17.0] - 2026-07-28
 
 ### Added

@@ -293,6 +293,8 @@ function makeCloseDryRunFixture({
 | **task_slug** | \`demo\` |
 | **graph_delta** | \`none\` |
 | **graph_delta_note** | \`lifecycle fixture\` |
+| **wiki_delta** | \`n/a\` |
+| **wiki_delta_note** | \`lifecycle fixture\` |
 
 ## 验收标准
 

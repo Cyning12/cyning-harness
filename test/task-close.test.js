@@ -28,6 +28,8 @@ const TASK_OK = `# Task · demo
 | **task_slug** | \`demo\` |
 | **graph_delta** | \`none\` |
 | **graph_delta_note** | \`fixture · 无图谱增量\` |
+| **wiki_delta** | \`n/a\` |
+| **wiki_delta_note** | \`fixture · 无 wiki 轨\` |
 
 ## 验收标准
 
@@ -403,4 +405,96 @@ test('close PASS：四维 KPI 简表可解析', () => {
   const rel = writeFixture(target, { taskContent: content });
   const result = runNode(['task', 'close', '--file', rel, '--yes'], target);
   assert.equal(result.status, 0, result.stdout);
+});
+
+test('close BLOCKED：缺 wiki_delta 字段；--allow-wiki-gap 放行', () => {
+  const target = makeTarget();
+  const content = TASK_OK.replace(/\|\s*\*\*wiki_delta\*\*\s*\|\s*`[^`]*`\s*\|\n?/, '').replace(
+    /\|\s*\*\*wiki_delta_note\*\*\s*\|\s*`[^`]*`\s*\|\n?/,
+    '',
+  );
+  const rel = writeFixture(target, { taskContent: content });
+  const blocked = runNode(['task', 'close', '--file', rel, '--yes'], target);
+  assert.equal(blocked.status, 2);
+  assert.match(blocked.stdout, /wiki_delta/);
+
+  const waived = runNode(
+    ['task', 'close', '--file', rel, '--yes', '--allow-wiki-gap'],
+    target,
+  );
+  assert.equal(waived.status, 0, waived.stdout);
+  assert.match(waived.stdout, /allow-wiki-gap/);
+});
+
+test('close BLOCKED：wiki_delta=none 无 note', () => {
+  const target = makeTarget();
+  const content = TASK_OK.replace('| **wiki_delta** | `n/a` |', '| **wiki_delta** | `none` |').replace(
+    /\|\s*\*\*wiki_delta_note\*\*\s*\|\s*`[^`]*`\s*\|\n?/,
+    '',
+  );
+  const rel = writeFixture(target, { taskContent: content });
+  const result = runNode(['task', 'close', '--file', rel, '--yes'], target);
+  assert.equal(result.status, 2);
+  assert.match(result.stdout, /wiki_delta_note|wiki_delta=none/);
+});
+
+test('close BLOCKED：experience=required + wiki path 无晋升指针；有指针则 PASS', () => {
+  const target = makeTarget();
+  const wikiDir = path.join(target, 'docs/coding_wiki');
+  fs.mkdirSync(wikiDir, { recursive: true });
+  fs.writeFileSync(path.join(wikiDir, 'volatile.md'), '# v\n');
+
+  const baseMeta = `| 字段 | 值 |
+| --- | --- |
+| **task_slug** | \`demo\` |
+| **graph_delta** | \`none\` |
+| **graph_delta_note** | \`fixture · 无图谱增量\` |
+| **wiki_delta** | \`docs/coding_wiki/volatile.md\` |
+| **wiki_delta_note** | \`updated volatile\` |
+| **experience_capture** | \`required\` |
+`;
+
+  const tail = `
+## 验收标准
+
+- [x] 甲
+- [X] 乙
+
+### 自检结论（执行者）
+
+npm test 全绿（42 passed）。
+
+### KPI（00）
+
+Task_KPI%: 88
+
+`;
+
+  const missingPtr = `# Task · demo
+
+> **状态**：\`done\` · 2026-07-22
+
+## Harness 元信息
+
+${baseMeta}
+${tail}
+### 经验总结
+
+- fixture 基线通过
+- close 闸覆盖 invoke 与自检
+- KPI 最小形态可解析
+`;
+
+  const rel = writeFixture(target, { taskContent: missingPtr });
+  const blocked = runNode(['task', 'close', '--file', rel, '--yes'], target);
+  assert.equal(blocked.status, 2, blocked.stdout);
+  assert.match(blocked.stdout, /wiki 晋升|coding_wiki|wiki_promoted/i);
+
+  const withPtr = missingPtr.replace(
+    /### 经验总结[\s\S]*$/,
+    '### 经验总结\n\n- fixture 基线通过\n- close 闸覆盖 invoke 与自检\n- Wiki: docs/coding_wiki/volatile.md\n',
+  );
+  fs.writeFileSync(path.join(target, 'docs/tasks/active/task_demo_v1.md'), withPtr);
+  const ok = runNode(['task', 'close', '--file', rel, '--yes'], target);
+  assert.equal(ok.status, 0, ok.stdout);
 });

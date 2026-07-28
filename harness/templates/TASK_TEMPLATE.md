@@ -25,6 +25,9 @@
 | **worktree_root** | （并行时填独立 worktree 目录） |
 | **graph_delta** | `docs/_tech_graph/<flow>.md` 或 `none` |
 | **graph_delta_note** | （`none` 时 **必填**理由） |
+| **wiki_delta** | `docs/coding_wiki/<file>.md` 或 `none` / `n/a` |
+| **wiki_delta_note** | （`none` / `n/a` 时 **必填**理由） |
+| **wiki_promotion** | `none` / `stable` / `context` / `volatile` / `mixed`（可选） |
 | **experience_capture** | `required` / `recommended` / `not_applicable` |
 | **experience_capture_note** | （`not_applicable` 时 **必填**理由） |
 | **kpi_rubric** | `KPI_RUBRIC_v1_2` |
@@ -112,6 +115,7 @@
 ### 经验总结
 
 （`experience_capture: required` 时关账必填 · ≥80 字或 ≥3 条列表）
+（`wiki_delta=path` 且 `experience_capture=required` 时须含 wiki 指针：`coding_wiki` 路径 / `wiki_promoted:` / `Wiki:`）
 
 ---
 
@@ -120,3 +124,4 @@
 | 日期 | 说明 |
 |------|------|
 | YYYY-MM-DD | 从 cyning-harness `TASK_TEMPLATE.md` 嵌入 |
+| 2026-07-28 | v2.18 · wiki_delta / wiki_promotion |

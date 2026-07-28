@@ -187,10 +187,11 @@ Schema：[`schema/verify_result.v1.schema.json`](../schema/verify_result.v1.sche
 | `npx @cyning/harness init` | 首次安装模板与 manifest（可选 `--with-scripts`） |
 | `npx @cyning/harness upgrade` | 同步产品包更新（可加 `--gate-check`）；v2.11.1+：`local.json` 在 apply 后写入；manifest 重写前 WARN 非标准字段（2.3+ 仅五字段） |
 | `npx @cyning/harness check` | 检查是否有新版本 |
-| `npx @cyning/harness verify` | 全量：双路径 + reviews（v2.9+）；`--task`：30 前聚合 + **pre-30 invoke 硬闸**（v2.17+；缺 40 仍 WARN）+ **graph_delta WARN**（`--strict-graph-delta` 可 BLOCK）；`--spec`：SPEC→00（v2.8+ · 互斥） |
+| `npx @cyning/harness verify` | 全量：双路径 + reviews（v2.9+）；`--task`：30 前聚合 + **pre-30 invoke 硬闸**（v2.17+；缺 40 仍 WARN）+ **graph_delta / wiki_delta WARN**（`--strict-graph-delta` / `--strict-wiki-delta` 可 BLOCK）；`--spec`：SPEC→00（v2.8+ · 互斥） |
 | `npx @cyning/harness status` | 过程可观测一屏投影（v2.14+ · 闸/invoke/review/`verify_preview`；**不替代** verify） |
+| `npx @cyning/harness wiki export --json` | 导出 `coding_wiki` 关系图 JSON（v2.18+ · schema `harness.wiki_graph.v1`；本包不渲染） |
 | `npx @cyning/harness timeline` | 过程时间线（v2.15+ · HGM 事件投影；默认不 ingest；可选 `--ingest`） |
-| `npx @cyning/harness task close` | 受闸归档；v2.12+ invoke hats；**v2.17+** graph_delta / KPI / experience；豁免 `--allow-invoke-gap` / `--allow-kpi-gap` / `--allow-experience-gap`（勿当默认绿路径） |
+| `npx @cyning/harness task close` | 受闸归档；v2.12+ invoke hats；**v2.17+** graph_delta / KPI / experience；**v2.18+** wiki_delta / 晋升指针；豁免 `--allow-invoke-gap` / `--allow-kpi-gap` / `--allow-experience-gap` / `--allow-wiki-gap`（勿当默认绿路径） |
 | `npx @cyning/harness lifecycle show` | 只读展示 `harness/lifecycle.yaml`（登记 · v2.7+） |
 | `npx @cyning/harness lifecycle dry-run` | 转移资格判定（v2.10+ · `to_30` v2.11 · **`close_*` v2.13** · 旁路 · 非 G7） |
 | `npx @cyning/harness discipline show` | 只读展示 `harness/discipline-coverage.yaml`（v2.11+ · 非 audit UI） |
@@ -295,14 +296,16 @@ chmod +x .git/hooks/pre-commit
 | `graph_delta` / `graph_delta_note` | 缺字段 WARN；`none` 无 note → BLOCK；路径须相对仓根存在 | 同规则默认 WARN；`--strict-graph-delta` → fail 级 BLOCK |
 | `kpi_aggregator=CLOSE`（默认） | `### KPI` 内须可解析分数（`Task_KPI%` / D1–D5 / 四维 1–5）；`--allow-kpi-gap` 豁免留痕 | **不**挡 30 |
 | `experience_capture` | `required` 须经验节非空；`recommended` WARN；`not_applicable` 须 note；`--allow-experience-gap` 豁免留痕 | **不**挡 30 |
+| `wiki_delta` / `wiki_delta_note` | **缺字段 close BLOCK**；`none`/`n/a` 无 note → BLOCK；path 须存在；`--allow-wiki-gap` 豁免留痕 | 同规则默认 WARN；`--strict-wiki-delta` → BLOCK |
+| wiki 晋升指针 | `experience=required` 且 `wiki_delta=path` 时经验节须含 `coding_wiki` / `Wiki:` / `wiki_promoted:` | **不**挡 30 |
 
-改码 task 推荐：填 `graph_delta` → 必要时改图 → `verify --graph` / `--task` → 开 30；关账前补 KPI 与经验节。
+改码 task 推荐：填 `graph_delta` / `wiki_delta` → 必要时改图与 wiki → `verify --graph` / `--task` → 开 30；关账前补 KPI、经验节与（path 时）wiki 晋升指针。
 
 归档前可用旁路资格报告（**不** mv、**不**替代 `task close`）：
 
 ```bash
 npx @cyning/harness lifecycle dry-run --transition close --from done --task docs/tasks/active/task_xxx.md
-# 可选：--allow-invoke-gap · --allow-unchecked · --allow-no-review · --allow-kpi-gap · --allow-experience-gap
+# 可选：--allow-invoke-gap · --allow-unchecked · --allow-no-review · --allow-kpi-gap · --allow-experience-gap · --allow-wiki-gap
 ```
 
 ### 6.1 SDD-Compliance bench（维护者 · 可选）

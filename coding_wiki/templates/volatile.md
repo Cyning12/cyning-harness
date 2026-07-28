@@ -13,3 +13,8 @@
 - task_slug：`<填写>`  
 - 必读图谱：`docs/_tech_graph/<flow>.md`  
 - `code_quality_bar`：`<strict | recommended | not_applicable>`  
+
+## 关账后
+
+- 可复用条目 → 晋升 `context.md` / `stable.md`  
+- 本文件清空或归档，避免下一 task 读到 stale volatile  

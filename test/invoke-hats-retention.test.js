@@ -37,6 +37,8 @@ const TASK_BASE = `# Task · demo
 | 字段 | 值 |
 | --- | --- |
 | **task_slug** | \`demo\` |
+| **wiki_delta** | \`n/a\` |
+| **wiki_delta_note** | \`fixture\` |
 __META_EXTRA__
 
 ## 验收标准

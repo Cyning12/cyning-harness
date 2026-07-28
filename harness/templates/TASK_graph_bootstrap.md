@@ -16,6 +16,8 @@
 | **code_quality_bar** | `not_applicable` |
 | **orchestration** | 单 task 或 Epic 首棒 |
 | **git_branch** | `task/graph-bootstrap` |
+| **wiki_delta** | `n/a` |
+| **wiki_delta_note** | 图谱 bootstrap；无 wiki 增量 |
 | **experience_capture** | `recommended` |
 
 ### 人工闸（本 task 核心）

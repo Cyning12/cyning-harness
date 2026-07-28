@@ -18,6 +18,8 @@
 | **semi_auto** | `false` |
 | **audit_profile** | `full` / `post_close` |
 | **git_branch** | `task/<epic-branch>` |
+| **wiki_delta** | `n/a` |
+| **wiki_delta_note** | Epic 跟踪单；wiki 增量在子 task |
 | **experience_capture** | `recommended` |
 | **kpi_rubric** | `KPI_RUBRIC_v1_2` |
 | **kpi_aggregator** | `CLOSE` |

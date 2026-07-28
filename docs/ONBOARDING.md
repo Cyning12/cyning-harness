@@ -78,7 +78,7 @@ npx @cyning/harness lifecycle dry-run --transition to_30 --from draft
 
 # 受闸归档（v2.12+ 多帽 invoke 集合 · 缺省 10,30,40 · 见 USER_GUIDE §6.0）
 npx @cyning/harness task close --file docs/tasks/active/task_xxx.md
-# 豁免示例：--allow-invoke-gap · --allow-unchecked · --allow-no-review · --allow-kpi-gap · --allow-experience-gap
+# 豁免示例：--allow-invoke-gap · --allow-unchecked · --allow-no-review · --allow-kpi-gap · --allow-experience-gap · --allow-wiki-gap
 # （勿把 --allow-*-gap 当默认绿路径）
 
 # 机械化率资产只读（v2.11+ · SoT=discipline-coverage.yaml）
@@ -103,7 +103,7 @@ npx @cyning/harness sync index --target /path/to/your-repo
 | **D5** | 改码任务测试声明 | 仅 `--task`：`test_strategy=required` 但无测试/CI 引用时 verify 非 0 |
 | **reviews** | R&lt;n&gt; 审查文存在 | `--task` 与全量（v2.9+）· 缺文 BLOCKED · `--allow-no-review` |
 | **invoke hats** | 多帽 invoke 集合 | `task close` 硬闸（v2.12+）· `verify --task` **pre-30** 硬闸（v2.17+；缺 40 仍 WARN）· `lifecycle dry-run close` 旁路（v2.13） |
-| **graph_delta / KPI / experience** | 闭环硬闸 | `task close`：graph_delta / KPI 打分 / experience（v2.17+）· verify 对 graph_delta 默认 WARN（`--strict-graph-delta` 可 BLOCK） |
+| **graph_delta / KPI / experience / wiki** | 闭环硬闸 | `task close`：graph_delta / KPI / experience（v2.17+）· **wiki_delta / 晋升指针（v2.18+ · 缺字段 BLOCK）** · verify 对 graph/wiki_delta 默认 WARN（`--strict-graph-delta` / `--strict-wiki-delta` 可 BLOCK） |
 | **active** | 任务发现 | 双路径 `docs/tasks/active` ∪ `docs/harness/tasks/active`（v2.9+） |
 | **S5** | Git 工作区干净 | dirty 时 warn（不直接 fail verify，但 apply 须 `--force`） |
 | **lint** | task 结构（仅 `--task`） | v2.7+ E 级 → `WARN: task lint`（不改 exit / `may_start_30`） |
