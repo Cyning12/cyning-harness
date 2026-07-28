@@ -2,6 +2,24 @@
 
 本仓库遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [2.21.0] - 2026-07-28
+
+### Added
+
+- **`wiki export`**：说明性伪链（`[[wikilink]]` / `page` / `…` 等）未解析时 **跳过 WARN**，计入 `skipped_illustrative`；真缺页仍 WARN（F-218-07 · [`SPEC-wiki-export-illustrative-wikilink_v1`](docs/spec/SPEC-wiki-export-illustrative-wikilink_v1.md)）。
+- **CI 样例** [`lint-wiki-delta.pin.yml.example`](ci/samples/lint-wiki-delta.pin.yml.example)：从 `harness.pin.json` 解析版本再 `npx`（web F-220-02）。
+
+### Changed
+
+- **RUNBOOK**（web+ops 2.20 dogfood）：§0b 已迁完快速路径；钉 `@x.y.z`；pin bump POINTER（F-220-01/04）；upgrade 后 overlay diff（ops U2）；`local.json` gitignore 建议（U3）；export `--target`/`--root`；§5.1 `cp` 三法（clone / pack / raw · F-220-03）；Python `package-manager-cache: false` 交叉链。
+- **USER_GUIDE / ONBOARDING / ci/samples/README**：旗标表 · 伪链降噪 · pin 样例 · `--strict` JSON 形状注记。
+
+### Notes
+
+- **不**削弱 close / wiki_delta 闸；CI **不**默认强制 `--strict`。
+- 来源：[`FEEDBACK` web](https://github.com/Cyning12/cyning-harness-web) · ops-desk-api dogfood 2026-07-28。
+- **待发布**：合入后由维护者 `npm publish` + tag `v2.21.0`（本 PR 不擅自发版）。
+
 ## [2.20.0] - 2026-07-28
 
 ### Added

@@ -25,7 +25,8 @@ npx @cyning/harness check    # 仅检查是否有新版本
 
 **`upgrade` 不代写业务 task**：只更新纪律层模板 / wizard / 帽文等（S2 保护 `docs/tasks/`、`reviews/`、`invokes/by-task/`）。  
 自 **2.18.0** 起 close 要求 `wiki_delta`——升级后须 **自行迁移** 存量 task 元信息；步骤与决策树见 [`USER_GUIDE` §6.0b](./USER_GUIDE_v1.0_zh.md)；缺字段清单：`npx @cyning/harness task lint-wiki-delta`（v2.19+）。  
-一页操作序（升级 → 扫描 → 补字段 → 可选 CI / topics）：[`RUNBOOK_upgrade_wiki_delta_v1_zh.md`](./RUNBOOK_upgrade_wiki_delta_v1_zh.md)（v2.19.1+）。  
+一页操作序（升级 → 扫描 → 补字段 → 可选 CI / topics）：[`RUNBOOK_upgrade_wiki_delta_v1_zh.md`](./RUNBOOK_upgrade_wiki_delta_v1_zh.md)（v2.19.1+；**v2.21+** 含已迁完快速路径 · pin/overlay · CI 三法复制）。  
+建议将 `.cyning-harness/local.json` 列入 `.gitignore`（常含本机路径）。
 自 **2.18.2** 起纪律包推荐 **coding_wiki 两层目录**（根三件套 + `topics/`；recommended，非硬闸）——见 [`coding_wiki/templates/README`](../coding_wiki/templates/README.md) · USER_GUIDE「Wiki 目录 vs 关系图」。  
 **`upgrade` 也不自动改业务仓已有 `docs/coding_wiki/` 目录形状**（例如平铺主题 → `topics/`）：须消费者自行 `git mv` 并修链，再 `wiki export` 校验。
 

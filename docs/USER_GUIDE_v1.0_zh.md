@@ -339,6 +339,9 @@ npx @cyning/harness task lint-wiki-delta [--target .] [--scope all|active|done] 
 # 关账预检（v2.20+）：另报 none/n/a 无 note、path 不存在（迁完字段后再用）
 npx @cyning/harness task lint-wiki-delta --target . --strict
 
+# --json 形状（strict 绿时）：ok / missing[] / issues[] / scanned / scope / strict
+# 有 issue 时 issues[].code 例：wiki_delta_none_no_note · wiki_delta_path_missing
+
 # 抽查单文件：缺字段时 verify 会 WARN（不挡 30）并提示上列命令；close 才会 BLOCK
 npx @cyning/harness verify --target . --task docs/tasks/active/<task>.md
 ```
@@ -361,7 +364,21 @@ npx @cyning/harness wiki export --json --root coding_wiki/templates
 # 业务仓若已 cp 到 docs/coding_wiki：--root docs/coding_wiki
 ```
 
-**防踩坑（F-218-07）**：文档/README **叙述**里不要写裸双括号字面（会把「说明用的伪链」解析成边 → `未解析 wikilink` warn）。正文举例请写「双括号 wikilink」，真实互链再用指向存在页的 `[[stable]]` 等。
+**防踩坑（F-218-07）**：文档/README **叙述**里不要写裸双括号字面（会把「说明用的伪链」解析成边 → `未解析 wikilink` warn）。正文举例请写「双括号 wikilink」，真实互链再用指向存在页的 `[[stable]]` 等。  
+**v2.21+**：未解析且目标名为说明性占位（如 `wikilink` / `page` / `…`）时 **跳过 WARN**（计入 `skipped_illustrative`）；真缺页仍 WARN。
+
+#### `wiki export` 旗标
+
+| 旗标 | 含义 |
+|------|------|
+| `--target PATH` | **仓根**（与其它子命令一致） |
+| `--root DIR` | wiki 目录，**相对仓根**（默认 `docs/coding_wiki`） |
+
+二者同时用：在 `--target` 所指仓根下读 `--root`。只写 `--root` 时仓根为 cwd。
+
+```bash
+npx @cyning/harness wiki export --json --target . --root docs/coding_wiki
+```
 
 归档前可用旁路资格报告（**不** mv、**不**替代 `task close`）：
 
