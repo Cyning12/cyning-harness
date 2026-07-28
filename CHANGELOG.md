@@ -15,7 +15,7 @@
 ### Notes
 
 - 不改 S2/S5 / close / wiki_delta / pre-30；不改 local.json 策略（U2 仍 P3）。
-- **待发布**：合入后维护者 `npm publish` + tag `v2.22.2`。
+- **已发布**：`@cyning/harness@2.22.2`（npm `latest` · 2026-07-28）· tag `v2.22.2` 已推送
 - 消费者：升 2.22.2 后可再跑 RUNBOOK §1.2.1 二次同版 upgrade，确认 `from_version` 仍为历史字符串。
 
 ## [2.22.1] - 2026-07-28

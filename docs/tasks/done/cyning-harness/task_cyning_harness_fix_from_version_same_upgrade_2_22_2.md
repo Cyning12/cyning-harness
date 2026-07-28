@@ -1,6 +1,6 @@
 # Task · 同版 upgrade 保留 from_version（2.22.2）
 
-> **状态**：`active`  
+> **状态**：`done`  
 > **关联**：ops-desk-web FEEDBACK U1 · `wizard/lib/manifest.sh`  
 > **Open Folder**：`cyning-harness/`  
 > **git_branch**：`task/fix-from-version-same-upgrade-2-22-2`
@@ -60,15 +60,33 @@
 
 - [x] 跨版：from_version = 升级前 version
 - [x] 同版二次：from_version 不变（非 null）
-- [x] `npm test` 绿 · PR URL
+- [x] `npm test` 绿 · PR URL · https://github.com/Cyning12/cyning-harness/pull/18
 
 ### 自检结论（执行者）
 
 - `npm test` → 254 pass（含同版二次 from_version）
 - PR：https://github.com/Cyning12/cyning-harness/pull/18
 
+### KPI（00）
+
+Task_KPI%: 90
+
+| 维 | 分 |
+| --- | --- |
+| 质量 | 5 |
+| 过程 | 4 |
+| 可观测 | 5 |
+| 回馈 | 5 |
+
+### 经验总结
+
+- 同版 re-upgrade 与「from_version=null 仅 init」冲突时，preserve 既有值即可；勿默认重写 null。
+- §1.2.1 建议二次同版 upgrade → 簿记字段必须幂等。
+- Wiki: n/a
+
 ## 修订记录
 
 | 日期 | 说明 |
 |------|------|
 | 2026-07-28 | 00/30 · 开工 |
+| 2026-07-28 | `@cyning/harness@2.22.2` 已发版 · 关账 |
