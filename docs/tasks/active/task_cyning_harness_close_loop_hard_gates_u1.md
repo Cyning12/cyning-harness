@@ -33,8 +33,8 @@
 | human_gate_id | status | blocks_hats | 说明 |
 |---------------|--------|-------------|------|
 | HG-TASK-DRAFT | approved | 22-R1, 30 | 维护者 2026-07-28：「先收口U0，后继续U1」 |
-| HG-SPEC-SIGNOFF | pending | 30 | 签 SPEC-close-loop-hard-gates_v1 或书面 skip_10_spec |
-| HG-AUDIT-R1 | pending | 30 | 可 skip_review 书面；否则 20 审后签 |
+| HG-SPEC-SIGNOFF | approved | 30 | 维护者 2026-07-28：「批准 SPEC-close-loop-hard-gates_v1」 |
+| HG-AUDIT-R1 | approved | 30 | 同会话「齐全后再通知发版」· maintainer skip_review |
 
 ---
 

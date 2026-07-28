@@ -2,7 +2,7 @@
 
 | 项 | 内容 |
 | --- | --- |
-| **状态** | `draft` · 待维护者签收或书面 `skip_10_spec` |
+| **状态** | `signed` · 维护者批准 2026-07-28 · 目标同窗发版 **2.17.0** |
 | **日期** | 2026-07-28 |
 | **track** | `feature` · close/verify 行为增强 |
 | **上游分析（工作区）** | `Projects/docs/harness/guides/ANALYSIS_cyning_harness_close_loop_hard_gates_gap_20260728_v1_zh.md` |

@@ -9,6 +9,7 @@
 | 文件 | 用途 |
 | --- | --- |
 | [`task_demo_p0_golden_v1.md`](./task_demo_p0_golden_v1.md) | 金样 task · 复制到 `docs/tasks/active/` |
+| [`ONTOLOGY_consumer_slice_demo_v1.md`](./ONTOLOGY_consumer_slice_demo_v1.md) | Consumer ontology 最小切片样例（v2.17+ · 非 ontology-check） |
 | [`ACCEPTANCE.md`](./ACCEPTANCE.md) | 分阶段验收勾选 |
 | [`00_main.graph.yaml`](./00_main.graph.yaml) | Inform-YAML v3 编辑源示例（v1.1+） |
 | [`00_main.md`](./00_main.md) | 由 `graph yaml compile` 生成的人类可读图 |
