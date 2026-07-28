@@ -120,10 +120,23 @@ write_manifest_upgrade() {
   ide_json="$(manifest_ide_from_profile "$target/.cyning-harness/profile.json")"
 
   if [[ -f "$mf" ]]; then
-    local old_ver
+    local old_ver old_from
     old_ver="$(grep '"version"' "$mf" | head -1 | sed -E 's/.*:[[:space:]]*"([^"]+)".*/\1/')"
     if [[ -n "$old_ver" && "$old_ver" != "$version" ]]; then
+      # 跨版：记录升级前 version
       from_ver="\"$old_ver\""
+    elif [[ -n "$old_ver" && "$old_ver" == "$version" ]]; then
+      # 同版 re-upgrade：保留既有 from_version（勿写成 null · ops-desk-web U1）
+      if grep -qE '"from_version"[[:space:]]*:[[:space:]]*null' "$mf"; then
+        from_ver="null"
+      else
+        old_from="$(grep '"from_version"' "$mf" | head -1 | sed -E 's/.*:[[:space:]]*"([^"]+)".*/\1/')"
+        if [[ -n "$old_from" ]]; then
+          from_ver="\"$old_from\""
+        else
+          from_ver="null"
+        fi
+      fi
     fi
     preset="$(grep '"preset"' "$mf" | head -1 | sed -E 's/.*:[[:space:]]*"([^"]+)".*/\1/' || echo "$preset")"
   fi

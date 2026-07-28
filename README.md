@@ -187,7 +187,7 @@ cyning-harness/
 
 | 项 | 值 |
 |----|-----|
-| 当前 npm | **`@cyning/harness@2.22.1`** — RUNBOOK §1.2.1 overlay 强制操作序 · 2.22 overlay 部分根治 |
+| 当前 npm | **`@cyning/harness@2.22.2`** — 同版 upgrade 保留 `manifest.from_version` |
 | 里程碑 | v2.0 — HGM G1 · Inform-YAML · ICVO audit · invoke_index |
 | 许可 | **MIT** · [`LICENSE`](LICENSE) · 变更 [`CHANGELOG.md`](CHANGELOG.md) |
 

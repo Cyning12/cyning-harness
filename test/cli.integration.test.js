@@ -86,6 +86,41 @@ test('upgrade --yes 等价 upgrade.sh 并更新 manifest', () => {
   assert.equal(after.from_version, before.version);
 });
 
+test('同版二次 upgrade 保留 from_version（不写 null · 2.22.2）', () => {
+  const target = mkTempProject();
+  let result = runNode([
+    'init',
+    '--target',
+    target,
+    '--preset',
+    'harness-only',
+    '--ide',
+    'cursor',
+    '--yes',
+  ]);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+
+  result = runNode(['upgrade', '--target', target, '--yes'], {
+    HARNESS_VERSION: '0.3.1',
+  });
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const afterCross = readManifest(target);
+  assert.equal(afterCross.version, '0.3.1');
+  assert.equal(afterCross.from_version, '0.3.0');
+
+  spawnSync('git', ['add', '-A'], { cwd: target });
+  spawnSync('git', ['commit', '-m', 'after cross upgrade'], { cwd: target });
+
+  result = runNode(['upgrade', '--target', target, '--yes'], {
+    HARNESS_VERSION: '0.3.1',
+  });
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const afterSame = readManifest(target);
+  assert.equal(afterSame.version, '0.3.1');
+  assert.equal(afterSame.from_version, '0.3.0');
+  assert.notEqual(afterSame.from_version, null);
+});
+
 test('F1：upgrade 在已跟踪 local.json 路径变化时仍一把过（不因自身脏中止）', () => {
   const target = mkTempProject();
   let result = runNode([
