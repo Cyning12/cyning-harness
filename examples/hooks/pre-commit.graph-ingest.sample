@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Optional pre-commit · graph ingest（过程可观测 · P2）
+#
+# 默认 **不** 由 init/upgrade 安装。维护者手动启用：
+#   mkdir -p .cyning-harness/hooks
+#   cp path/to/@cyning/harness/examples/hooks/pre-commit.graph-ingest.sample \
+#      .cyning-harness/hooks/pre-commit.sample
+#   cp .cyning-harness/hooks/pre-commit.sample .git/hooks/pre-commit
+#   chmod +x .git/hooks/pre-commit
+#
+# 纪律：只 append HGM events · 不改 task/review 正文（S2）
+# 失败默认 WARN 不挡 commit（取消下行注释可改为 block）
+
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "$REPO_ROOT"
+
+if ! npx --yes @cyning/harness graph ingest --target "$REPO_ROOT"; then
+  echo "WARN: graph ingest 失败 · 未阻断 commit（可取消下行注释以 block）" >&2
+  # exit 1
+fi

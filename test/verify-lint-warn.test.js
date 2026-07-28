@@ -80,6 +80,11 @@ function makeTarget({ lintOk = true } = {}) {
   const reviewsDir = path.join(target, 'docs/harness/reviews');
   fs.mkdirSync(reviewsDir, { recursive: true });
   fs.writeFileSync(path.join(reviewsDir, 'task_demo_audit_R1_20260724.md'), '# review\n');
+  // v2.14+：有 task_slug 时须有 pre-30 invoke，否则 verify BLOCK
+  const invokeDir = path.join(target, 'docs/harness/invokes/by-task/demo');
+  fs.mkdirSync(invokeDir, { recursive: true });
+  fs.writeFileSync(path.join(invokeDir, 'invoke_20260727_10_demo.md'), '# 10\n');
+  fs.writeFileSync(path.join(invokeDir, 'invoke_20260727_30_demo.md'), '# 30\n');
   return target;
 }
 

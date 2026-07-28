@@ -187,7 +187,7 @@ cyning-harness/
 
 | 项 | 值 |
 |----|-----|
-| 当前 npm | **`@cyning/harness@2.13.0`** — dry-run `close_*` · invoke hats 硬闸（2.12）· lifecycle / verify 扩面（2.9–2.11） |
+| 当前 npm | **`@cyning/harness@2.16.2`** — tech-graph CI 样例 · pnpm cache 摩擦说明 |
 | 里程碑 | v2.0 — HGM G1 · Inform-YAML · ICVO audit · invoke_index |
 | 许可 | **MIT** · [`LICENSE`](LICENSE) · 变更 [`CHANGELOG.md`](CHANGELOG.md) |
 

@@ -4,6 +4,108 @@
 
 ## [Unreleased]
 
+### Changed
+
+- **`verify --task` · pre-30 invoke 硬闸**（目标 **2.17.0**）：`required ∩ {10,20,00}` 缺失 → `VERIFY: BLOCKED · missing pre-30 invoke hats` · `may_start_30=false`（v2.12 仅 WARN 的语义升格）。
+- 缺 **40** / 缺 30 文件本身 **不挡** 30（仍 WARN）；`invoke_retention_profile: minimal`（无 preRequired）不挡。
+- `--allow-invoke-gap`：pre-30 BLOCK **豁免为 WARN 放行**并留痕；`--json` handoff 增加 `invoke_pre30_ok` / `invoke_pre30_missing` 等。
+- `lib/task-meta.js`：新增 `evaluatePre30InvokeHats`。
+- FRAGMENT_30 / 30-execute / TEMPLATE_30_gate_stop · USER_GUIDE §6.0：写明「用户『开工』≠ 闸」。
+
+### Notes
+
+- SPEC：`docs/spec/SPEC-verify-pre30-invoke-hats-gate_v1.md`（修订上游 `SPEC-invoke-hats-retention-gate` verify 语义）
+- **破坏性（verify）**：存量业务仓 **default + 仅有 30 invoke** → upgrade 到含本变更的版本后 **verify 将挡 30**。补救：补 `invoke_*_10_*`、改 `minimal` / 显式 `required_invoke_hats: 30`、或 `--allow-invoke-gap`
+- **版本**：叠在已发布 `@cyning/harness@2.16.2` 之上；**勿**再占用 2.14.0（该号在 npm 叙事中已为 `status` CLI）
+- 待与 U1（close-loop hard gates）同窗或紧随发版；发版前由维护者 `npm publish`
+
+## [2.16.2] - 2026-07-27
+
+### Added
+
+- **CI 样例**：`ci/samples/tech-graph.yml.example`（`docs/_tech_graph` + `graph-compile.sh` · `package-manager-cache: false`）。
+
+### Fixed
+
+- `ci/samples/hgm-ingest.yml.example`：setup-node@v5 显式 `package-manager-cache: false`（npx-only job 遇 `packageManager=pnpm` 不再误找 pnpm）。
+- `ci/samples/README.md`：登记 tech-graph；专节摩擦（setup-node × pnpm cache × npx-only vs quality 先 action-setup）。
+
+### Notes
+
+- patch · 仅 CI 样例 / 文档；不改变 CLI 行为
+- **已发布**：`@cyning/harness@2.16.2`（npm `latest` · 2026-07-27）· tag `v2.16.2` 已推送
+
+## [2.16.1] - 2026-07-27
+
+### Added
+
+- USER_GUIDE §6.0a：**跨壳过程观测边界** POINTER（工作区 `GUIDANCE_harness_process_observability_shell_boundary_v1_zh.md` · Epic P3a）。
+
+### Notes
+
+- patch · 产品仓仅文档指针；边界真值在工作区 Guides
+- 不改变 CLI 行为
+- **已发布**：`@cyning/harness@2.16.1`（npm `latest` · 2026-07-27）
+
+## [2.16.0] - 2026-07-27
+
+### Added
+
+- **`status --check` 硬语义**：缺 R1 review 或 `may_start_30=false` → **exit 2**（须 `--task`）。
+- **hook 样例（随包）**：`examples/hooks/pre-commit.graph-ingest.sample`（默认 warn 不挡 commit · init 不装）。
+- **CI 样例**：`ci/samples/hgm-ingest.yml.example`（可选 · `continue-on-error`）。
+
+### Changed
+
+- USER_GUIDE §6.0a / §13.3：交叉链 hook + CI；`--check` 说明升级。
+- `discipline-coverage.yaml` `as_of` → **2.16.0**。
+
+### Notes
+
+- SPEC / Epic P2 · **不**强制装 hook · **不**替代 verify
+- minor · 相对 2.15：`--check` 从 WARN 升为可失败 exit
+- 过程可观测 Epic 同窗发版收口于 **2.16.1**（见上）
+
+## [2.15.0] - 2026-07-27
+
+### Added
+
+- **`harness timeline`**：按 task 投影 HGM 事件时间线（`--task` / `--json` / `--limit` / 可选 `--ingest`）。
+- JSON 契约 `obs_timeline.v1`；无匹配事件时 exit 0 + WARN，提示 `graph ingest`（默认不写盘）。
+- `lib/timeline.js` · `lib/obs-hgm.js`（与 `status.hgm` **同一** task 匹配规则）· `test/timeline.test.js`。
+
+### Changed
+
+- USER_GUIDE §6.0a 扩写 timeline；`status` 经 `obs-hgm` 复用过滤。
+- `discipline-coverage.yaml` `as_of` → **2.15.0**。
+
+### Notes
+
+- SPEC：`docs/spec/SPEC-process-observability_status_timeline_v1.md` · Epic P1
+- minor · 与 P0 `status`（2.14）同窗过程可观测；`--ingest` 为显式开关
+- 禁止 Neo4j；不改 verify / status 退出语义
+- **UX**：`--ingest` 先剥再解析，避免 `--task --ingest path` 误吞；帮助文含正确示例
+
+## [2.14.0] - 2026-07-27
+
+### Added
+
+- **`harness status`**：过程可观测一屏投影（`--target` / `--task` / `--json` / `--check` WARN stub）。
+- JSON 契约 `obs_status.v1`：闸表 · `may_start_30` · blockers · last_invoke · reviews(R1/CLOSE) · `verify_preview`（只读）· HGM 计数 · KPI 节存在性 · `next_hint`。
+- `lib/status.js` + `test/status.test.js`。
+
+### Changed
+
+- USER_GUIDE：新增「过程可观测」小节；CLI 速查表登记 `status`。
+- 明确纪律：**status 不替代** 正式 `harness verify`（30 前仍须跑 verify）。
+
+### Notes
+
+- SPEC：`docs/spec/SPEC-process-observability_status_timeline_v1.md` · Epic P0
+- minor · `timeline` / `--check` 硬失败属后续棒；本版 `--check` 仅 WARN
+- status **禁止**偷偷 `graph ingest` 写盘
+- **fix**：`next_hint` 识别 post-30（last_invoke hat≥30）与 done/CLOSE，不再误提示「开 30」
+
 ## [2.13.0] - 2026-07-26
 
 ### Added

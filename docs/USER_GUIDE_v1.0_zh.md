@@ -187,7 +187,9 @@ Schema：[`schema/verify_result.v1.schema.json`](../schema/verify_result.v1.sche
 | `npx @cyning/harness init` | 首次安装模板与 manifest（可选 `--with-scripts`） |
 | `npx @cyning/harness upgrade` | 同步产品包更新（可加 `--gate-check`）；v2.11.1+：`local.json` 在 apply 后写入；manifest 重写前 WARN 非标准字段（2.3+ 仅五字段） |
 | `npx @cyning/harness check` | 检查是否有新版本 |
-| `npx @cyning/harness verify` | 全量：双路径 + reviews（v2.9+）；`--task`：30 前聚合 + invoke hats WARN（v2.12+）；`--spec`：SPEC→00（v2.8+ · 互斥） |
+| `npx @cyning/harness verify` | 全量：双路径 + reviews（v2.9+）；`--task`：30 前聚合 + **pre-30 invoke 硬闸**（目标 v2.17+；缺 40 仍 WARN）；`--spec`：SPEC→00（v2.8+ · 互斥） |
+| `npx @cyning/harness status` | 过程可观测一屏投影（v2.14+ · 闸/invoke/review/`verify_preview`；**不替代** verify） |
+| `npx @cyning/harness timeline` | 过程时间线（v2.15+ · HGM 事件投影；默认不 ingest；可选 `--ingest`） |
 | `npx @cyning/harness task close` | 受闸归档；v2.12+ 按 `required_invoke_hats` / `invoke_retention_profile` 校验多帽 invoke（缺省 `10,30,40`；`--allow-invoke-gap`） |
 | `npx @cyning/harness lifecycle show` | 只读展示 `harness/lifecycle.yaml`（登记 · v2.7+） |
 | `npx @cyning/harness lifecycle dry-run` | 转移资格判定（v2.10+ · `to_30` v2.11 · **`close_*` v2.13** · 旁路 · 非 G7） |
@@ -207,7 +209,72 @@ Schema：[`schema/verify_result.v1.schema.json`](../schema/verify_result.v1.sche
 
 Audit **不替代** 维护者判断；22 内容质量仍须人读 review。详见 [`ONBOARDING.md`](./ONBOARDING.md) §2.2。
 
-### 6.0 多帽 invoke 留档（v2.12+）
+### 6.0a 过程可观测 · `status` / `timeline`（v2.14+ / v2.15+）
+
+#### status（一屏）
+
+一屏回答「这个 task 现在能不能进 30？卡在哪？」——聚合闸表、invoke/review 存在性、以及 **`verify` 只读预览**。
+
+```bash
+# 列出 active 摘要
+npx @cyning/harness status --target /path/to/repo
+
+# 单 task 详表（人读）
+npx @cyning/harness status --target /path/to/repo --task docs/harness/tasks/active/task_xxx.md
+
+# 机读（obs_status.v1）
+npx @cyning/harness status --target /path/to/repo --task docs/harness/tasks/active/task_xxx.md --json
+```
+
+| 要点 | 说明 |
+| --- | --- |
+| **≠ verify** | `verify_preview` 仅为投影；**30 前仍须**正式 `harness verify --task …` |
+| `--check` | 须 `--task`。缺 R1 或 `may_start_30=false` → **exit 2**（v2.16+）；**仍 ≠** 替代 verify |
+| HGM | 只读事件计数；无匹配事件时 `event_count=null`；**不会**自动 `ingest` |
+| JSON | 字段只加不删语义（`schema_version: obs_status.v1`） |
+
+#### timeline（时间线 · v2.15+）
+
+按时间升序列出与该 task 相关的 HGM 事件（与 `status.hgm` **同一匹配规则**）。
+
+```bash
+npx @cyning/harness timeline --target /path/to/repo --task docs/harness/tasks/active/task_xxx.md
+npx @cyning/harness timeline --target /path/to/repo --task docs/…/task_xxx.md --json --limit 20
+# 显式写盘后再投影（默认不会偷偷 ingest）
+npx @cyning/harness timeline --target /path/to/repo --task docs/…/task_xxx.md --ingest
+```
+
+| 要点 | 说明 |
+| --- | --- |
+| 无事件 | exit 0 · stderr WARN · 提示先 `graph ingest` 或加 `--ingest` |
+| `--ingest` | **显式**调用 ingest；非默认 |
+| JSON | `obs_timeline.v1` · 每行含 `occurred_at` / `type` / `subject` / `summary` |
+
+完整字段见产品 SPEC：`docs/spec/SPEC-process-observability_status_timeline_v1.md`。
+
+#### 可选 · commit 后 ingest hook（v2.16+ / 既有 §13.3）
+
+`init` **默认不安装** hook。随包样例：
+
+```bash
+# 从 npm 包 / clone
+cp node_modules/@cyning/harness/examples/hooks/pre-commit.graph-ingest.sample \
+  .cyning-harness/hooks/pre-commit.sample
+cp .cyning-harness/hooks/pre-commit.sample .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
+```
+
+失败默认 **WARN 不挡 commit**。CI 可选步骤见 [`ci/samples/hgm-ingest.yml.example`](../ci/samples/hgm-ingest.yml.example)。
+
+#### 跨壳边界（工作区 GUIDANCE · P3a）
+
+结束态认**落盘**；飞行中属各 ExecutionShell，**禁止**升格为签收真值。完整边界表：
+
+- 工作区（Open `Projects/`）：`docs/harness/guides/GUIDANCE_harness_process_observability_shell_boundary_v1_zh.md`
+- Kimi 壳专章（链）：同目录 `GUIDANCE_kimi_code_00_observability_v1_zh.md`
+- Ops Desk 只读 JSON 消费者：**P3b**（可选 · 不阻塞 Epic）
+
+### 6.0 多帽 invoke 留档（v2.12+ · verify pre-30 硬闸 · 目标 v2.17+）
 
 `task close` 按 task 元信息校验 `by-task/<slug>/` 下 invoke 文件名所覆盖的 **hat 集合**（缺省要求 `10,30,40`）。
 
@@ -216,10 +283,10 @@ Audit **不替代** 维护者判断；22 内容质量仍须人读 review。详�
 | `invoke_retention_profile` | `default`=`10,30,40` · `minimal`=`30` · `full`=`00,10,20,30,40,CLOSE` |
 | `required_invoke_hats` | 显式列表，**优先于** profile |
 | 命名 | `invoke_YYYYMMDD_<hat>[_<hat>...]_<slug>.md`；hat 只在日期后连续前缀（例 `30_40` 可双计）；**slug 段勿夹** `10`/`40` 等（v2.12.1 起不误计） |
-| `--allow-invoke-gap` | close / `verify --task` 缺帽豁免并留痕 |
+| `--allow-invoke-gap` | close / `verify --task` 缺帽豁免并留痕（verify 对 **pre-30** 硬闸亦适用） |
 | 存量仅 30 | upgrade 后：补 `10`/`40` 档、或改 `minimal`、或显式 `--allow-invoke-gap` |
 
-`verify --task` 对缺口仅 **WARN**，不挡 `may_start_30`；硬闸在 close。
+**verify `--task`（目标 v2.17+）**：`required ∩ {10,20,00}`（**pre-30**）缺失 → **VERIFY BLOCKED** · `may_start_30=false`（用户口头「开工」≠ 闸）。缺 **40** / 缺 30 文件本身 **不挡** 30（仍可 WARN）；`minimal`（无 preRequired）不挡。硬闸 close 仍覆盖全量 required（含 40）。
 
 归档前可用旁路资格报告（**不** mv、**不**替代 `task close`）：
 
@@ -406,9 +473,12 @@ npx @cyning/harness graph axioms check --target /path/to/your-repo --json
 
 ### 13.3 可选 · Git hooks
 
-`init` **默认不安装** pre-commit。维护者可手动复制：
+`init` **默认不安装** pre-commit。维护者可手动复制（随包样例优先）：
 
 ```bash
+cp node_modules/@cyning/harness/examples/hooks/pre-commit.graph-ingest.sample \
+  .cyning-harness/hooks/pre-commit.sample
+# 或本地 clone：examples/hooks/pre-commit.graph-ingest.sample
 cp .cyning-harness/hooks/pre-commit.sample .git/hooks/pre-commit
 chmod +x .git/hooks/pre-commit
 ```

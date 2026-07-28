@@ -4,21 +4,38 @@
 
 ## v0.1 已交付（T4 · M2）
 
-| 样例 | 状态 | 适用栈 | 三门禁 |
-|------|------|--------|--------|
+| 样例 | 状态 | 适用栈 | 三门禁 / 说明 |
+|------|------|--------|----------------|
 | [`quality.yml.example`](./quality.yml.example) | ✅ | Node/TS · Next 等 | install → lint → test → build |
 | [`pytest.yml.example`](./pytest.yml.example) | ✅ | Python · FastAPI 等 | install → pytest |
+| [`tech-graph.yml.example`](./tech-graph.yml.example) | ✅ · **可选** | 已接入 `docs/_tech_graph` + `scripts/graph-compile.sh` | graph compile（业务仓自备脚本） |
+| [`hgm-ingest.yml.example`](./hgm-ingest.yml.example) | ✅ · **可选** | 任意已接入 Harness 的仓 | `graph ingest`（默认 continue-on-error） |
 
 ## 嵌入步骤
 
-```bash
-mkdir -p .github/workflows
-cp cyning-harness/ci/samples/quality.yml.example .github/workflows/quality.yml
-# 或
-cp cyning-harness/ci/samples/pytest.yml.example .github/workflows/pytest.yml
-```
+    mkdir -p .github/workflows
+    cp cyning-harness/ci/samples/quality.yml.example .github/workflows/quality.yml
+    # 或
+    cp cyning-harness/ci/samples/pytest.yml.example .github/workflows/pytest.yml
+    # 图谱编译（可选 · 须自备 graph-compile.sh）
+    cp cyning-harness/ci/samples/tech-graph.yml.example .github/workflows/tech-graph.yml
+    # 过程可观测（可选 · 非三门禁必绿）
+    cp cyning-harness/ci/samples/hgm-ingest.yml.example .github/workflows/hgm-ingest.yml
 
 按 `package.json` / `requirements.txt` / Node 版本 / env 变量 **裁剪注释块**。
+
+## 摩擦 / 坑 · setup-node × packageManager(pnpm) × npx-only
+
+`actions/setup-node@v5` 默认会按 `package.json` 的 `packageManager` 开 **package-manager-cache**。若字段为 `pnpm@…`，但本 job **只装 Node、用 npx / 不跑 pnpm install**（未先 `pnpm/action-setup`），则会红：
+
+    Unable to locate executable file: pnpm
+
+| Job 类型 | 正确做法 |
+|----------|----------|
+| **npx-only**（`tech-graph` / `hgm-ingest` 等） | `setup-node` 显式 `package-manager-cache: false` |
+| **质量三门禁**（`quality.yml.example`） | 先 `pnpm/action-setup`，再 `setup-node` 且 `cache: pnpm` |
+
+不要把 npx-only 样例抄成「开了 cache 却没装 pnpm」。
 
 ## 金样 POINTER（Ink · 只读对照）
 
@@ -26,17 +43,21 @@ cp cyning-harness/ci/samples/pytest.yml.example .github/workflows/pytest.yml
 |----|----------------|
 | 前端 | `ai-ink-brain/.github/workflows/quality.yml` |
 | 后端 | `ai-ink-brain-api-python/.github/workflows/pytest.yml` |
+| 图谱 | `ai-ink-brain-api-python/.github/workflows/tech-graph.yml`（业务专有；Starter 为最小 compile 样例） |
 
-Ink workflow 含图谱 export、跨仓 checkout 等 **业务专有** 步骤；Starter 样例为 **最小三门禁**，按需从金样增量合并。
+Ink workflow 含图谱 export、跨仓 checkout 等 **业务专有** 步骤；Starter 样例为 **最小三门禁 / 最小 compile**，按需从金样增量合并。
 
 ## 与 Harness 关系
 
 - task `test_strategy: required` → 本地/CI 须与 workflow 命令一致
 - L2 模板 CI 对齐节：[`standards/TEMPLATE_CODING_BASELINE_L2_*.md`](../standards/)
 - ONBOARDING §5：五轨检查清单含 CI 样例已适配
+- **不**把 tech-graph / pre-commit hook 绑进 `init` 默认拷贝；按需从本目录 `cp`
 
 ## 修订记录
 
 | 日期 | 说明 |
 |------|------|
+| 2026-07-27 | 增 `tech-graph.yml.example`；`hgm-ingest` 补 `package-manager-cache: false`；专节摩擦说明 |
+| 2026-07-27 | 增 `hgm-ingest.yml.example`（过程可观测 P2 · 可选） |
 | 2026-06-09 | T4 M2 首版样例 |
