@@ -78,7 +78,8 @@ npx @cyning/harness lifecycle dry-run --transition to_30 --from draft
 
 # 受闸归档（v2.12+ 多帽 invoke 集合 · 缺省 10,30,40 · 见 USER_GUIDE §6.0）
 npx @cyning/harness task close --file docs/tasks/active/task_xxx.md
-# 豁免示例：--allow-invoke-gap · --allow-unchecked · --allow-no-review
+# 豁免示例：--allow-invoke-gap · --allow-unchecked · --allow-no-review · --allow-kpi-gap · --allow-experience-gap
+# （勿把 --allow-*-gap 当默认绿路径）
 
 # 机械化率资产只读（v2.11+ · SoT=discipline-coverage.yaml）
 npx @cyning/harness discipline show
@@ -101,7 +102,8 @@ npx @cyning/harness sync index --target /path/to/your-repo
 | **D3** | 30 前置人闸 | 复用 `gate-check.sh`，HG-AUDIT-R1 非 approved 时 verify 非 0 |
 | **D5** | 改码任务测试声明 | 仅 `--task`：`test_strategy=required` 但无测试/CI 引用时 verify 非 0 |
 | **reviews** | R&lt;n&gt; 审查文存在 | `--task` 与全量（v2.9+）· 缺文 BLOCKED · `--allow-no-review` |
-| **invoke hats** | 多帽 invoke 集合 | `task close` 硬闸（v2.12+）· `verify --task` 仅 WARN · `lifecycle dry-run close` 旁路（v2.13） |
+| **invoke hats** | 多帽 invoke 集合 | `task close` 硬闸（v2.12+）· `verify --task` **pre-30** 硬闸（v2.17+；缺 40 仍 WARN）· `lifecycle dry-run close` 旁路（v2.13） |
+| **graph_delta / KPI / experience** | 闭环硬闸 | `task close`：graph_delta / KPI 打分 / experience（v2.17+）· verify 对 graph_delta 默认 WARN（`--strict-graph-delta` 可 BLOCK） |
 | **active** | 任务发现 | 双路径 `docs/tasks/active` ∪ `docs/harness/tasks/active`（v2.9+） |
 | **S5** | Git 工作区干净 | dirty 时 warn（不直接 fail verify，但 apply 须 `--force`） |
 | **lint** | task 结构（仅 `--task`） | v2.7+ E 级 → `WARN: task lint`（不改 exit / `may_start_30`） |
@@ -112,6 +114,20 @@ npx @cyning/harness sync index --target /path/to/your-repo
 机械化率覆盖资产（Starter）：[`harness/discipline-coverage.yaml`](../harness/discipline-coverage.yaml)（SoT · 随版本改 statements/gaps；**无** audit UI）。
 
 Audit **不替代** 维护者最终判断；Agent 首输出仍须人工复核。
+
+---
+
+## 2.0a 绿野推荐顺序（Consumer Ontology · v2.17+）
+
+新业务仓（绿野）建议按序完成 **Inform 语义设定**，再开涉码 30：
+
+1. `npx @cyning/harness init --preset harness-only --ide …`
+2. 复制 [`harness/templates/ONTOLOGY_consumer_slice_v1.md`](../harness/templates/ONTOLOGY_consumer_slice_v1.md) → 业务仓 `docs/meta/ONTOLOGY_<domain>_v1.md` 并填术语 / 核心类
+3. 填 `docs/_tech_graph/01_struct.md`（及必要 `10_flow_*.md`）
+4. 签 task 闸表 **`HG-GRAPH-MODULES`**（若启用）后再 `verify --task` / 开 30
+
+样例：[`examples/demo_checkout/ONTOLOGY_consumer_slice_demo_v1.md`](../examples/demo_checkout/ONTOLOGY_consumer_slice_demo_v1.md)。  
+**注意**：consumer slice **不**并入 `harness ontology-check`（产品本体与业务语义分离）。
 
 ---
 

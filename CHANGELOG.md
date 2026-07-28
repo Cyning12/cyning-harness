@@ -2,22 +2,32 @@
 
 本仓库遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
-## [Unreleased]
+## [2.17.0] - 2026-07-28
+
+### Added
+
+- **`verify --task` · pre-30 invoke 硬闸**：`required ∩ {10,20,00}` 缺失 → `VERIFY: BLOCKED · missing pre-30 invoke hats` · `may_start_30=false`（相对 v2.12 仅 WARN 升格）。
+- **闭环硬闸 G1 · `graph_delta`**：主 `TASK_TEMPLATE` 增加 `graph_delta` / `graph_delta_note`；`task close`：缺字段 WARN；`none` 无 note → BLOCK；路径须相对仓根存在 → 否则 BLOCK。`verify --task` 同规则默认 WARN；`--strict-graph-delta` → fail 级 BLOCK。
+- **闭环硬闸 G3 P0 · KPI**：`kpi_aggregator=CLOSE`（默认）时 close 要求 `### KPI` 内可解析分数（`Task_KPI%` / D1–D5 / 四维 1–5）；失败 BLOCK；`--allow-kpi-gap` 豁免留痕。**不**在 verify 挡 30。
+- **闭环硬闸 G4 · experience**：`experience_capture=required` 时 close 要求经验节非空（≥80 字或 ≥3 列表项）；`recommended` → WARN；`not_applicable` 须 `experience_capture_note`；`--allow-experience-gap` 豁免留痕。
+- **G2 P0 · Consumer ontology**：模板 `harness/templates/ONTOLOGY_consumer_slice_v1.md`；ONBOARDING「绿野推荐顺序」；`examples/demo_checkout/ONTOLOGY_consumer_slice_demo_v1.md`。**不**改 `ontology-check` 产品本体语义。
+- `lib/close-loop-gates.js`；`lifecycle` close 增补 `close_graph_delta` / `close_kpi` / `close_experience`。
 
 ### Changed
 
-- **`verify --task` · pre-30 invoke 硬闸**（目标 **2.17.0**）：`required ∩ {10,20,00}` 缺失 → `VERIFY: BLOCKED · missing pre-30 invoke hats` · `may_start_30=false`（v2.12 仅 WARN 的语义升格）。
 - 缺 **40** / 缺 30 文件本身 **不挡** 30（仍 WARN）；`invoke_retention_profile: minimal`（无 preRequired）不挡。
 - `--allow-invoke-gap`：pre-30 BLOCK **豁免为 WARN 放行**并留痕；`--json` handoff 增加 `invoke_pre30_ok` / `invoke_pre30_missing` 等。
-- `lib/task-meta.js`：新增 `evaluatePre30InvokeHats`。
-- FRAGMENT_30 / 30-execute / TEMPLATE_30_gate_stop · USER_GUIDE §6.0：写明「用户『开工』≠ 闸」。
+- `lib/task-meta.js`：`evaluatePre30InvokeHats`；`parseHarnessMeta` 支持无反引号笔记单元格。
+- FRAGMENT_30 / 30-execute / TEMPLATE_30_gate_stop · USER_GUIDE §6.0：写明「用户『开工』≠ 闸」+ 闭环硬闸表。
+- `discipline-coverage.yaml` `as_of_package_version` → **2.17.0**。
 
 ### Notes
 
-- SPEC：`docs/spec/SPEC-verify-pre30-invoke-hats-gate_v1.md`（修订上游 `SPEC-invoke-hats-retention-gate` verify 语义）
-- **破坏性（verify）**：存量业务仓 **default + 仅有 30 invoke** → upgrade 到含本变更的版本后 **verify 将挡 30**。补救：补 `invoke_*_10_*`、改 `minimal` / 显式 `required_invoke_hats: 30`、或 `--allow-invoke-gap`
-- **版本**：叠在已发布 `@cyning/harness@2.16.2` 之上；**勿**再占用 2.14.0（该号在 npm 叙事中已为 `status` CLI）
-- 待与 U1（close-loop hard gates）同窗或紧随发版；发版前由维护者 `npm publish`
+- SPEC：`docs/spec/SPEC-verify-pre30-invoke-hats-gate_v1.md` · `docs/spec/SPEC-close-loop-hard-gates_v1.md`
+- **破坏性（verify）**：存量业务仓 **default + 仅有 30 invoke** → upgrade 后 **verify 将挡 30**。补救：补 `invoke_*_10_*`、改 `minimal` / 显式 `required_invoke_hats: 30`、或 `--allow-invoke-gap`
+- **破坏性（close）**：缺省 `kpi_aggregator=CLOSE` 且 KPI 无可解析分数 → close BLOCK；`experience_capture=required` 无经验节 → BLOCK。勿默认依赖 `--allow-*-gap`
+- 叠在已发布 `@cyning/harness@2.16.2` 之上；**勿**再占用 2.14.0
+- **发版**：维护者 `npm publish`（本 PR 不 publish）
 
 ## [2.16.2] - 2026-07-27
 

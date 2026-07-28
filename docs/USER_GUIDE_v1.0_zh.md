@@ -187,10 +187,10 @@ Schema：[`schema/verify_result.v1.schema.json`](../schema/verify_result.v1.sche
 | `npx @cyning/harness init` | 首次安装模板与 manifest（可选 `--with-scripts`） |
 | `npx @cyning/harness upgrade` | 同步产品包更新（可加 `--gate-check`）；v2.11.1+：`local.json` 在 apply 后写入；manifest 重写前 WARN 非标准字段（2.3+ 仅五字段） |
 | `npx @cyning/harness check` | 检查是否有新版本 |
-| `npx @cyning/harness verify` | 全量：双路径 + reviews（v2.9+）；`--task`：30 前聚合 + **pre-30 invoke 硬闸**（目标 v2.17+；缺 40 仍 WARN）；`--spec`：SPEC→00（v2.8+ · 互斥） |
+| `npx @cyning/harness verify` | 全量：双路径 + reviews（v2.9+）；`--task`：30 前聚合 + **pre-30 invoke 硬闸**（v2.17+；缺 40 仍 WARN）+ **graph_delta WARN**（`--strict-graph-delta` 可 BLOCK）；`--spec`：SPEC→00（v2.8+ · 互斥） |
 | `npx @cyning/harness status` | 过程可观测一屏投影（v2.14+ · 闸/invoke/review/`verify_preview`；**不替代** verify） |
 | `npx @cyning/harness timeline` | 过程时间线（v2.15+ · HGM 事件投影；默认不 ingest；可选 `--ingest`） |
-| `npx @cyning/harness task close` | 受闸归档；v2.12+ 按 `required_invoke_hats` / `invoke_retention_profile` 校验多帽 invoke（缺省 `10,30,40`；`--allow-invoke-gap`） |
+| `npx @cyning/harness task close` | 受闸归档；v2.12+ invoke hats；**v2.17+** graph_delta / KPI / experience；豁免 `--allow-invoke-gap` / `--allow-kpi-gap` / `--allow-experience-gap`（勿当默认绿路径） |
 | `npx @cyning/harness lifecycle show` | 只读展示 `harness/lifecycle.yaml`（登记 · v2.7+） |
 | `npx @cyning/harness lifecycle dry-run` | 转移资格判定（v2.10+ · `to_30` v2.11 · **`close_*` v2.13** · 旁路 · 非 G7） |
 | `npx @cyning/harness discipline show` | 只读展示 `harness/discipline-coverage.yaml`（v2.11+ · 非 audit UI） |
@@ -286,13 +286,23 @@ chmod +x .git/hooks/pre-commit
 | `--allow-invoke-gap` | close / `verify --task` 缺帽豁免并留痕（verify 对 **pre-30** 硬闸亦适用） |
 | 存量仅 30 | upgrade 后：补 `10`/`40` 档、或改 `minimal`、或显式 `--allow-invoke-gap` |
 
-**verify `--task`（目标 v2.17+）**：`required ∩ {10,20,00}`（**pre-30**）缺失 → **VERIFY BLOCKED** · `may_start_30=false`（用户口头「开工」≠ 闸）。缺 **40** / 缺 30 文件本身 **不挡** 30（仍可 WARN）；`minimal`（无 preRequired）不挡。硬闸 close 仍覆盖全量 required（含 40）。
+**verify `--task`（v2.17+）**：`required ∩ {10,20,00}`（**pre-30**）缺失 → **VERIFY BLOCKED** · `may_start_30=false`（用户口头「开工」≠ 闸）。缺 **40** / 缺 30 文件本身 **不挡** 30（仍可 WARN）；`minimal`（无 preRequired）不挡。硬闸 close 仍覆盖全量 required（含 40）。
+
+**闭环硬闸（v2.17+ · close）**：
+
+| 字段 / 手段 | close | verify `--task` |
+| --- | --- | --- |
+| `graph_delta` / `graph_delta_note` | 缺字段 WARN；`none` 无 note → BLOCK；路径须相对仓根存在 | 同规则默认 WARN；`--strict-graph-delta` → fail 级 BLOCK |
+| `kpi_aggregator=CLOSE`（默认） | `### KPI` 内须可解析分数（`Task_KPI%` / D1–D5 / 四维 1–5）；`--allow-kpi-gap` 豁免留痕 | **不**挡 30 |
+| `experience_capture` | `required` 须经验节非空；`recommended` WARN；`not_applicable` 须 note；`--allow-experience-gap` 豁免留痕 | **不**挡 30 |
+
+改码 task 推荐：填 `graph_delta` → 必要时改图 → `verify --graph` / `--task` → 开 30；关账前补 KPI 与经验节。
 
 归档前可用旁路资格报告（**不** mv、**不**替代 `task close`）：
 
 ```bash
 npx @cyning/harness lifecycle dry-run --transition close --from done --task docs/tasks/active/task_xxx.md
-# 可选：--allow-invoke-gap · --allow-unchecked · --allow-no-review
+# 可选：--allow-invoke-gap · --allow-unchecked · --allow-no-review · --allow-kpi-gap · --allow-experience-gap
 ```
 
 ### 6.1 SDD-Compliance bench（维护者 · 可选）
