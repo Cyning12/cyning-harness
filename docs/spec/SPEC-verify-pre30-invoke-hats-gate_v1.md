@@ -2,12 +2,12 @@
 
 | 项 | 内容 |
 | --- | --- |
-| **状态** | `signed` · 实现完成 · 待发版 v2.14.0 |
+| **状态** | `signed` · 实现完成 · 待发版 v2.17.0 |
 | **日期** | 2026-07-27 |
 | **track** | `feature` · 行为变更（verify） |
 | **上游** | [`SPEC-invoke-hats-retention-gate_v1.md`](./SPEC-invoke-hats-retention-gate_v1.md)（v2.12 · close 硬 / verify WARN） |
 | **触发 dogfood** | Ops-desk `ops-desk-api` Phase α：用户说「开工」后 Agent 直进 30，缺 10/40 invoke；verify 仍 PASS |
-| **建议版本** | **v2.14.0**（minor · breaking for verify semantics） |
+| **建议版本** | **v2.17.0**（minor · breaking for verify semantics · 叠于 2.16.2） |
 
 ---
 
@@ -76,7 +76,7 @@ v2.12 将 invoke 集合硬闸放在 **`task close`**：`verify --task` 对缺帽
 | `harness/prompts/30-execute-code.md` · `TEMPLATE_30_gate_stop.md` | 同步纪律 |
 | `docs/USER_GUIDE_v1.0_zh.md` §6.0 | 改写「verify 仅 WARN」句 |
 | `docs/spec/SPEC-invoke-hats-retention-gate_v1.md` | 文末 **Amend** 指针到本 SPEC（勿静默改历史验收勾选语义，用修订节） |
-| `CHANGELOG.md` | **v2.14.0** 行为变更醒目说明 + 豁免 / `minimal` 指引 |
+| `CHANGELOG.md` | **v2.17.0** 行为变更醒目说明 + 豁免 / `minimal` 指引 |
 
 ---
 
@@ -105,7 +105,7 @@ v2.12 将 invoke 集合硬闸放在 **`task close`**：`verify --task` 对缺帽
 
 | 场景 | 行为 |
 |------|------|
-| 存量业务仓 default + 仅 30 invoke | upgrade 到 2.14 后 **verify 挡 30** → 补 10、或改 `minimal`、或 `--allow-invoke-gap` |
+| 存量业务仓 default + 仅 30 invoke | upgrade 到 2.17 后 **verify 挡 30** → 补 10、或改 `minimal`、或 `--allow-invoke-gap` |
 | 紧急 fix 习惯直进 30 | 文档推荐 `minimal` 或显式 `required_invoke_hats: 30` |
 | Agent 无视 BLOCK 仍改码 | 产品无法拦 IDE；靠 FRAGMENT「零 diff」+ 本闸降低误放行 |
 
