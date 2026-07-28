@@ -23,6 +23,9 @@ npx @cyning/harness upgrade
 npx @cyning/harness check    # 仅检查是否有新版本
 ```
 
+**`upgrade` 不代写业务 task**：只更新纪律层模板 / wizard / 帽文等（S2 保护 `docs/tasks/`、`reviews/`、`invokes/by-task/`）。  
+自 **2.18.0** 起 close 要求 `wiki_delta`——升级后须 **自行迁移** 存量 task 元信息；步骤与决策树见 [`USER_GUIDE` §6.0b](./USER_GUIDE_v1.0_zh.md)。
+
 写入 `.cyning-harness/manifest.json`（钉版本 · preset · ide）与 `profile.json`。  
 Schema：[`schema/manifest.v1.schema.json`](../schema/manifest.v1.schema.json)
 

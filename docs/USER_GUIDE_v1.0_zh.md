@@ -301,6 +301,48 @@ chmod +x .git/hooks/pre-commit
 
 改码 task 推荐：填 `graph_delta` / `wiki_delta` → 必要时改图与 wiki → `verify --graph` / `--task` → 开 30；关账前补 KPI、经验节与（path 时）wiki 晋升指针。
 
+### 6.0b 升级后 · `wiki_delta` 存量迁移（v2.18.1+）
+
+> **破坏性（2.18.0）**：`task close` **缺 `wiki_delta` 字段 → BLOCK**。`verify --task` 仅 **WARN**（文案会提示 close 将 BLOCK）——**易漏迁**。升级后请主动扫 task，勿等关账才发现。
+
+**`upgrade` 不会改写业务 task 元信息**（S2：不覆盖 `docs/tasks/`）。须人工或脚本补字段。
+
+#### 决策树：`n/a` vs `none` vs `path`
+
+| 条件 | 填 | note |
+|------|----|------|
+| 本仓 **未启用** WikiTrack（无 `docs/coding_wiki/`，或 profile `wiki: false` / harness-only） | **`n/a`** | 一行理由，如「harness-only · 未启用 WikiTrack」 |
+| 已有 `docs/coding_wiki/`，**本 task 未改** wiki | **`none`** | 一行理由，如「本轮无 wiki 增量」 |
+| 本 task **改了** wiki（或新建/晋升条目） | **相对仓根 path**（文件或目录） | path 存在即可；`experience_capture=required` 时经验节须含晋升指针 |
+
+#### 扫描建议（升级后立刻做）
+
+```bash
+# 列出疑似缺 wiki_delta 的 task（启发式 · 非 CLI 硬闸；正式 lint 规划 2.19+）
+rg -L "wiki_delta" docs/tasks --glob '*.md' || true
+
+# 抽查：缺字段时 verify 会 WARN（不挡 30）；close 才会 BLOCK
+npx @cyning/harness verify --target . --task docs/tasks/active/<task>.md
+```
+
+批量补字段：在 Harness 元信息表、`graph_delta_note` 行后插入两行（示例）：
+
+```markdown
+| **wiki_delta** | `n/a` |
+| **wiki_delta_note** | harness-only · 未启用 WikiTrack |
+```
+
+#### `wiki export` schema
+
+输出含 `"schema": "harness.wiki_graph.v1"`（**无**单独 `schema_version` 字段）。消费者应用全等校验该字符串；破坏性变更将升 schema 名（如 `v2`），而非另加数字字段。
+
+产品包模板互链样例（拷贝后边非空）：
+
+```bash
+npx @cyning/harness wiki export --json --root coding_wiki/templates
+# 业务仓若已 cp 到 docs/coding_wiki：--root docs/coding_wiki
+```
+
 归档前可用旁路资格报告（**不** mv、**不**替代 `task close`）：
 
 ```bash
@@ -447,7 +489,10 @@ A：团队自定。Starter 设计是 **改码前 22 审核 + gate-check**；小�
 A：`init --ide cursor` 会生成入口片段；Harness task + prompts 是 **任务级 SDD**，rules 是 **编辑器级约束**，可同时用。
 
 **Q：升级后 task 会被覆盖吗？**  
-A：不会（S2 域）。若 prompts 模板有更新，apply 会更新 **模板侧**，不删你的 active task。
+A：不会（S2 域）。若 prompts 模板有更新，apply 会更新 **模板侧**，不删你的 active task。**也不会**自动给旧 task 补 `wiki_delta` 等新字段——见 §6.0b。
+
+**Q：`wiki_delta` 填 `n/a` 还是 `none`？**  
+A：无 WikiTrack → `n/a`；有轨但本 task 未改 wiki → `none`；改了 → path。见 §6.0b 决策树。
 
 **Q：如何编辑 Inform 架构图？**  
 A：v1.1+ 可选 `docs/_tech_graph/*.graph.yaml` 作为编辑源，运行 `npx @cyning/harness graph yaml compile|check` 生成 MD / 校验 graph.json。

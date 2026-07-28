@@ -2,6 +2,12 @@
 
 > **层**：context · 项目级指针（变更频率低于 volatile）
 
+## 相关页（样例互链 · v2.18.1+）
+
+- 稳定摘要：[[stable]]
+- 本 task：[[volatile]]
+- 目录说明：[[README]]
+
 ## 待填写
 
 - `docs/standards/CODING_*_L2_*.md`  
