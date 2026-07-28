@@ -20,7 +20,7 @@
 - 本命令**只**查缺字段；`none`/`n/a` 缺 note、path 不存在仍由 close/verify 处理。
 - **不**削弱 close/`wiki_delta` 硬闸；勿默认 `--allow-wiki-gap`。
 - 叠在 `@cyning/harness@2.18.2` 之上（目录约定已合入）。
-- **发版**：维护者确认后 `npm publish`（本 PR 默认不 publish）
+- **已发布**：`@cyning/harness@2.19.0`（npm `latest` · 2026-07-28）· tag `v2.19.0` 已推送
 
 ## [2.18.2] - 2026-07-28
 
@@ -38,7 +38,7 @@
 
 - **目录约定 ≠ close/`wiki_delta` 硬闸**；字段闸仍见 2.18.0 / §6.0b。
 - **F-218-01** CLI lint/list 缺 `wiki_delta` → **2.19.0**（见上）。
-- **发版**：维护者确认后 `npm publish`（本 PR 默认不 publish）
+- **已发布**：`@cyning/harness@2.18.2`（npm · 2026-07-28）· tag `v2.18.2` 已推送
 
 ## [2.18.1] - 2026-07-28
 

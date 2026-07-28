@@ -1,6 +1,6 @@
 # Task · coding_wiki 目录规划约定（2.18.2）
 
-> **状态**：`in_progress`  
+> **状态**：`done`  
 > **关联**：[`coding_wiki/templates/README.md`](../../../coding_wiki/templates/README.md) · USER_GUIDE「Wiki 目录 vs 关系图」  
 > **Open Folder**：`cyning-harness/`  
 > **git_branch**：`task/wiki-dir-convention-2-18-2`
@@ -97,3 +97,4 @@ Task_KPI%: 90
 |------|------|
 | 2026-07-28 | 00 起草 · 目录约定 2.18.2 |
 | 2026-07-28 | 30 落地 · test 绿 · 待 PR |
+| 2026-07-28 | PR #10 合入 · `@cyning/harness@2.18.2` 已发版 · 关账 |

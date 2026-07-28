@@ -1,6 +1,6 @@
 # Task · task lint-wiki-delta（2.19.0）+ docs 防踩坑回填
 
-> **状态**：`in_progress`  
+> **状态**：`done`  
 > **消费者证据**：`cyning-harness-web/docs/evidence/FEEDBACK_…` · `BACKFILL_DRAFT_…`（剩余 open）  
 > **Open Folder**：`cyning-harness/`  
 > **git_branch**：`task/wiki-delta-lint-2-19`
@@ -91,3 +91,4 @@ Task_KPI%: 90
 | 日期 | 说明 |
 |------|------|
 | 2026-07-28 | 00/30 · 2.19.0 剩余回填 |
+| 2026-07-28 | PR #11 合入 · `@cyning/harness@2.19.0` 已发版 · 关账 |
