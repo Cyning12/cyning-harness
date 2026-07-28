@@ -317,7 +317,8 @@ chmod +x .git/hooks/pre-commit
 
 ### 6.0b 升级后 · `wiki_delta` 存量迁移（v2.18.1+）
 
-> **破坏性（2.18.0）**：`task close` **缺 `wiki_delta` 字段 → BLOCK**。`verify --task` 仅 **WARN**（文案会提示 close 将 BLOCK）——**易漏迁**。升级后请主动扫 task，勿等关账才发现。
+> **破坏性（2.18.0）**：`task close` **缺 `wiki_delta` 字段 → BLOCK**。`verify --task` 仅 **WARN**（文案会提示 close 将 BLOCK）——**易漏迁**。升级后请主动扫 task，勿等关账才发现。  
+> **一页 runbook（v2.19.1+）**：[`RUNBOOK_upgrade_wiki_delta_v1_zh.md`](./RUNBOOK_upgrade_wiki_delta_v1_zh.md)（升级 → `lint-wiki-delta` → 补字段 → 可选 CI / `topics/`）。CI 样例：[`ci/samples/lint-wiki-delta.yml.example`](../ci/samples/lint-wiki-delta.yml.example)。
 
 **`upgrade` 不会改写业务 task 元信息**（S2：不覆盖 `docs/tasks/`）。须人工或脚本补字段。
 
