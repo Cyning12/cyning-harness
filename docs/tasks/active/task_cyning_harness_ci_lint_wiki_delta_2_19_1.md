@@ -61,7 +61,7 @@
 
 - [x] CI 样例可 `cp` 且注释说明硬失败 / 迁移中 continue-on-error
 - [x] runbook 含 upgrade → lint → 补字段 → 可选 CI/topics
-- [x] `npm test` 全绿 · PR URL
+- [x] `npm test` 全绿 · PR URL · https://github.com/Cyning12/cyning-harness/pull/12
 
 ### 自检结论（执行者）
 
