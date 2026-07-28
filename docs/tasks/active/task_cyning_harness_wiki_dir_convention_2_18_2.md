@@ -67,7 +67,7 @@ web dogfood：图靠链接可用，文件夹平铺易爆。把 **两层起步 + 
 - [x] templates README 含两层树 + ≥15 加深指引 + 操作清单
 - [x] USER_GUIDE 有「目录 vs 图」并链 templates README
 - [x] `package.json` / CHANGELOG = **2.18.2**
-- [x] `npm test` 全绿 · PR URL
+- [x] `npm test` 全绿 · PR URL · https://github.com/Cyning12/cyning-harness/pull/10
 
 ### 自检结论（执行者）
 
