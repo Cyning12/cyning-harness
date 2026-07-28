@@ -66,7 +66,7 @@
 
 - [x] F-218-02/03/05 关闭；F-218-01 文档侧缓解、CLI 延期；F-218-04 维持 schema 字符串说明
 - [x] `npm test` 全绿
-- [ ] PR URL
+- [x] PR URL · https://github.com/Cyning12/cyning-harness/pull/9
 
 ### 自检结论（执行者）
 
