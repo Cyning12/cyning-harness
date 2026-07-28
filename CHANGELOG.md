@@ -2,6 +2,24 @@
 
 本仓库遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [2.18.2] - 2026-07-28
+
+### Added
+
+- **coding_wiki 目录约定（recommended）**：默认两层（根读序 + stable/context/volatile + `topics/`）；原则（根禁主题长文 · 勿按日期/PR/task_slug 建目录 · export 不依赖深度）；加深阈值（md≥15 / 难扫 / 单页>~80 行 / 连续 3 task 同前缀 → 子域第 3 层）与操作清单。
+- **templates**：`_index.md` · `topics/wiki_layout.md` · `topics/wikilinks_export.md` 演示两层；USER_GUIDE 专节「Wiki 目录 vs 关系图」。
+
+### Changed
+
+- **ONBOARDING**：POINTER 至 templates README / 目录 vs 图。
+- **CHECKLIST_acceptance_2.18.0**：可选勾选「知悉两层目录约定」（非硬闸）。
+
+### Notes
+
+- **目录约定 ≠ close/`wiki_delta` 硬闸**；字段闸仍见 2.18.0 / §6.0b。
+- **F-218-01** CLI lint/list 缺 `wiki_delta` → 仍规划 **2.19.0**。
+- **发版**：维护者确认后 `npm publish`（本 PR 默认不 publish）
+
 ## [2.18.1] - 2026-07-28
 
 ### Added

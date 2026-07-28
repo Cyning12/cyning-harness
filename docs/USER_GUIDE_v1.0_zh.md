@@ -301,6 +301,19 @@ chmod +x .git/hooks/pre-commit
 
 改码 task 推荐：填 `graph_delta` / `wiki_delta` → 必要时改图与 wiki → `verify --graph` / `--task` → 开 30；关账前补 KPI、经验节与（path 时）wiki 晋升指针。
 
+### Wiki 目录 vs 关系图（v2.18.2+ · recommended）
+
+> **人看文件夹，图看链接。** 目录约定真值在产品包 [`coding_wiki/templates/README.md`](../coding_wiki/templates/README.md)（拷贝后即业务仓 `docs/coding_wiki/README.md`）。此处只定边界，**不**重复 §6.0b 决策树。
+
+| | 目录树（两层起步） | 关系图（`wiki export`） |
+|--|-------------------|-------------------------|
+| 目的 | 避免根目录主题长文平铺爆炸 | Agent / Web / Obsidian 消费边 |
+| 形状 | `stable`/`context`/`volatile` 留根 · 主题进 `topics/` | **不**依赖目录深度 |
+| 加深 | md≥15 / 难扫 / 单页>~80 行 / 连续 3 task 同前缀 → 子域第 3 层 | `git mv` 后修好双括号 wikilink 即可 |
+| 闸 | **recommended 仅**；缺两层 **不**挡 close | `wiki_delta` 字段闸见上表与 §6.0b |
+
+升级后字段迁移、`n/a`/`none`/path：见 **§6.0b**。CLI 缺字段 lint 仍规划 **2.19+**。
+
 ### 6.0b 升级后 · `wiki_delta` 存量迁移（v2.18.1+）
 
 > **破坏性（2.18.0）**：`task close` **缺 `wiki_delta` 字段 → BLOCK**。`verify --task` 仅 **WARN**（文案会提示 close 将 BLOCK）——**易漏迁**。升级后请主动扫 task，勿等关账才发现。

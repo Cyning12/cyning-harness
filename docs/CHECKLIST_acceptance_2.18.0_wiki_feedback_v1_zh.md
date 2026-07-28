@@ -51,6 +51,7 @@
 - [ ] USER_GUIDE 可见 wiki_delta / export / `--allow-wiki-gap`
 - [ ] 30/40 帽文提到关账前答 wiki_delta
 - [ ] `coding_wiki/templates/README` 关账晋升节可读
+- [ ] （2.18.2+ · 非硬闸）知悉两层目录约定：根三件套 + `topics/`；加深阈值见 templates README / USER_GUIDE「目录 vs 图」
 
 ---
 
@@ -94,3 +95,4 @@
 |------|------|
 | 2026-07-28 | 2.18.0 发版前草稿 · 00 |
 | 2026-07-28 | §7 批注 web FEEDBACK；人签仍交维护者 |
+| 2026-07-28 | §4 增「知悉两层目录约定」勾选（2.18.2 · 非硬闸） |
