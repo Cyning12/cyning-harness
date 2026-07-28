@@ -1,8 +1,9 @@
 # Checklist 草稿 · `@cyning/harness@2.18.0` 实仓验收
 
 > **用途**：维护者在真实业务仓（建议已启用 `wiki: true` 的 fullstack / ios-cursor，或自建 `docs/coding_wiki`）验收本版。  
-> **状态**：`draft` · 发版后由人勾选  
-> **SPEC**：[`SPEC-experience-wiki-feedback_loop_v1.md`](../spec/SPEC-experience-wiki-feedback_loop_v1.md)
+> **状态**：`draft` · 发版后由人勾选 · **人签真值仍在本文件**  
+> **SPEC**：[`SPEC-experience-wiki-feedback_loop_v1.md`](../spec/SPEC-experience-wiki-feedback_loop_v1.md)  
+> **消费者对照（非人签）**：`cyning-harness-web/docs/evidence/FEEDBACK_harness_2_18_0_from_web_obs_20260728.md`（2026-07-28 dogfood）
 
 ---
 
@@ -72,8 +73,24 @@
 
 ---
 
+## 7. 文档侧批注 · web dogfood（2026-07-28 · **非**最终人签）
+
+| checklist 域 | 消费者结果 | FEEDBACK |
+|--------------|------------|----------|
+| §0 破坏性知悉 / 补 wiki_delta | web 已迁 8 done task | — |
+| §1 缺字段 close BLOCK / n/a 路径 | 语义确认；verify WARN→迁后消失 | F-218-01（warn · 文档已加 §6.0b；CLI lint→2.19） |
+| §1 n/a vs none | 决策树进 USER_GUIDE 2.18.1 | F-218-02 |
+| §3 export schema + nodes/edges | web nodes=6 edges=6；产品 templates 互链 2.18.1 | F-218-04/05 |
+| §3 可选 Web 消费 | `/wiki-graph` dogfood 通过 | — |
+| severity=block | **无** | — |
+
+升级不代写 task：见 ONBOARDING / CHANGELOG 2.18.1 Notes（F-218-03）。
+
+---
+
 ## 修订记录
 
 | 日期 | 说明 |
 |------|------|
 | 2026-07-28 | 2.18.0 发版前草稿 · 00 |
+| 2026-07-28 | §7 批注 web FEEDBACK；人签仍交维护者 |

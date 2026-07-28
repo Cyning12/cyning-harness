@@ -10,6 +10,14 @@
 
 invoke §3 应 **pointer** 到本目录，勿重复贴长文。
 
+## 样例互链（v2.18.1+）
+
+模板正文含 `[[wikilink]]`（[[stable]] · [[context]] · [[volatile]]），拷贝到业务仓后 `wiki export --json` 可见边。验证产品包自身：
+
+```bash
+npx @cyning/harness wiki export --json --root coding_wiki/templates
+```
+
 ## 关账与晋升（v2.18+）
 
 1. task 元信息填 **`wiki_delta`**：改了哪份 wiki / `none`+理由 / `n/a`（未启用 WikiTrack）。  
@@ -26,3 +34,4 @@ npx @cyning/harness wiki export --json [--root docs/coding_wiki]
 | 日期 | 说明 |
 |------|------|
 | 2026-07-28 | 关账晋升 + wiki export 指针 |
+| 2026-07-28 | v2.18.1 · stable/context/volatile 样例互链 |

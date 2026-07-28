@@ -45,3 +45,20 @@ test('wiki export · 无根 → exit 2', () => {
   });
   assert.equal(r.status, 2);
 });
+
+test('wiki export · 产品 coding_wiki/templates 互链 edges≥1', () => {
+  const templates = path.join(repoRoot, 'coding_wiki/templates');
+  const g = exportWikiGraph(repoRoot, { root: 'coding_wiki/templates' });
+  assert.ok(g.nodes.length >= 3, `nodes=${g.nodes.length}`);
+  assert.ok(g.edges.length >= 1, `edges=${g.edges.length}`);
+  assert.ok(g.edges.some((e) => e.kind === 'wikilink'));
+  const r = spawnSync(
+    process.execPath,
+    [harnessBin, 'wiki', 'export', '--json', '--root', 'coding_wiki/templates'],
+    { cwd: repoRoot, encoding: 'utf8' },
+  );
+  assert.equal(r.status, 0, r.stderr || r.stdout);
+  const j = JSON.parse(r.stdout);
+  assert.ok(j.edges.length >= 1);
+  void templates;
+});

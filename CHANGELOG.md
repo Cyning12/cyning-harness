@@ -2,6 +2,26 @@
 
 本仓库遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [2.18.1] - 2026-07-28
+
+### Added
+
+- **USER_GUIDE §6.0b**：升级后 `wiki_delta` 存量迁移专节（`n/a` / `none` / `path` 决策树 · `rg -L` 扫描建议 · schema 字符串说明）。
+- **coding_wiki/templates**：`stable` / `context` / `volatile` 最小 `[[wikilink]]` 互链样例，避免拷贝后 `wiki export` 空边（dogfood F-218-05）。
+
+### Changed
+
+- **ONBOARDING**：明示 `upgrade` **不**代写业务 task 元信息；破坏性迁移链到 USER_GUIDE §6.0b。
+- **CHECKLIST_acceptance_2.18.0**：批注 web dogfood 对照（非最终人签）。
+
+### Notes
+
+- 消费者回填：`cyning-harness-web` FEEDBACK F-218-01..05 · **无** severity=block。
+- **F-218-01**：本版以文档缓解（verify WARN ≠ 已迁移）；**CLI lint/list 缺 wiki_delta → 规划 2.19.0**，本版不做。
+- **F-218-04**：保持 `schema: harness.wiki_graph.v1` 单字符串；不加 `schema_version`。
+- **破坏性（仍自 2.18.0）**：存量 task 须自补 `wiki_delta`；`upgrade` 不代写。
+- **发版**：维护者确认后 `npm publish`（本 PR 默认不 publish）
+
 ## [2.18.0] - 2026-07-28
 
 ### Added
