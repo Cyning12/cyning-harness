@@ -10,7 +10,7 @@
 | [`pytest.yml.example`](./pytest.yml.example) | ✅ | Python · FastAPI 等 | install → pytest |
 | [`tech-graph.yml.example`](./tech-graph.yml.example) | ✅ · **可选** | 已接入 `docs/_tech_graph` + `scripts/graph-compile.sh` | graph compile（业务仓自备脚本） |
 | [`hgm-ingest.yml.example`](./hgm-ingest.yml.example) | ✅ · **可选** | 任意已接入 Harness 的仓 | `graph ingest`（默认 continue-on-error） |
-| [`lint-wiki-delta.yml.example`](./lint-wiki-delta.yml.example) | ✅ · **可选** | ≥2.18 须有 `wiki_delta` 的仓 | `task lint-wiki-delta`（默认硬失败 · 缺字段 exit 2） |
+| [`lint-wiki-delta.yml.example`](./lint-wiki-delta.yml.example) | ✅ · **可选** | ≥2.18 须有 `wiki_delta` 的仓 | `task lint-wiki-delta`（默认硬失败 · 缺字段 exit 2；可选 `--strict`） |
 
 ## 嵌入步骤
 
@@ -61,6 +61,7 @@ Ink workflow 含图谱 export、跨仓 checkout 等 **业务专有** 步骤；St
 
 | 日期 | 说明 |
 |------|------|
+| 2026-07-28 | `lint-wiki-delta` 样例注明：迁完再硬失败；可选 `--strict`（v2.20） |
 | 2026-07-28 | 增 `lint-wiki-delta.yml.example`（升级扫迁 · v2.19.1） |
 | 2026-07-27 | 增 `tech-graph.yml.example`；`hgm-ingest` 补 `package-manager-cache: false`；专节摩擦说明 |
 | 2026-07-27 | 增 `hgm-ingest.yml.example`（过程可观测 P2 · 可选） |

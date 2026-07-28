@@ -99,5 +99,60 @@ test('CLI lint-wiki-delta --json', () => {
   const j = JSON.parse(result.stdout);
   assert.equal(j.ok, false);
   assert.equal(j.missing.length, 1);
+  assert.equal(j.strict, false);
+  assert.equal(j.missing[0].code, 'wiki_delta_missing');
   assert.match(j.missing[0].path, /docs\/harness\/tasks\/done\/task_gap\.md/);
+});
+
+const META_NONE_NO_NOTE = `## Harness 元信息
+
+| 字段 | 值 |
+|------|-----|
+| **task_slug** | \`nonote\` |
+| **wiki_delta** | \`none\` |
+`;
+
+const META_BAD_PATH = `## Harness 元信息
+
+| 字段 | 值 |
+|------|-----|
+| **task_slug** | \`badpath\` |
+| **wiki_delta** | \`docs/coding_wiki/does-not-exist.md\` |
+`;
+
+test('默认模式 · none 无 note / 坏 path 不报（仅缺字段）', () => {
+  const target = makeTarget();
+  writeTask(target, 'docs/tasks/done/task_nonote.md', `# t\n\n${META_NONE_NO_NOTE}`);
+  writeTask(target, 'docs/tasks/done/task_badpath.md', `# t\n\n${META_BAD_PATH}`);
+  const r = lintWikiDeltaMissing(target);
+  assert.equal(r.ok, true);
+  assert.equal(r.missing.length, 0);
+});
+
+test('--strict · none 无 note → fail', () => {
+  const target = makeTarget();
+  writeTask(target, 'docs/tasks/done/task_nonote.md', `# t\n\n${META_NONE_NO_NOTE}`);
+  writeTask(target, 'docs/tasks/done/task_ok.md', `# t\n\n${META_WITH}`);
+  const r = lintWikiDeltaMissing(target, { strict: true });
+  assert.equal(r.ok, false);
+  assert.equal(r.missing.length, 0);
+  assert.equal(r.issues.length, 1);
+  assert.equal(r.issues[0].code, 'wiki_delta_none_no_note');
+});
+
+test('--strict · path 不存在 → fail', () => {
+  const target = makeTarget();
+  writeTask(target, 'docs/tasks/done/task_badpath.md', `# t\n\n${META_BAD_PATH}`);
+  const r = lintWikiDeltaMissing(target, { strict: true });
+  assert.equal(r.ok, false);
+  assert.equal(r.issues[0].code, 'wiki_delta_path_missing');
+});
+
+test('CLI --strict · exit 2 · 含 code', () => {
+  const target = makeTarget();
+  writeTask(target, 'docs/tasks/done/task_nonote.md', `# t\n\n${META_NONE_NO_NOTE}`);
+  const result = runNode(['task', 'lint-wiki-delta', '--target', target, '--strict']);
+  assert.equal(result.status, 2, result.stderr || result.stdout);
+  assert.match(result.stdout, /wiki_delta_none_no_note/);
+  assert.match(result.stdout, /LINT-WIKI-DELTA: FAIL/);
 });
