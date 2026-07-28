@@ -1,6 +1,6 @@
 # Task · lint-wiki-delta --strict（2.20.0）+ 2.19.2 docs 澄清
 
-> **状态**：`in_progress`  
+> **状态**：`done`  
 > **关联**：[`docs/RUNBOOK_upgrade_wiki_delta_v1_zh.md`](../../RUNBOOK_upgrade_wiki_delta_v1_zh.md)  
 > **Open Folder**：`cyning-harness/`  
 > **git_branch**：`task/lint-wiki-delta-strict-2-20`
@@ -90,3 +90,4 @@ Task_KPI%: 90
 | 日期 | 说明 |
 |------|------|
 | 2026-07-28 | 00/30 · 2.20.0 + 2.19.2 同波 |
+| 2026-07-28 | PR #13 合入 · `@cyning/harness@2.20.0` 已发版 · 关账 |

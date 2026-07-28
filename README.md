@@ -187,7 +187,7 @@ cyning-harness/
 
 | 项 | 值 |
 |----|-----|
-| 当前 npm | **`@cyning/harness@2.19.1`** — lint-wiki-delta CI 样例 · 升级 runbook · wiki 反馈闭环 |
+| 当前 npm | **`@cyning/harness@2.20.0`** — `lint-wiki-delta --strict` · 升级 runbook · wiki 反馈闭环 |
 | 里程碑 | v2.0 — HGM G1 · Inform-YAML · ICVO audit · invoke_index |
 | 许可 | **MIT** · [`LICENSE`](LICENSE) · 变更 [`CHANGELOG.md`](CHANGELOG.md) |
 
