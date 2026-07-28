@@ -1,6 +1,6 @@
 # Task · CI lint-wiki-delta 样例 + 升级 runbook（2.19.1）
 
-> **状态**：`in_progress`  
+> **状态**：`done`  
 > **关联**：[`docs/RUNBOOK_upgrade_wiki_delta_v1_zh.md`](../../RUNBOOK_upgrade_wiki_delta_v1_zh.md) · [`ci/samples/lint-wiki-delta.yml.example`](../../../ci/samples/lint-wiki-delta.yml.example)  
 > **Open Folder**：`cyning-harness/`  
 > **git_branch**：`task/ci-lint-wiki-delta-sample-2-19-1`
@@ -90,3 +90,4 @@ Task_KPI%: 88
 | 日期 | 说明 |
 |------|------|
 | 2026-07-28 | 00/30 · 2.19.1 |
+| 2026-07-28 | PR #12 合入 · `@cyning/harness@2.19.1` 已发版 · 关账 |

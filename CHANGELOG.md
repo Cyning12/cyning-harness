@@ -16,7 +16,7 @@
 ### Notes
 
 - patch · 文档与 CI 样例；**不**改变 CLI / close 闸语义。
-- **发版**：维护者确认后 `npm publish`（本 PR 默认不 publish）
+- **已发布**：`@cyning/harness@2.19.1`（npm `latest` · 2026-07-28）· tag `v2.19.1` 已推送
 
 ## [2.19.0] - 2026-07-28
 
