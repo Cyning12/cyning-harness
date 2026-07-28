@@ -10,6 +10,7 @@
 | [`pytest.yml.example`](./pytest.yml.example) | ✅ | Python · FastAPI 等 | install → pytest |
 | [`tech-graph.yml.example`](./tech-graph.yml.example) | ✅ · **可选** | 已接入 `docs/_tech_graph` + `scripts/graph-compile.sh` | graph compile（业务仓自备脚本） |
 | [`hgm-ingest.yml.example`](./hgm-ingest.yml.example) | ✅ · **可选** | 任意已接入 Harness 的仓 | `graph ingest`（默认 continue-on-error） |
+| [`lint-wiki-delta.yml.example`](./lint-wiki-delta.yml.example) | ✅ · **可选** | ≥2.18 须有 `wiki_delta` 的仓 | `task lint-wiki-delta`（默认硬失败 · 缺字段 exit 2） |
 
 ## 嵌入步骤
 
@@ -21,6 +22,8 @@
     cp cyning-harness/ci/samples/tech-graph.yml.example .github/workflows/tech-graph.yml
     # 过程可观测（可选 · 非三门禁必绿）
     cp cyning-harness/ci/samples/hgm-ingest.yml.example .github/workflows/hgm-ingest.yml
+    # wiki_delta 缺字段扫描（可选 · 升级后迁移 / 防回归）
+    cp cyning-harness/ci/samples/lint-wiki-delta.yml.example .github/workflows/lint-wiki-delta.yml
 
 按 `package.json` / `requirements.txt` / Node 版本 / env 变量 **裁剪注释块**。
 
@@ -32,7 +35,7 @@
 
 | Job 类型 | 正确做法 |
 |----------|----------|
-| **npx-only**（`tech-graph` / `hgm-ingest` 等） | `setup-node` 显式 `package-manager-cache: false` |
+| **npx-only**（`tech-graph` / `hgm-ingest` / `lint-wiki-delta` 等） | `setup-node` 显式 `package-manager-cache: false` |
 | **质量三门禁**（`quality.yml.example`） | 先 `pnpm/action-setup`，再 `setup-node` 且 `cache: pnpm` |
 
 不要把 npx-only 样例抄成「开了 cache 却没装 pnpm」。
@@ -58,6 +61,7 @@ Ink workflow 含图谱 export、跨仓 checkout 等 **业务专有** 步骤；St
 
 | 日期 | 说明 |
 |------|------|
+| 2026-07-28 | 增 `lint-wiki-delta.yml.example`（升级扫迁 · v2.19.1） |
 | 2026-07-27 | 增 `tech-graph.yml.example`；`hgm-ingest` 补 `package-manager-cache: false`；专节摩擦说明 |
 | 2026-07-27 | 增 `hgm-ingest.yml.example`（过程可观测 P2 · 可选） |
 | 2026-06-09 | T4 M2 首版样例 |

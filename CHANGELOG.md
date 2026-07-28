@@ -2,6 +2,22 @@
 
 本仓库遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [2.19.1] - 2026-07-28
+
+### Added
+
+- **CI 样例**：`ci/samples/lint-wiki-delta.yml.example`（npx-only · `package-manager-cache: false` · 默认硬失败）。
+- **Runbook**：[`docs/RUNBOOK_upgrade_wiki_delta_v1_zh.md`](docs/RUNBOOK_upgrade_wiki_delta_v1_zh.md)（升级 → `lint-wiki-delta` → 补字段 → 可选 CI / topics）。
+
+### Changed
+
+- **ONBOARDING** / **USER_GUIDE §6.0b** / **ci/samples/README**：POINTER 至 runbook 与 CI 样例。
+
+### Notes
+
+- patch · 文档与 CI 样例；**不**改变 CLI / close 闸语义。
+- **发版**：维护者确认后 `npm publish`（本 PR 默认不 publish）
+
 ## [2.19.0] - 2026-07-28
 
 ### Added

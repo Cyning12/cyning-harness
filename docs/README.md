@@ -5,7 +5,7 @@
 | **入口** | 本页 → **[方法论总指引](./methodology/README.md)** |
 | **接入** | [**USER_GUIDE v1.0**](./USER_GUIDE_v1.0_zh.md)（§6.0 invoke 留档 · lifecycle）· [`ONBOARDING.md`](./ONBOARDING.md) · [`../wizard/README.md`](../wizard/README.md) |
 | **架构** | [`ARCHITECTURE.md`](./ARCHITECTURE.md) |
-| **变更** | [`../CHANGELOG.md`](../CHANGELOG.md) · 当前包 **2.13.0** |
+| **变更** | [`../CHANGELOG.md`](../CHANGELOG.md) · 当前包以 `package.json` / npm `latest` 为准 |
 
 ---
 
@@ -18,12 +18,13 @@
 | **战略 / 开源** | [`methodology/pointers/`](./methodology/pointers/README.md) → 工作区 STRATEGY_* |
 | **HGM 远期** | [`methodology/graph/`](./methodology/graph/README.md) · 愿景 [`ROADMAP_TO_AGENT_GOVERNANCE.md`](./ROADMAP_TO_AGENT_GOVERNANCE.md) |
 
-### 近期产品说明（2.12–2.13）
+### 近期产品说明（2.12+ · wiki 闭环）
 
 | 主题 | 文档 |
 |------|------|
 | 多帽 invoke 留档硬闸 | USER_GUIDE §6.0 · [`SPEC-invoke-hats-retention-gate_v1.md`](./spec/SPEC-invoke-hats-retention-gate_v1.md) |
 | dry-run 接线 close | [`SPEC-lifecycle-dry-run-close_v1.md`](./spec/SPEC-lifecycle-dry-run-close_v1.md) · ONBOARDING §2.2 |
+| 升级后 wiki_delta 扫迁 | [`RUNBOOK_upgrade_wiki_delta_v1_zh.md`](./RUNBOOK_upgrade_wiki_delta_v1_zh.md) · USER_GUIDE §6.0b · [`ci/samples/lint-wiki-delta.yml.example`](../ci/samples/lint-wiki-delta.yml.example) |
 
 ---
 
