@@ -65,7 +65,7 @@
 ### 自检结论（执行者）
 
 - `npm test` → 254 pass（含同版二次 from_version）
-- PR：（填）
+- PR：https://github.com/Cyning12/cyning-harness/pull/18
 
 ## 修订记录
 
