@@ -1,6 +1,6 @@
 # Task · RUNBOOK overlay 强制操作序（2.22.1 docs）
 
-> **状态**：`active`  
+> **状态**：`done`  
 > **关联**：ops `FEEDBACK_RUNBOOK_overlay_procedure_*` · [`RUNBOOK` §1.2.1](../../RUNBOOK_upgrade_wiki_delta_v1_zh.md)  
 > **Open Folder**：`cyning-harness/`  
 > **git_branch**：`task/runbook-overlay-procedure-2-22-1`
@@ -49,15 +49,32 @@
 ## 验收
 
 - [x] §1.2.1 可逐步复制；§0b↔§1.2.1 互链
-- [x] `npm test` 绿 · PR URL
+- [x] `npm test` 绿 · PR URL · https://github.com/Cyning12/cyning-harness/pull/16
 
 ### 自检结论（执行者）
 
 - `npm test` → 253 pass
 - PR：https://github.com/Cyning12/cyning-harness/pull/16
 
+### KPI（00）
+
+Task_KPI%: 88
+
+| 维 | 分 |
+| --- | --- |
+| 质量 | 5 |
+| 过程 | 4 |
+| 可观测 | 4 |
+| 回馈 | 5 |
+
+### 经验总结
+
+- 能力（2.22.0）与流程（§1.2.1）分开发版时，消费者仍会靠经验撞 S5；强制序必须写「先 commit 再 upgrade」。
+- Wiki: n/a
+
 ## 修订记录
 
 | 日期 | 说明 |
 |------|------|
 | 2026-07-28 | 00/30 · docs 回填开工 |
+| 2026-07-28 | `@cyning/harness@2.22.1` 已发版 · 关账 |

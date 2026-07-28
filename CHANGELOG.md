@@ -13,7 +13,7 @@
 
 - **仅文档**；不改 sync/S5/close/wiki_delta 行为。
 - 可选后续：S5 拒 apply 时 stdout 提示「先提交 local/profile」（未做）。
-- **待发布**：合入后维护者 `npm publish` + tag `v2.22.1`。
+- **已发布**：`@cyning/harness@2.22.1`（npm `latest` · 2026-07-28）· tag `v2.22.1` 已推送
 
 ## [2.22.0] - 2026-07-28
 
@@ -53,7 +53,7 @@
 
 - **不**削弱 close / wiki_delta 闸；CI **不**默认强制 `--strict`。
 - 来源：[`FEEDBACK` web](https://github.com/Cyning12/cyning-harness-web) · ops-desk-api dogfood 2026-07-28。
-- **待发布**：合入后由维护者 `npm publish` + tag `v2.21.0`（本 PR 不擅自发版）。
+- **已发布**：`@cyning/harness@2.21.0`（npm · 2026-07-28）· tag `v2.21.0` 已推送
 
 ## [2.20.0] - 2026-07-28
 
