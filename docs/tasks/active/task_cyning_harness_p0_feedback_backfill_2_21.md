@@ -68,7 +68,7 @@
 
 - `npm test` → 249 pass / 0 fail
 - illustrative：`[[wikilink]]` 跳过 WARN；`[[missing_real_page_xyz]]` 仍 WARN
-- PR：（填 URL）
+- PR：https://github.com/Cyning12/cyning-harness/pull/14
 
 ### KPI（00）
 
