@@ -4,6 +4,7 @@
 # 由 `lifecycle dry-run` 引擎消费（v2.10+ · 资格判定旁路报告 · 不写盘）。
 # v2.11+ to_30 已接线：HG-AUDIT-R1 · HG-TASK-DRAFT · reviews_retention · audit_D5 · task_lint
 # v2.13+ close 已接线：close_invoke · close_self_check · close_acceptance · close_slug · close_status · close_review
+# v2.17+ close 增补：close_graph_delta · close_kpi · close_experience
 #   （to_00 / spec_reviews_retention 仍可 unevaluated）
 # 只读展示：npx @cyning/harness lifecycle show [--json]
 # Schema：schema/lifecycle.v1.schema.json
@@ -88,3 +89,15 @@ transitions:
         command_or_check: "task close 检查6 · R<n> 审查文（v2.5+）"
         severity: block
         allow_flag: "--allow-no-review"
+      - id: close_graph_delta
+        command_or_check: "task close · graph_delta（缺字段 WARN；none 无 note / 路径不存在 BLOCK · v2.17+）"
+        severity: block
+        note: "缺字段由 adapter 返回 warn · 不挡 dry-run；fail 级与 close 同语义"
+      - id: close_kpi
+        command_or_check: "task close · KPI 可解析分数（kpi_aggregator=CLOSE · v2.17+）"
+        severity: block
+        allow_flag: "--allow-kpi-gap"
+      - id: close_experience
+        command_or_check: "task close · experience_capture（required 硬闸 · v2.17+）"
+        severity: block
+        allow_flag: "--allow-experience-gap"

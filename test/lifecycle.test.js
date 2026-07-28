@@ -291,6 +291,8 @@ function makeCloseDryRunFixture({
 | 字段 | 值 |
 | --- | --- |
 | **task_slug** | \`demo\` |
+| **graph_delta** | \`none\` |
+| **graph_delta_note** | \`lifecycle fixture\` |
 
 ## 验收标准
 
@@ -299,6 +301,10 @@ function makeCloseDryRunFixture({
 ### 自检结论（执行者）
 
 ok。
+
+### KPI（00）
+
+Task_KPI%: 80
 `,
   );
   const invokeDir = path.join(target, 'docs/harness/invokes/by-task/demo');

@@ -23,7 +23,10 @@
 | **required_invoke_hats** | `10,30,40`（显式列表优先于 profile；缺省=default） |
 | **git_branch** | `task/<slug>` |
 | **worktree_root** | （并行时填独立 worktree 目录） |
+| **graph_delta** | `docs/_tech_graph/<flow>.md` 或 `none` |
+| **graph_delta_note** | （`none` 时 **必填**理由） |
 | **experience_capture** | `required` / `recommended` / `not_applicable` |
+| **experience_capture_note** | （`not_applicable` 时 **必填**理由） |
 | **kpi_rubric** | `KPI_RUBRIC_v1_2` |
 | **kpi_aggregator** | `CLOSE`（默认） |
 
@@ -102,7 +105,13 @@
 
 ### KPI（00）
 
-（`kpi_aggregator: CLOSE` · 关账回溯填写）
+（`kpi_aggregator: CLOSE` · 关账回溯填写 · 至少一种可解析分数：`Task_KPI%: N` / D1–D5 表 / 四维 1–5）
+
+---
+
+### 经验总结
+
+（`experience_capture: required` 时关账必填 · ≥80 字或 ≥3 条列表）
 
 ---
 

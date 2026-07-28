@@ -46,6 +46,10 @@ __META_EXTRA__
 ### 自检结论（执行者）
 
 ok。
+
+### KPI（00）
+
+Task_KPI%: 80
 `;
 
 function writeCloseFixture(target, { metaExtra = '', invokeFiles = [] } = {}) {

@@ -26,6 +26,8 @@ const TASK_OK = `# Task · demo
 | 字段 | 值 |
 | --- | --- |
 | **task_slug** | \`demo\` |
+| **graph_delta** | \`none\` |
+| **graph_delta_note** | \`fixture · 无图谱增量\` |
 
 ## 验收标准
 
@@ -35,6 +37,16 @@ const TASK_OK = `# Task · demo
 ### 自检结论（执行者）
 
 npm test 全绿（42 passed）。
+
+### KPI（00）
+
+Task_KPI%: 88
+
+### 经验总结
+
+- fixture 基线通过
+- close 闸覆盖 invoke 与自检
+- KPI 最小形态可解析
 `;
 
 function makeTarget() {
@@ -306,4 +318,89 @@ test('close：编排仓布局 docs/harness/tasks/active → 同级 done', () => 
     fs.existsSync(path.join(target, 'docs/harness/tasks/done/task_demo_v1.md')),
     '应推导同级 done/',
   );
+});
+
+test('close BLOCKED：graph_delta=none 无 note', () => {
+  const target = makeTarget();
+  const cleaned = TASK_OK.replace(
+    /\|\s*\*\*graph_delta_note\*\*\s*\|\s*`[^`]*`\s*\|\n?/,
+    '',
+  );
+  const rel = writeFixture(target, { taskContent: cleaned });
+  const result = runNode(['task', 'close', '--file', rel, '--yes'], target);
+  assert.equal(result.status, 2, result.stdout);
+  assert.match(result.stdout, /graph_delta_note/);
+});
+
+test('close BLOCKED：graph_delta 路径不存在', () => {
+  const target = makeTarget();
+  const content = TASK_OK.replace(
+    '| **graph_delta** | `none` |',
+    '| **graph_delta** | `docs/_tech_graph/missing_flow.md` |',
+  ).replace(/\|\s*\*\*graph_delta_note\*\*\s*\|\s*`[^`]*`\s*\|\n?/, '');
+  const rel = writeFixture(target, { taskContent: content });
+  const result = runNode(['task', 'close', '--file', rel, '--yes'], target);
+  assert.equal(result.status, 2);
+  assert.match(result.stdout, /graph_delta 路径不存在/);
+});
+
+test('close WARN：缺 graph_delta 字段（不 BLOCK）', () => {
+  const target = makeTarget();
+  const content = TASK_OK.replace(/\|\s*\*\*graph_delta\*\*\s*\|\s*`[^`]*`\s*\|\n?/, '').replace(
+    /\|\s*\*\*graph_delta_note\*\*\s*\|\s*`[^`]*`\s*\|\n?/,
+    '',
+  );
+  const rel = writeFixture(target, { taskContent: content });
+  const result = runNode(['task', 'close', '--file', rel, '--yes'], target);
+  assert.equal(result.status, 0, result.stdout);
+  assert.match(result.stdout, /warn:.*graph_delta/i);
+});
+
+test('close BLOCKED：KPI 无可解析分数；--allow-kpi-gap 放行', () => {
+  const target = makeTarget();
+  const content = TASK_OK.replace('Task_KPI%: 88', '（关账待填）');
+  const rel = writeFixture(target, { taskContent: content });
+
+  const blocked = runNode(['task', 'close', '--file', rel, '--yes'], target);
+  assert.equal(blocked.status, 2);
+  assert.match(blocked.stdout, /KPI/);
+
+  const waived = runNode(
+    ['task', 'close', '--file', rel, '--yes', '--allow-kpi-gap'],
+    target,
+  );
+  assert.equal(waived.status, 0, waived.stdout);
+  assert.match(waived.stdout, /allow-kpi-gap/);
+});
+
+test('close BLOCKED：experience_capture=required 无经验节；--allow-experience-gap 放行', () => {
+  const target = makeTarget();
+  let content = TASK_OK.replace(
+    '| **graph_delta_note** | `fixture · 无图谱增量` |',
+    '| **graph_delta_note** | `fixture · 无图谱增量` |\n| **experience_capture** | `required` |',
+  );
+  content = content.replace(/### 经验总结[\s\S]*$/, '');
+  const rel = writeFixture(target, { taskContent: content });
+
+  const blocked = runNode(['task', 'close', '--file', rel, '--yes'], target);
+  assert.equal(blocked.status, 2);
+  assert.match(blocked.stdout, /experience/i);
+
+  const waived = runNode(
+    ['task', 'close', '--file', rel, '--yes', '--allow-experience-gap'],
+    target,
+  );
+  assert.equal(waived.status, 0, waived.stdout);
+  assert.match(waived.stdout, /allow-experience-gap/);
+});
+
+test('close PASS：四维 KPI 简表可解析', () => {
+  const target = makeTarget();
+  const content = TASK_OK.replace(
+    'Task_KPI%: 88',
+    '| 维 | 分 |\n| --- | --- |\n| 质量 | 4 |\n| 过程 | 5 |\n| 可观测 | 4 |\n| 回馈 | 3 |',
+  );
+  const rel = writeFixture(target, { taskContent: content });
+  const result = runNode(['task', 'close', '--file', rel, '--yes'], target);
+  assert.equal(result.status, 0, result.stdout);
 });
