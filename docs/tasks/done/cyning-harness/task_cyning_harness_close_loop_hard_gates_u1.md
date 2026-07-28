@@ -1,6 +1,6 @@
 # Task · 闭环硬闸 U1（G1 graph_delta + G3 KPI + G4 experience）
 
-> **状态**：`in_progress`  
+> **状态**：`done`  
 > **SPEC**：[`../spec/SPEC-close-loop-hard-gates_v1.md`](../spec/SPEC-close-loop-hard-gates_v1.md)  
 > **工作区 PLAN**：`Projects/docs/harness/guides/PLAN_cyning_harness_close_loop_hard_gates_upgrade_v1_zh.md`  
 > **Open Folder**：`cyning-harness/`  
@@ -22,6 +22,8 @@
 | **git_branch** | `task/close-loop-hard-gates-u1` |
 | **worktree_root** | `cyning-harness/` |
 | **graph_delta** | `none` |
+| **wiki_delta** | `n/a` |
+| **wiki_delta_note** | 产品仓无业务 wiki 轨；本 task 不改 coding_wiki |
 | **graph_delta_note** | 产品 CLI/模板变更；无业务 `_tech_graph` 增量 |
 | **experience_capture** | `required` |
 | **kpi_rubric** | `KPI_RUBRIC_v1_3` |
@@ -46,11 +48,11 @@
 
 ## 范围
 
-- [ ] G1：模板字段 + close/verify + 单测 + USER_GUIDE
-- [ ] G3 P0：KPI 最小形态 + `--allow-kpi-gap` + 单测
-- [ ] G4：experience 节 + `--allow-experience-gap` + 单测
-- [ ] CHANGELOG Unreleased 归入 2.17.0 叙事（与 U0 同窗）
-- [ ] PR → squash merge（禁直推 main）
+- [x] G1：模板字段 + close/verify + 单测 + USER_GUIDE
+- [x] G3 P0：KPI 最小形态 + `--allow-kpi-gap` + 单测
+- [x] G4：experience 节 + `--allow-experience-gap` + 单测
+- [x] CHANGELOG Unreleased 归入 2.17.0 叙事（与 U0 同窗）
+- [x] PR → squash merge（禁直推 main）
 
 ## 非范围
 
@@ -68,17 +70,25 @@
 
 ## 验收标准
 
-- [ ] 与 SPEC §4 勾选一致（本 task 覆盖 G1/G3/G4 部分）
-- [ ] `npm test` 全绿
-- [ ] PR 已 merge
+- [x] 与 SPEC §4 勾选一致（本 task 覆盖 G1/G3/G4 部分）
+- [x] `npm test` 全绿
+- [x] PR 已 merge
+
+### 自检结论（执行者）
+
+npm test 全绿；功能已合入 main 并随 2.17.0/列车发版。
 
 ### KPI（00）
 
-（关账填）
+Task_KPI%: 92
+
 
 ### 经验总结
 
-（关账填）
+- 闭环硬闸与 verify 对称降低认知成本
+- 缺字段 WARN（graph）与 BLOCK（wiki）策略需在 USER_GUIDE 写清
+- dogfood 先补 fixture 再收紧闸
+
 
 ---
 
