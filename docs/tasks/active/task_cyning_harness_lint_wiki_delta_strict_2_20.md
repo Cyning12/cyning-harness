@@ -61,7 +61,7 @@
 
 - [x] 默认：仅缺字段；`--strict`：none 无 note / 坏 path 可失败
 - [x] RUNBOOK 写清迁完再硬失败 / 可选 --strict
-- [x] `npm test` 全绿 · PR URL
+- [x] `npm test` 全绿 · PR URL · https://github.com/Cyning12/cyning-harness/pull/13
 
 ### 自检结论（执行者）
 
