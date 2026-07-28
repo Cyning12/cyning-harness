@@ -62,3 +62,19 @@ test('wiki export · 产品 coding_wiki/templates 互链 edges≥1', () => {
   assert.ok(j.edges.length >= 1);
   void templates;
 });
+
+test('wiki export · 说明性伪链不进 warnings（v2.21）', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'wiki-illust-'));
+  const wiki = path.join(dir, 'docs/coding_wiki');
+  fs.mkdirSync(wiki, { recursive: true });
+  fs.writeFileSync(
+    path.join(wiki, 'README.md'),
+    '# readme\n\n说明用 [[wikilink]] 与真链 [[stable]]\n\n缺页 [[missing_real_page_xyz]]\n',
+  );
+  fs.writeFileSync(path.join(wiki, 'stable.md'), '# stable\n\n[[README]]\n');
+  const g = exportWikiGraph(dir);
+  assert.ok(g.skipped_illustrative >= 1);
+  assert.ok(!g.warnings.some((w) => /\[\[wikilink\]\]/.test(w)));
+  assert.ok(g.warnings.some((w) => /missing_real_page_xyz/.test(w)));
+  assert.ok(g.edges.some((e) => e.kind === 'wikilink'));
+});

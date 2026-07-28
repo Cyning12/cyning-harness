@@ -6,7 +6,7 @@
 # 禁止：把本文件当「每周全量重盘」流程；不做 audit --discipline UI（本波）
 
 version: "1"
-as_of_package_version: "2.20.0"
+as_of_package_version: "2.21.0"
 scope: "Starter · harness/prompts （10/22/30/40 + FRAGMENT）+ TEMPLATE_invoke"
 source_audit: "rethink/2026-07-mechanization-rate · 02 转录 + 03 聚合 · 状态已按 G1–G4/N1–N4 刷新（非第二轮通读盘点）"
 

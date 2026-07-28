@@ -1,14 +1,9 @@
-# Optional · wiki_delta 扫描（升级迁移清单 · v2.19+ / 可选 --strict · v2.20+）
+# Optional · wiki_delta 扫描（默认硬失败 · v2.19+）
 #
-# 用途：复制为 .github/workflows/lint-wiki-delta.yml（或并入既有 workflow 的一步）。
-# 命令：npx @cyning/harness task lint-wiki-delta
-# 失败策略：
-#   - 样例默认硬失败（exit 2）。
-#   - 迁移中（字段未补齐）：continue-on-error: true。
-#   - 迁完后再硬失败；需要关账预检时再加 --strict（勿在半迁时开）。
-#
-# 配套 runbook：docs/RUNBOOK_upgrade_wiki_delta_v1_zh.md
-# 决策树：docs/USER_GUIDE_v1.0_zh.md §6.0b
+# 获取本文件：见 docs/RUNBOOK_upgrade_wiki_delta_v1_zh.md §5.1（clone / npm pack / GitHub raw）
+# 失败策略：迁移中 continue-on-error: true；迁完硬失败；--strict 半迁勿开。
+# Python / 无 package.json：必须 package-manager-cache: false（见 ci/samples/README）
+# 有 harness.pin.json：改用 lint-wiki-delta.pin.yml.example，或按下方「读 pin」注释改写。
 
 name: lint-wiki-delta
 
@@ -27,8 +22,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      # npx-only：关闭 setup-node@v5 默认 packageManager 缓存
-      # （package.json 若声明 packageManager=pnpm 且未装 pnpm → Unable to locate executable file: pnpm）
       - name: Setup Node
         uses: actions/setup-node@v5
         with:
@@ -36,13 +29,19 @@ jobs:
           package-manager-cache: false
 
       - name: task lint-wiki-delta
-        # 迁移中可改为 continue-on-error: true；迁完后应硬失败
-        run: npx --yes @cyning/harness@2.20 task lint-wiki-delta --target .
+        # 迁移中可改为 continue-on-error: true
+        run: npx --yes @cyning/harness@2.21 task lint-wiki-delta --target .
 
-      # 可选：关账预检（迁完字段后再开；半迁勿开）
-      # - name: lint-wiki-delta --strict
-      #   run: npx --yes @cyning/harness@2.20 task lint-wiki-delta --target . --strict
+      # 可选矩阵 B · 关账预检（迁完字段后再开；半迁勿开）
+      # - name: task lint-wiki-delta --strict
+      #   run: npx --yes @cyning/harness@2.21 task lint-wiki-delta --target . --strict
 
-      # 可选：仅扫 active（关账前）
+      # 可选：仅扫 active
       # - name: lint-wiki-delta · active only
-      #   run: npx --yes @cyning/harness@2.20 task lint-wiki-delta --target . --scope active
+      #   run: npx --yes @cyning/harness@2.21 task lint-wiki-delta --target . --scope active
+
+      # 可选 · 读 pin（若仓有 harness.pin.json，勿写死 @2.21）：
+      # - name: lint from pin
+      #   run: |
+      #     PIN=$(node -p "require('./harness.pin.json').version")
+      #     npx --yes "@cyning/harness@${PIN}" task lint-wiki-delta --target .
