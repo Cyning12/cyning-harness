@@ -2,6 +2,33 @@
 
 本仓库遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [2.20.0] - 2026-07-28
+
+### Added
+
+- **`task lint-wiki-delta --strict`**：在默认「缺字段」之外，复用 close 的 `evaluateWikiDelta`，另报 `none`/`n/a` 无 note、path 非法/不存在；`--json` 增加 `strict` / `issues[]`（含 `code`/`detail`）。默认行为不变（兼容 2.19 CI）。
+
+### Changed
+
+- USER_GUIDE §6.0b / RUNBOOK / CI 样例：文档 `--strict` 关账预检；注明**迁完字段后再开**。
+
+### Notes
+
+- **不**削弱 close 闸；勿默认 `--allow-wiki-gap`；`--strict` 非 CI 默认必绿。
+- 同波纳入下方 **2.19.2** 文档澄清（不单独发 npm `2.19.2`）。
+- **发版**：维护者确认后 `npm publish`（本 PR 默认不 publish）
+
+## [2.19.2] - 2026-07-28
+
+### Changed
+
+- **RUNBOOK**：§0「何时硬失败」· 迁完再硬失败；消费者仓 POINTER（Ink / Ops-desk / web 同序，产品不代写 workflow）。
+- **CI 样例** `lint-wiki-delta.yml.example`：注释强调迁移中 `continue-on-error`、迁完硬失败、可选 `--strict`。
+
+### Notes
+
+- docs/ci 澄清 patch；能力随 **2.20.0** 一并发布（无独立 `2.19.2` npm tag）。
+
 ## [2.19.1] - 2026-07-28
 
 ### Added

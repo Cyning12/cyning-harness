@@ -190,7 +190,7 @@ Schema：[`schema/verify_result.v1.schema.json`](../schema/verify_result.v1.sche
 | `npx @cyning/harness verify` | 全量：双路径 + reviews（v2.9+）；`--task`：30 前聚合 + **pre-30 invoke 硬闸**（v2.17+；缺 40 仍 WARN）+ **graph_delta / wiki_delta WARN**（`--strict-graph-delta` / `--strict-wiki-delta` 可 BLOCK）；`--spec`：SPEC→00（v2.8+ · 互斥） |
 | `npx @cyning/harness status` | 过程可观测一屏投影（v2.14+ · 闸/invoke/review/`verify_preview`；**不替代** verify） |
 | `npx @cyning/harness wiki export --json` | 导出 `coding_wiki` 关系图 JSON（v2.18+ · schema `harness.wiki_graph.v1`；本包不渲染） |
-| `npx @cyning/harness task lint-wiki-delta` | 列出缺 `wiki_delta` 字段的 task（v2.19+ · 升级迁移清单；有缺失 exit 2） |
+| `npx @cyning/harness task lint-wiki-delta` | 列出 `wiki_delta` 缺口（v2.19+ 默认缺字段；**v2.20+** `--strict` 含 note/path；有缺口 exit 2） |
 | `npx @cyning/harness timeline` | 过程时间线（v2.15+ · HGM 事件投影；默认不 ingest；可选 `--ingest`） |
 | `npx @cyning/harness task close` | 受闸归档；v2.12+ invoke hats；**v2.17+** graph_delta / KPI / experience；**v2.18+** wiki_delta / 晋升指针；豁免 `--allow-invoke-gap` / `--allow-kpi-gap` / `--allow-experience-gap` / `--allow-wiki-gap`（勿当默认绿路径） |
 | `npx @cyning/harness lifecycle show` | 只读展示 `harness/lifecycle.yaml`（登记 · v2.7+） |
@@ -313,7 +313,7 @@ chmod +x .git/hooks/pre-commit
 | 加深 | md≥15 / 难扫 / 单页>~80 行 / 连续 3 task 同前缀 → 子域第 3 层 | `git mv` 后修好双括号 wikilink 即可 |
 | 闸 | **recommended 仅**；缺两层 **不**挡 close | `wiki_delta` 字段闸见上表与 §6.0b |
 
-升级后字段迁移、`n/a`/`none`/path：见 **§6.0b**。CLI 缺字段 lint 仍规划 **2.19+**。
+升级后字段迁移、`n/a`/`none`/path：见 **§6.0b**。CLI：`task lint-wiki-delta`（v2.19+）；关账预检加 `--strict`（v2.20+）。
 
 ### 6.0b 升级后 · `wiki_delta` 存量迁移（v2.18.1+）
 
@@ -335,6 +335,9 @@ chmod +x .git/hooks/pre-commit
 ```bash
 # 列出缺 wiki_delta 字段的 task（v2.19+ · 有缺失 exit 2；可进 CI）
 npx @cyning/harness task lint-wiki-delta [--target .] [--scope all|active|done] [--json]
+
+# 关账预检（v2.20+）：另报 none/n/a 无 note、path 不存在（迁完字段后再用）
+npx @cyning/harness task lint-wiki-delta --target . --strict
 
 # 抽查单文件：缺字段时 verify 会 WARN（不挡 30）并提示上列命令；close 才会 BLOCK
 npx @cyning/harness verify --target . --task docs/tasks/active/<task>.md

@@ -3,6 +3,15 @@
 > **用途**：业务仓从 `@cyning/harness` **低于 2.18** 升到 **≥ 2.19** 后，一次性扫迁 `wiki_delta`，并可选挂 CI。  
 > **非范围**：不削弱 close 闸；不自动改 task；不自动把 `coding_wiki` 迁成 `topics/`。
 
+## 0. 何时硬失败（CI）
+
+| 阶段 | 建议 |
+|------|------|
+| **迁移中**（存量 task 尚未补齐） | workflow 可暂 `continue-on-error: true`，或只本地跑 lint |
+| **迁完后** | CI **硬失败**（样例默认）；再开可选 `--strict` 做关账预检 |
+
+原则：**先补字段让默认 lint 绿，再考虑 `--strict` / 硬闸**。勿在半迁状态把 `--strict` 设成必绿。
+
 ## 1. 升级包
 
 ```bash
@@ -12,17 +21,24 @@ npx @cyning/harness check
 
 `upgrade` **不**代写 `docs/tasks/**` 元信息，也 **不**改已有 `docs/coding_wiki/` 目录形状。
 
-## 2. 扫缺字段
+## 2. 扫缺口
 
 ```bash
+# 默认：只报缺 wiki_delta 字段（升级迁移清单 · v2.19+）
 npx @cyning/harness task lint-wiki-delta --target .
-# 仅 active / 仅 done：
+
+# 关账预检（v2.20+）：另报 none/n/a 无 note、path 不存在
+npx @cyning/harness task lint-wiki-delta --target . --strict
+
+# 仅 active / 仅 done / JSON
 # npx @cyning/harness task lint-wiki-delta --scope active
-# JSON：加 --json（CI / 脚本友好）
+# npx @cyning/harness task lint-wiki-delta --json
 ```
 
-- exit **0**：全齐  
-- exit **2**：列出缺 `wiki_delta` 的相对路径 → 按 §3 补
+- exit **0**：当前档全齐  
+- exit **2**：列出相对路径（及 `--strict` 时的 `code`）→ 按 §3 补
+
+消费者仓（Ink / Ops-desk / harness-web）操作序同本页；产品仓只提供本 runbook + CI 样例，**不**代写各仓 workflow。
 
 ## 3. 补字段（决策树）
 
@@ -61,7 +77,13 @@ cp path/to/@cyning/harness/ci/samples/lint-wiki-delta.yml.example \
   .github/workflows/lint-wiki-delta.yml
 ```
 
-样例默认 **硬失败**；迁移中可暂 `continue-on-error: true`。说明见 [`ci/samples/README.md`](../ci/samples/README.md)。
+| 建议 | 说明 |
+|------|------|
+| 样例默认 | **硬失败** + 默认 lint（仅缺字段） |
+| 迁移中 | `continue-on-error: true` |
+| 迁完且想关账预检 | 去掉 continue-on-error，并可加 `--strict`（见样例注释） |
+
+说明见 [`ci/samples/README.md`](../ci/samples/README.md)。
 
 ## 6. 关账后继续
 
@@ -72,3 +94,5 @@ cp path/to/@cyning/harness/ci/samples/lint-wiki-delta.yml.example \
 | 日期 | 说明 |
 |------|------|
 | 2026-07-28 | v2.19.1 · 升级扫迁一页 runbook |
+| 2026-07-28 | v2.19.2 · §0 迁完再硬失败；消费者 POINTER；CI 策略表 |
+| 2026-07-28 | v2.20.0 · 文档 `--strict` 关账预检 |
