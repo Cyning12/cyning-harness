@@ -190,6 +190,7 @@ Schema：[`schema/verify_result.v1.schema.json`](../schema/verify_result.v1.sche
 | `npx @cyning/harness verify` | 全量：双路径 + reviews（v2.9+）；`--task`：30 前聚合 + **pre-30 invoke 硬闸**（v2.17+；缺 40 仍 WARN）+ **graph_delta / wiki_delta WARN**（`--strict-graph-delta` / `--strict-wiki-delta` 可 BLOCK）；`--spec`：SPEC→00（v2.8+ · 互斥） |
 | `npx @cyning/harness status` | 过程可观测一屏投影（v2.14+ · 闸/invoke/review/`verify_preview`；**不替代** verify） |
 | `npx @cyning/harness wiki export --json` | 导出 `coding_wiki` 关系图 JSON（v2.18+ · schema `harness.wiki_graph.v1`；本包不渲染） |
+| `npx @cyning/harness task lint-wiki-delta` | 列出缺 `wiki_delta` 字段的 task（v2.19+ · 升级迁移清单；有缺失 exit 2） |
 | `npx @cyning/harness timeline` | 过程时间线（v2.15+ · HGM 事件投影；默认不 ingest；可选 `--ingest`） |
 | `npx @cyning/harness task close` | 受闸归档；v2.12+ invoke hats；**v2.17+** graph_delta / KPI / experience；**v2.18+** wiki_delta / 晋升指针；豁免 `--allow-invoke-gap` / `--allow-kpi-gap` / `--allow-experience-gap` / `--allow-wiki-gap`（勿当默认绿路径） |
 | `npx @cyning/harness lifecycle show` | 只读展示 `harness/lifecycle.yaml`（登记 · v2.7+） |
@@ -331,10 +332,10 @@ chmod +x .git/hooks/pre-commit
 #### 扫描建议（升级后立刻做）
 
 ```bash
-# 列出疑似缺 wiki_delta 的 task（启发式 · 非 CLI 硬闸；正式 lint 规划 2.19+）
-rg -L "wiki_delta" docs/tasks --glob '*.md' || true
+# 列出缺 wiki_delta 字段的 task（v2.19+ · 有缺失 exit 2；可进 CI）
+npx @cyning/harness task lint-wiki-delta [--target .] [--scope all|active|done] [--json]
 
-# 抽查：缺字段时 verify 会 WARN（不挡 30）；close 才会 BLOCK
+# 抽查单文件：缺字段时 verify 会 WARN（不挡 30）并提示上列命令；close 才会 BLOCK
 npx @cyning/harness verify --target . --task docs/tasks/active/<task>.md
 ```
 
@@ -355,6 +356,8 @@ npx @cyning/harness verify --target . --task docs/tasks/active/<task>.md
 npx @cyning/harness wiki export --json --root coding_wiki/templates
 # 业务仓若已 cp 到 docs/coding_wiki：--root docs/coding_wiki
 ```
+
+**防踩坑（F-218-07）**：文档/README **叙述**里不要写裸双括号字面（会把「说明用的伪链」解析成边 → `未解析 wikilink` warn）。正文举例请写「双括号 wikilink」，真实互链再用指向存在页的 `[[stable]]` 等。
 
 归档前可用旁路资格报告（**不** mv、**不**替代 `task close`）：
 
