@@ -2,6 +2,22 @@
 
 本仓库遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [2.22.2] - 2026-07-28
+
+### Fixed
+
+- **`write_manifest_upgrade`**：同钉版二次 `upgrade` **保留**既有 `manifest.from_version`，不再写成 `null`（ops-desk-web FEEDBACK **U1**）。跨版仍写入升级前 `version`；init / 无旧值仍为 `null`。
+
+### Changed
+
+- schema `from_version` 描述澄清；集成测覆盖同版二次 upgrade。
+
+### Notes
+
+- 不改 S2/S5 / close / wiki_delta / pre-30；不改 local.json 策略（U2 仍 P3）。
+- **待发布**：合入后维护者 `npm publish` + tag `v2.22.2`。
+- 消费者：升 2.22.2 后可再跑 RUNBOOK §1.2.1 二次同版 upgrade，确认 `from_version` 仍为历史字符串。
+
 ## [2.22.1] - 2026-07-28
 
 ### Changed

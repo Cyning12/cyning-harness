@@ -26,7 +26,7 @@
     },
     "from_version": {
       "type": ["string", "null"],
-      "description": "upgrade 前版本；init 时为 null"
+      "description": "upgrade 前版本；init（或尚未跨版）时为 null；同版 re-upgrade 须保留既有非 null 值"
     },
     "upgraded_at": {
       "type": "string",

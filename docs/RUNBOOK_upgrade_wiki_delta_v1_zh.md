@@ -24,11 +24,11 @@
 > **overlay（≥2.22）**：若仓内曾有 AGENTS/FRAGMENT/cursor **仓内定制**（或仍把词写在产品 `cyning-harness:begin/end` 内）→ **先完成 [§1.2.1](#121-首次接入-overlay-契约强制序)**（或确认已有产品块外 local + 所需 `graph_modules_path` 且已 commit），再跑下方 upgrade。勿跳过迁契约却指望手恢复。
 
 ```bash
-npx --yes @cyning/harness@2.22.1 upgrade --yes
-npx --yes @cyning/harness@2.22.1 check
+npx --yes @cyning/harness@2.22.2 upgrade --yes
+npx --yes @cyning/harness@2.22.2 check
 # 若仓有 harness.pin.json / 单源版本文件 → 同步 bump（产品 upgrade 不代写）
-npx --yes @cyning/harness@2.22.1 task lint-wiki-delta --target .
-npx --yes @cyning/harness@2.22.1 task lint-wiki-delta --target . --strict
+npx --yes @cyning/harness@2.22.2 task lint-wiki-delta --target .
+npx --yes @cyning/harness@2.22.2 task lint-wiki-delta --target . --strict
 # （可选）挂 CI · 见 §5
 ```
 
@@ -41,8 +41,8 @@ npx --yes @cyning/harness@2.22.1 task lint-wiki-delta --target . --strict
 推荐**钉目标版**（与 check / CI 一致；dogfood F-220-04）：
 
 ```bash
-npx --yes @cyning/harness@2.22.1 upgrade --yes
-npx --yes @cyning/harness@2.22.1 check
+npx --yes @cyning/harness@2.22.2 upgrade --yes
+npx --yes @cyning/harness@2.22.2 check
 ```
 
 `upgrade` **不**代写 `docs/tasks/**` 元信息，也 **不**改已有 `docs/coding_wiki/` 目录形状。
@@ -105,8 +105,8 @@ git diff HEAD -- AGENTS.md CLAUDE.md .cursor/rules/05-harness-starter.mdc \
 
 4. **再钉版 upgrade**  
 
-       npx --yes @cyning/harness@2.22.1 upgrade --yes
-       npx --yes @cyning/harness@2.22.1 check
+       npx --yes @cyning/harness@2.22.2 upgrade --yes
+       npx --yes @cyning/harness@2.22.2 check
 
    注视 stdout：`overlay · FRAGMENT graph_modules_path → …` 与 `hint · overlay`。
 
@@ -118,7 +118,8 @@ git diff HEAD -- AGENTS.md CLAUDE.md .cursor/rules/05-harness-starter.mdc \
          docs/harness/prompts/FRAGMENT_30_gate_verify_v1_zh.md
 
    - 期望：local 关键词仍在；FRAGMENT 含 profile 路径（非误回默认且丢定制）；**无需**从 backup 手贴。  
-   - 建议再跑一次 `npx --yes @cyning/harness@2.22.1 upgrade --yes`：第二次 overlay 相关 diff 宜空或仅产品合法更新。
+   - 建议再跑一次 `npx --yes @cyning/harness@2.22.2 upgrade --yes`：第二次 overlay 相关 diff 宜空或仅产品合法更新。  
+   - **v2.22.2+**：二次同版 upgrade 后 `manifest.from_version` 应**仍为**跨版时写入的历史字符串（不得变 `null`）。
 
 IDE 纪律摘要：[`ide/adapters/README.md`](../ide/adapters/README.md)（POINTER 回本节）。
 
@@ -132,13 +133,13 @@ IDE 纪律摘要：[`ide/adapters/README.md`](../ide/adapters/README.md)（POINT
 
 ```bash
 # 默认：只报缺 wiki_delta 字段（v2.19+）
-npx --yes @cyning/harness@2.22.1 task lint-wiki-delta --target .
+npx --yes @cyning/harness@2.22.2 task lint-wiki-delta --target .
 
 # 关账预检（v2.20+）：另报 none/n/a 无 note、path 不存在
-npx --yes @cyning/harness@2.22.1 task lint-wiki-delta --target . --strict
+npx --yes @cyning/harness@2.22.2 task lint-wiki-delta --target . --strict
 
 # 仅 active / JSON
-# npx --yes @cyning/harness@2.22.1 task lint-wiki-delta --scope active --json
+# npx --yes @cyning/harness@2.22.2 task lint-wiki-delta --scope active --json
 ```
 
 - exit **0**：当前档全齐  
@@ -157,7 +158,7 @@ npx --yes @cyning/harness@2.22.1 task lint-wiki-delta --target . --strict
 | 本 task 改了 wiki | 相对仓根 path | path 须存在 |
 
 ```bash
-npx --yes @cyning/harness@2.22.1 verify --target . --task docs/tasks/active/<task>.md
+npx --yes @cyning/harness@2.22.2 verify --target . --task docs/tasks/active/<task>.md
 ```
 
 ---
@@ -166,7 +167,7 @@ npx --yes @cyning/harness@2.22.1 verify --target . --task docs/tasks/active/<tas
 
 ```bash
 # --target = 仓根；--root = wiki 目录（相对仓根）。二者等价语义见 USER_GUIDE。
-npx --yes @cyning/harness@2.22.1 wiki export --json --target . --root docs/coding_wiki
+npx --yes @cyning/harness@2.22.2 wiki export --json --target . --root docs/coding_wiki
 ```
 
 叙述勿写裸双括号说明性字面；v2.21+ 对 `[[wikilink]]` 等**伪链**默认跳过 WARN（真缺页仍 WARN）。
@@ -185,14 +186,14 @@ cp /path/to/cyning-harness/ci/samples/lint-wiki-delta.yml.example \
   .github/workflows/lint-wiki-delta.yml
 
 # B · npm pack（不依赖 monorepo checkout）
-npm pack @cyning/harness@2.22.1
+npm pack @cyning/harness@2.22.2
 tar -xzf cyning-harness-*.tgz
 cp package/ci/samples/lint-wiki-delta.yml.example .github/workflows/lint-wiki-delta.yml
 rm -rf package cyning-harness-*.tgz
 
 # C · GitHub raw（标签随发版改）
 curl -fsSL -o .github/workflows/lint-wiki-delta.yml \
-  https://raw.githubusercontent.com/Cyning12/cyning-harness/v2.22.1/ci/samples/lint-wiki-delta.yml.example
+  https://raw.githubusercontent.com/Cyning12/cyning-harness/v2.22.2/ci/samples/lint-wiki-delta.yml.example
 ```
 
 有 **pin** 的仓：对照 [`lint-wiki-delta.pin.yml.example`](../ci/samples/lint-wiki-delta.pin.yml.example) 改编，或样例内「读 pin」注释。
@@ -222,3 +223,4 @@ curl -fsSL -o .github/workflows/lint-wiki-delta.yml \
 | 2026-07-28 | v2.21.0 · 快速路径 · pin/overlay · cp 三法 · Python 交叉链 · export 旗标/伪链（web+ops FEEDBACK） |
 | 2026-07-28 | v2.22.0 · overlay 部分根治（local 块 · graph_modules_path · hint） |
 | 2026-07-28 | v2.22.1 · §1.2.1 首次接入 overlay **强制操作序** · §0b 交叉链 · 示例钉版（ops RUNBOOK FEEDBACK） |
+| 2026-07-28 | v2.22.2 · 同版 upgrade 保留 from_version；§1.2.1 验收补一句 |
