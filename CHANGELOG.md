@@ -20,7 +20,7 @@
 - **F-218-01**：本版以文档缓解（verify WARN ≠ 已迁移）；**CLI lint/list 缺 wiki_delta → 规划 2.19.0**，本版不做。
 - **F-218-04**：保持 `schema: harness.wiki_graph.v1` 单字符串；不加 `schema_version`。
 - **破坏性（仍自 2.18.0）**：存量 task 须自补 `wiki_delta`；`upgrade` 不代写。
-- **发版**：维护者确认后 `npm publish`（本 PR 默认不 publish）
+- **已发布**：`@cyning/harness@2.18.1`（npm `latest` · 2026-07-28）· tag `v2.18.1` 已推送
 
 ## [2.18.0] - 2026-07-28
 
@@ -40,7 +40,7 @@
 
 - SPEC：`docs/spec/SPEC-experience-wiki-feedback_loop_v1.md`（signed · 缺字段 BLOCK · P0–P2 同窗）
 - **破坏性（close）**：存量 task **必须**补 `wiki_delta`（无 wiki 轨填 `n/a` + note）。勿默认依赖 `--allow-wiki-gap`
-- **发版**：维护者 `npm publish`
+- **已发布**：`@cyning/harness@2.18.0`（npm · 2026-07-28）· tag `v2.18.0` 已推送
 
 ## [2.17.0] - 2026-07-28
 

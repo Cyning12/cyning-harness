@@ -1,6 +1,6 @@
 # Task · wiki_delta 升级迁移文档 + templates 互链（2.18.1）
 
-> **状态**：`in_progress`  
+> **状态**：`done`  
 > **关联 SPEC**：[`../spec/SPEC-experience-wiki-feedback_loop_v1.md`](../spec/SPEC-experience-wiki-feedback_loop_v1.md)  
 > **消费者证据**：`cyning-harness-web/docs/evidence/FEEDBACK_harness_2_18_0_from_web_obs_20260728.md` · `BACKFILL_DRAFT_…`  
 > **Open Folder**：`cyning-harness/`  
@@ -96,3 +96,4 @@ Task_KPI%: 90
 | 日期 | 说明 |
 |------|------|
 | 2026-07-28 | 00 起草 · 吸收 FEEDBACK/BACKFILL |
+| 2026-07-28 | PR #9 合入 · `@cyning/harness@2.18.1` 已发版 · 关账 |
