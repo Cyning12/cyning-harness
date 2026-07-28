@@ -2,6 +2,19 @@
 
 本仓库遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [2.22.1] - 2026-07-28
+
+### Changed
+
+- **RUNBOOK**：新增 **§1.2.1 首次接入 overlay 契约（强制序）**——profile `graph_modules_path` → AGENTS local 块 → **先 commit 再 upgrade**（脏树 S5）→ 钉版 check / pin → 四文件验收与二次 upgrade；§0b 交叉链；§1.2 表补「操作序」与负面边界；示例命令钉 `@2.22.1`（ops dogfood RB-ORD-*）。
+- **ide/adapters README** / **ONBOARDING**：POINTER 至 §1.2.1。
+
+### Notes
+
+- **仅文档**；不改 sync/S5/close/wiki_delta 行为。
+- 可选后续：S5 拒 apply 时 stdout 提示「先提交 local/profile」（未做）。
+- **已发布**：`@cyning/harness@2.22.1`（npm `latest` · 2026-07-28）· tag `v2.22.1` 已推送
+
 ## [2.22.0] - 2026-07-28
 
 ### Added
@@ -21,7 +34,7 @@
 
 - **不能**保证「同文件双边改行」永远零人工；裸写在产品 marker 内的定制仍会被冲。
 - **不**削弱 S2/S5 / close / wiki_delta / pre-30；无定制仓默认仍全量 sync（占位展开为 `01_struct`）。
-- **待发布**：合入后维护者 `npm publish` + tag `v2.22.0`（本 PR 不擅自发版）。
+- **已发布**：`@cyning/harness@2.22.0`（npm `latest` · 2026-07-28）· tag `v2.22.0` 已推送
 - 建议叠在 **2.21.0**（PR #14）之上。
 
 ## [2.21.0] - 2026-07-28
@@ -40,7 +53,7 @@
 
 - **不**削弱 close / wiki_delta 闸；CI **不**默认强制 `--strict`。
 - 来源：[`FEEDBACK` web](https://github.com/Cyning12/cyning-harness-web) · ops-desk-api dogfood 2026-07-28。
-- **待发布**：合入后由维护者 `npm publish` + tag `v2.21.0`（本 PR 不擅自发版）。
+- **已发布**：`@cyning/harness@2.21.0`（npm · 2026-07-28）· tag `v2.21.0` 已推送
 
 ## [2.20.0] - 2026-07-28
 

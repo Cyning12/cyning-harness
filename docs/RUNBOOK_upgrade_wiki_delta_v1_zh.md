@@ -21,12 +21,14 @@
 
 若上一波已补齐 `wiki_delta`（默认 `lint-wiki-delta` 预期绿），升小版本只需：
 
+> **overlay（≥2.22）**：若仓内曾有 AGENTS/FRAGMENT/cursor **仓内定制**（或仍把词写在产品 `cyning-harness:begin/end` 内）→ **先完成 [§1.2.1](#121-首次接入-overlay-契约强制序)**（或确认已有产品块外 local + 所需 `graph_modules_path` 且已 commit），再跑下方 upgrade。勿跳过迁契约却指望手恢复。
+
 ```bash
-npx @cyning/harness@2.21.0 upgrade --yes
-npx @cyning/harness@2.21.0 check
+npx --yes @cyning/harness@2.22.1 upgrade --yes
+npx --yes @cyning/harness@2.22.1 check
 # 若仓有 harness.pin.json / 单源版本文件 → 同步 bump（产品 upgrade 不代写）
-npx @cyning/harness@2.21.0 task lint-wiki-delta --target .
-npx @cyning/harness@2.21.0 task lint-wiki-delta --target . --strict
+npx --yes @cyning/harness@2.22.1 task lint-wiki-delta --target .
+npx --yes @cyning/harness@2.22.1 task lint-wiki-delta --target . --strict
 # （可选）挂 CI · 见 §5
 ```
 
@@ -39,8 +41,8 @@ npx @cyning/harness@2.21.0 task lint-wiki-delta --target . --strict
 推荐**钉目标版**（与 check / CI 一致；dogfood F-220-04）：
 
 ```bash
-npx @cyning/harness@2.21.0 upgrade --yes
-npx @cyning/harness@2.21.0 check
+npx --yes @cyning/harness@2.22.1 upgrade --yes
+npx --yes @cyning/harness@2.22.1 check
 ```
 
 `upgrade` **不**代写 `docs/tasks/**` 元信息，也 **不**改已有 `docs/coding_wiki/` 目录形状。
@@ -56,8 +58,9 @@ npx @cyning/harness@2.21.0 check
 
 | 做法 | 说明 |
 |------|------|
+| **操作序** | **先迁并 commit 契约 → 再 upgrade**（见 [§1.2.1](#121-首次接入-overlay-契约强制序)）；脏树可能 **S5** 拒 apply；勿依赖「upgrade 后代手恢复」；`--force` **非**默认 |
 | **local 块** | 仓特异词写在 `<!-- cyning-harness-local:begin/end -->`，且在产品 `cyning-harness:begin/end` **外** |
-| **G-L 路径** | `.cyning-harness/profile.json` 增加 `"graph_modules_path": "l1/01_modules"`（默认 `01_struct`） |
+| **G-L 路径** | `.cyning-harness/profile.json` 与 `tracks` **同级**增加 `"graph_modules_path": "l1/01_modules"`（默认不写 = `01_struct`） |
 | **自检** | apply 结束会打印 `hint · overlay`；仍建议看 diff |
 
 ```bash
@@ -65,7 +68,59 @@ git diff HEAD -- AGENTS.md CLAUDE.md .cursor/rules/05-harness-starter.mdc \
   docs/harness/prompts/FRAGMENT_30_gate_verify_v1_zh.md
 ```
 
-若定制仍裸写在产品 marker 内（无 local 包裹），**仍会被冲** — 迁到 local 块或改 profile 占位。误把 local 嵌在产品块内时，sync 会尝试 **salvage** 到块外（见 stdout warn）。
+**负面边界**：定制只写在产品 marker 内且无 local 包裹 → upgrade **仍冲**（预期边界，勿当 bug）。误把 local 嵌在产品块内时，sync 会尝试 **salvage** 到块外（见 stdout warn）。
+
+### 1.2.1 首次接入 overlay 契约（强制序）
+
+适用于：manifest **低于 2.22**，或已 ≥2.22 但仍把仓特异词写在产品 `cyning-harness:begin/end` 内 / 未设所需 `graph_modules_path`。  
+能力真值自 **2.22.0**；本序为 ops dogfood 流程化（文档 **2.22.1+**）。无仓内定制可跳过本节。
+
+**逐步（须按序；可复制）：**
+
+1. **迁 profile**（若需 G-L / 非默认模块页）  
+   编辑 `.cyning-harness/profile.json`，与 `tracks` **同级**增加（路径按仓裁剪）：
+
+       "graph_modules_path": "l1/01_modules"
+
+   不需要变体时可不写（sync 展开为 `01_struct`）。
+
+2. **迁 AGENTS**（CLAUDE 若有同类定制则同规）  
+   - 产品 `<!-- cyning-harness:begin -->` … `<!-- cyning-harness:end -->` **内**：只留产品 fragment 语义，**删除**仓特异词。  
+   - 紧接产品 `end` **之后**增加 local 块，例如：
+
+         <!-- cyning-harness-local:begin -->
+         （仓特异：试点闸关键词、拒改码补句等）
+         <!-- cyning-harness-local:end -->
+
+   - **禁止**：local 嵌在产品 begin/end 内；**禁止**往 `.cursor/rules/05-harness-starter.mdc`（或等价 cursor 规则）塞仓特异词（upgrade 全量 `cp`）。
+
+3. **先 commit 契约（关键）**  
+
+       git add .cyning-harness/profile.json AGENTS.md
+       # 若改了 CLAUDE.md 一并 add
+       git status   # 工作区应对 sync 足够干净
+       git commit -m "chore(harness): adopt overlay local block and graph_modules_path"
+
+   未提交就 `upgrade` → 脏树常触发 **S5**（`sync apply` 中止）。紧急才用 `upgrade --force` / `HARNESS_SYNC_FORCE=1`；**勿**把 force 当常态。
+
+4. **再钉版 upgrade**  
+
+       npx --yes @cyning/harness@2.22.1 upgrade --yes
+       npx --yes @cyning/harness@2.22.1 check
+
+   注视 stdout：`overlay · FRAGMENT graph_modules_path → …` 与 `hint · overlay`。
+
+5. **有 pin 则 bump**（upgrade **不**代写）→ 再跑本仓 pin 检查（若有）。
+
+6. **验收（合规零手恢复）**  
+
+       git diff HEAD -- AGENTS.md CLAUDE.md .cursor/rules/05-harness-starter.mdc \
+         docs/harness/prompts/FRAGMENT_30_gate_verify_v1_zh.md
+
+   - 期望：local 关键词仍在；FRAGMENT 含 profile 路径（非误回默认且丢定制）；**无需**从 backup 手贴。  
+   - 建议再跑一次 `npx --yes @cyning/harness@2.22.1 upgrade --yes`：第二次 overlay 相关 diff 宜空或仅产品合法更新。
+
+IDE 纪律摘要：[`ide/adapters/README.md`](../ide/adapters/README.md)（POINTER 回本节）。
 
 ### 1.3 local.json（建议）
 
@@ -77,13 +132,13 @@ git diff HEAD -- AGENTS.md CLAUDE.md .cursor/rules/05-harness-starter.mdc \
 
 ```bash
 # 默认：只报缺 wiki_delta 字段（v2.19+）
-npx @cyning/harness@2.21.0 task lint-wiki-delta --target .
+npx --yes @cyning/harness@2.22.1 task lint-wiki-delta --target .
 
 # 关账预检（v2.20+）：另报 none/n/a 无 note、path 不存在
-npx @cyning/harness@2.21.0 task lint-wiki-delta --target . --strict
+npx --yes @cyning/harness@2.22.1 task lint-wiki-delta --target . --strict
 
 # 仅 active / JSON
-# npx @cyning/harness@2.21.0 task lint-wiki-delta --scope active --json
+# npx --yes @cyning/harness@2.22.1 task lint-wiki-delta --scope active --json
 ```
 
 - exit **0**：当前档全齐  
@@ -102,7 +157,7 @@ npx @cyning/harness@2.21.0 task lint-wiki-delta --target . --strict
 | 本 task 改了 wiki | 相对仓根 path | path 须存在 |
 
 ```bash
-npx @cyning/harness@2.21.0 verify --target . --task docs/tasks/active/<task>.md
+npx --yes @cyning/harness@2.22.1 verify --target . --task docs/tasks/active/<task>.md
 ```
 
 ---
@@ -111,7 +166,7 @@ npx @cyning/harness@2.21.0 verify --target . --task docs/tasks/active/<task>.md
 
 ```bash
 # --target = 仓根；--root = wiki 目录（相对仓根）。二者等价语义见 USER_GUIDE。
-npx @cyning/harness@2.21.0 wiki export --json --target . --root docs/coding_wiki
+npx --yes @cyning/harness@2.22.1 wiki export --json --target . --root docs/coding_wiki
 ```
 
 叙述勿写裸双括号说明性字面；v2.21+ 对 `[[wikilink]]` 等**伪链**默认跳过 WARN（真缺页仍 WARN）。
@@ -130,14 +185,14 @@ cp /path/to/cyning-harness/ci/samples/lint-wiki-delta.yml.example \
   .github/workflows/lint-wiki-delta.yml
 
 # B · npm pack（不依赖 monorepo checkout）
-npm pack @cyning/harness@2.21.0
+npm pack @cyning/harness@2.22.1
 tar -xzf cyning-harness-*.tgz
 cp package/ci/samples/lint-wiki-delta.yml.example .github/workflows/lint-wiki-delta.yml
 rm -rf package cyning-harness-*.tgz
 
 # C · GitHub raw（标签随发版改）
 curl -fsSL -o .github/workflows/lint-wiki-delta.yml \
-  https://raw.githubusercontent.com/Cyning12/cyning-harness/v2.21.0/ci/samples/lint-wiki-delta.yml.example
+  https://raw.githubusercontent.com/Cyning12/cyning-harness/v2.22.1/ci/samples/lint-wiki-delta.yml.example
 ```
 
 有 **pin** 的仓：对照 [`lint-wiki-delta.pin.yml.example`](../ci/samples/lint-wiki-delta.pin.yml.example) 改编，或样例内「读 pin」注释。
@@ -164,5 +219,6 @@ curl -fsSL -o .github/workflows/lint-wiki-delta.yml \
 | 2026-07-28 | v2.19.1 · 首版 |
 | 2026-07-28 | v2.19.2 · §0 硬失败 |
 | 2026-07-28 | v2.20.0 · `--strict` |
-| 2026-07-28 | v2.22.0 · overlay 部分根治（local 块 · graph_modules_path · hint） |
 | 2026-07-28 | v2.21.0 · 快速路径 · pin/overlay · cp 三法 · Python 交叉链 · export 旗标/伪链（web+ops FEEDBACK） |
+| 2026-07-28 | v2.22.0 · overlay 部分根治（local 块 · graph_modules_path · hint） |
+| 2026-07-28 | v2.22.1 · §1.2.1 首次接入 overlay **强制操作序** · §0b 交叉链 · 示例钉版（ops RUNBOOK FEEDBACK） |

@@ -1,6 +1,6 @@
 # Task · upgrade overlay 部分根治（2.22.0）
 
-> **状态**：`active`  
+> **状态**：`done`  
 > **关联**：[`SPEC-upgrade-overlay-preserve_v1.md`](../../spec/SPEC-upgrade-overlay-preserve_v1.md) · ops U2  
 > **Open Folder**：`cyning-harness/`（git root）  
 > **git_branch**：`task/upgrade-overlay-preserve-2-22`
@@ -61,19 +61,33 @@ ops dogfood：每次 `upgrade` 冲 AGENTS marker 内定制与 FRAGMENT `l1/01_mo
 
 - [x] 无定制：占位 → `01_struct`；local 无关
 - [x] 定制：local 块保留；path=`l1/01_modules` 写入 FRAGMENT
-- [x] `npm test` 全绿 · PR URL
+- [x] `npm test` 全绿 · PR URL · https://github.com/Cyning12/cyning-harness/pull/15
 
 ### 自检结论（执行者）
 
 - `npm test` → 253 pass（含 sync.overlay ×4）
 - PR：https://github.com/Cyning12/cyning-harness/pull/15（base=#14 / 2.21）
 
+### KPI（00）
+
+Task_KPI%: 90
+
+| 维 | 分 |
+| --- | --- |
+| 质量 | 5 |
+| 过程 | 4 |
+| 可观测 | 5 |
+| 回馈 | 5 |
+
 ### 经验总结
 
-（关账填）
+- 产品同步面内就地定制无法「完全零人工」；合规路径 = local 块 + profile 占位。
+- 能力发版后仍需 §1.2.1 强制操作序（见 2.22.1）。
+- Wiki: n/a
 
 ## 修订记录
 
 | 日期 | 说明 |
 |------|------|
 | 2026-07-28 | 00/30 · 签收开工 |
+| 2026-07-28 | `@cyning/harness@2.22.0` 已发版 · 关账 |
