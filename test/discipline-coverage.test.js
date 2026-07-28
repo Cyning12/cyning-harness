@@ -26,7 +26,7 @@ test('包内 discipline-coverage.yaml 通过校验', () => {
   const { data, filePath } = loadDisciplineCoverage({ harnessRoot: repoRoot });
   assert.ok(filePath.endsWith('discipline-coverage.yaml'));
   assert.equal(data.version, '1');
-  assert.equal(data.as_of_package_version, '2.18.2');
+  assert.equal(data.as_of_package_version, '2.19.0');
   assert.ok(data.statements.length >= 20);
 });
 
@@ -89,7 +89,7 @@ test('formatDisciplineShow 含 version / as_of / 计数', () => {
   const { data } = loadDisciplineCoverage({ harnessRoot: repoRoot });
   const text = formatDisciplineShow(data);
   assert.match(text, /discipline-coverage v1/);
-  assert.match(text, /as_of: 2.18.2/);
+  assert.match(text, /as_of: 2.19.0/);
   assert.match(text, /## statements/);
   assert.match(text, /## gaps/);
 });
@@ -97,7 +97,7 @@ test('formatDisciplineShow 含 version / as_of / 计数', () => {
 test('discipline show CLI · exit 0 · 含 as_of', () => {
   const r = runNode(['discipline', 'show']);
   assert.equal(r.status, 0, r.stderr || r.stdout);
-  assert.match(r.stdout, /as_of: 2.18.2/);
+  assert.match(r.stdout, /as_of: 2.19.0/);
 });
 
 test('discipline show --json · 可 parse · version', () => {

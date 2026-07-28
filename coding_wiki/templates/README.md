@@ -53,6 +53,8 @@ invoke §3 应 **pointer** 到本目录，勿重复贴长文。
 
 详述与关账字段：[`docs/USER_GUIDE_v1.0_zh.md`](../../docs/USER_GUIDE_v1.0_zh.md)「Wiki 目录 vs 关系图」· `wiki_delta` 决策树见同文 **§6.0b**（本文不重复）。
 
+> **防踩坑（v2.19+）**：叙述里勿写裸双括号字面当作「格式说明」（会被 `wiki export` 当边解析）；请写「双括号 wikilink」，互链只指向真实页。
+
 ---
 
 ## 加深阈值（第 3 层）
@@ -110,3 +112,4 @@ npx @cyning/harness wiki export --json --root coding_wiki/templates
 | 2026-07-28 | 关账晋升 + wiki export 指针 |
 | 2026-07-28 | v2.18.1 · stable/context/volatile 样例互链 |
 | 2026-07-28 | v2.18.2 · 两层目录约定 · 加深阈值/清单 · topics 示例 |
+| 2026-07-28 | v2.19.0 · 叙述防踩坑（勿裸双括号字面） |

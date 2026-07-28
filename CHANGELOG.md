@@ -2,6 +2,26 @@
 
 本仓库遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [2.19.0] - 2026-07-28
+
+### Added
+
+- **`task lint-wiki-delta`**：扫描 `docs/tasks/{active,done}` 与 `docs/harness/tasks/{active,done}`，列出元信息**缺 `wiki_delta` 字段**的 task（`--scope all|active|done` · `--json`）；有缺失 → exit 2。升级后迁移清单（dogfood F-218-01 剩余）。
+- verify `--task` 缺 wiki_delta 的 WARN 文案链到该命令。
+
+### Changed
+
+- **USER_GUIDE §6.0b**：扫描建议以 CLI 取代 `rg -L` 启发式；wiki export **防踩坑**（叙述勿写裸双括号字面 · F-218-07）。
+- **coding_wiki/templates/README**：去掉说明性伪链字面；加防踩坑一句。
+- **ONBOARDING**：明示 `upgrade` **不**自动把已有 `coding_wiki` 迁成 `topics/`（消费者自 `git mv`）；并 POINTER `lint-wiki-delta`。
+
+### Notes
+
+- 本命令**只**查缺字段；`none`/`n/a` 缺 note、path 不存在仍由 close/verify 处理。
+- **不**削弱 close/`wiki_delta` 硬闸；勿默认 `--allow-wiki-gap`。
+- 叠在 `@cyning/harness@2.18.2` 之上（目录约定已合入）。
+- **发版**：维护者确认后 `npm publish`（本 PR 默认不 publish）
+
 ## [2.18.2] - 2026-07-28
 
 ### Added
@@ -17,7 +37,7 @@
 ### Notes
 
 - **目录约定 ≠ close/`wiki_delta` 硬闸**；字段闸仍见 2.18.0 / §6.0b。
-- **F-218-01** CLI lint/list 缺 `wiki_delta` → 仍规划 **2.19.0**。
+- **F-218-01** CLI lint/list 缺 `wiki_delta` → **2.19.0**（见上）。
 - **发版**：维护者确认后 `npm publish`（本 PR 默认不 publish）
 
 ## [2.18.1] - 2026-07-28
