@@ -29,6 +29,13 @@
 - [awesome-harness-engineering](https://github.com/ai-boost/awesome-harness-engineering)
 - [bench-my-harness](https://github.com/vinilana/bench-my-harness)
 
+## 产品边界 · 三线程序（POINTER）
+
+纪律包保持无 Runtime；完整 HE 与 Ops Agent 完善见统筹工作区：
+
+`/Users/cyning/Desktop/cyning-ai-program/PLAN_dual_track_v1_zh.md`  
+（线 B1 = 本仓；线 B2 = HE 新仓 pending；线 A = Ops Desk）
+
 ## 建议下一实现 task（签闸后）
 
 1. TASK_TEMPLATE 验收节补 `verify:` 示例（G-M2-01）

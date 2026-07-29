@@ -34,8 +34,17 @@
 
 ---
 
+## 程序统筹（桌面薄工作区）
+
+| POINTER | 真值 |
+| --- | --- |
+| [`POINTER_cyning_ai_program_v1_zh.md`](./POINTER_cyning_ai_program_v1_zh.md) | `/Users/cyning/Desktop/cyning-ai-program/PLAN_dual_track_v1_zh.md`（线 B1=本仓；B2 HE 新仓；A=Ops） |
+
+---
+
 ## 修订
 
 | 日期 | 说明 |
 | --- | --- |
+| 2026-07-29 | 增 cyning-ai-program POINTER |
 | 2026-06-15 | 初版 POINTER 清单 |
