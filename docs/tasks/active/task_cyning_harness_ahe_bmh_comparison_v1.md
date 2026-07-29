@@ -56,7 +56,7 @@ BMH Cursor adapter；引入 LangGraph/mem0/E2B；实现 token 采集；擅自 pu
 - [x] 一词三义表 + 对外一句话
 - [x] 六份产出可从 comparisons/README 索引
 - [x] SPEC draft 含 source/confidence/comparability
-- [x] PR URL
+- [x] PR URL → https://github.com/Cyning12/cyning-harness/pull/19
 
 ### 自检结论（执行者）
 
