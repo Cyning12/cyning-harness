@@ -19,6 +19,8 @@ description: 索引与背景 · 2026-08 cyning-harness × Agent Skills 升级思
 |---|---|---|
 | [01_current_state_mapping.md](01_current_state_mapping.md) | 现状盘点：帽体系五要素 × Skill 标准五要素逐条映射；已是/不是 Skill 的边界 | 理解「我们离标准有多远」 |
 | [02_tensions_and_directions.md](02_tensions_and_directions.md) | 五个关键张力 + 候选方向 A/B/C/D + 反方向纪律 | 评审升级路线 |
+| [03_format_design.md](03_format_design.md) | R2 上：四个落点决策（元数据嵌头部 / references 复制 / 包内生成物入库 / skills build\|check）+ SKILL.md 草案 | 看具体格式长什么样 |
+| [04_dogfood_evaluation.md](04_dogfood_evaluation.md) | R2 下：T1 对抗评测 S1–S3 + 30 帽负向触发 description 草案 + dogfood 三阶段 + 反方向自检 | 评审「不削弱闸纪律」的证据链 |
 
 ## 过程记录（回溯用）
 
@@ -27,6 +29,8 @@ description: 索引与背景 · 2026-08 cyning-harness × Agent Skills 升级思
 | 2026-08-03 | 读 agentskills.io/home + /specification 全文 | 会话记录 |
 | 2026-08-03 | 盘点 `.claude/agents/`（工作区 6 薄层）+ `harness/prompts/`（包 Starter 9 文件）+ `Projects/docs/harness/prompts/`（Extended 帽）；映射 Skill 标准 | 01 |
 | 2026-08-03 | 张力分析 + 候选方向 | 02 |
+| 2026-08-03 | R2：实测 Starter 条文行数（27–78，全 <500）→ 修正「薄层拆分」前提；四落点决策 + SKILL.md 草案 | 03 |
+| 2026-08-03 | R2：T1 评测设计（S1–S3 判死线）+ dogfood 三阶段 + 反方向自检全过 | 04 |
 
 **范围声明**：本轮覆盖 **npm 包分发面**（`harness/`）与 **工作区消费面**（`Projects/.claude/`、`Projects/docs/harness/`）两层。Ink 业务子仓（30/40/50 落地侧）不在本轮，方法可复用。
 
