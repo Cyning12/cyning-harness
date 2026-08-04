@@ -21,6 +21,7 @@ description: 索引与背景 · 2026-08 cyning-harness × Agent Skills 升级思
 | [02_tensions_and_directions.md](02_tensions_and_directions.md) | 五个关键张力 + 候选方向 A/B/C/D + 反方向纪律 | 评审升级路线 |
 | [03_format_design.md](03_format_design.md) | R2 上：四个落点决策（元数据嵌头部 / references 复制 / 包内生成物入库 / skills build\|check）+ SKILL.md 草案 | 看具体格式长什么样 |
 | [04_dogfood_evaluation.md](04_dogfood_evaluation.md) | R2 下：T1 对抗评测 S1–S3 + 30 帽负向触发 description 草案 + dogfood 三阶段 + 反方向自检 | 评审「不削弱闸纪律」的证据链 |
+| [05_conclusion_proposal.md](05_conclusion_proposal.md) | R3：GO 结论（A+B+C 合一）+ 五问决策 + SPEC 形态草案 + 落地链预览 | 决定是否立项、起草 10-spec 前 |
 
 ## 过程记录（回溯用）
 
@@ -31,6 +32,7 @@ description: 索引与背景 · 2026-08 cyning-harness × Agent Skills 升级思
 | 2026-08-03 | 张力分析 + 候选方向 | 02 |
 | 2026-08-03 | R2：实测 Starter 条文行数（27–78，全 <500）→ 修正「薄层拆分」前提；四落点决策 + SKILL.md 草案 | 03 |
 | 2026-08-03 | R2：T1 评测设计（S1–S3 判死线）+ dogfood 三阶段 + 反方向自检全过 | 04 |
+| 2026-08-04 | R3：GO 结论（A+B+C 合一 SPEC · v2.x minor · sync 不动 · Extended 帽不做 · eval/ 半自动）+ SPEC 形态草案 | 05 |
 
 **范围声明**：本轮覆盖 **npm 包分发面**（`harness/`）与 **工作区消费面**（`Projects/.claude/`、`Projects/docs/harness/`）两层。Ink 业务子仓（30/40/50 落地侧）不在本轮，方法可复用。
 
