@@ -1,7 +1,8 @@
 # Task · Agent Skills 标准封装（Starter 帽 frontmatter + skills build/check + 分发）
 
-> **状态**：`active` · 00 起草 + 10-task 思考轮已回填 · **待 20-task-audit R1 → HG-AUDIT-R1**  
+> **状态**：`active` · R1 通过 + HG-AUDIT-R1 approved · **可 30 开工**  
 > **SPEC**：[`../spec/SPEC-agent-skills-packaging_v1.md`](../spec/SPEC-agent-skills-packaging_v1.md)（signed 2026-08-06）  
+> **R1**：[`../harness/reviews/task_cyning_harness_agent_skills_packaging_audit_R1_20260806.md`](../harness/reviews/task_cyning_harness_agent_skills_packaging_audit_R1_20260806.md)  
 > **rethink**：[`../rethink/2026-08-skills-upgrade/README.md`](../rethink/2026-08-skills-upgrade/README.md)（01–05 · 30 必读输入）  
 > **Open Folder**：`cyning-harness/`  
 > **git_branch**：`task/agent-skills-packaging`（30 开工时建 · 本仓工作树有无关脏文件，**commit 仅限本 task 路径**）
@@ -33,7 +34,7 @@
 |---------------|--------|-------------|------|
 | HG-TASK-DRAFT | approved | 22-R1, 30 | 2026-08-06 开立（维护者「同意，立项」） |
 | HG-SPEC-SIGNOFF | approved | 30 | 2026-08-06 · SPEC signed |
-| HG-AUDIT-R1 | **pending** | 30 | 待 20-task-audit R1 + 人签 |
+| HG-AUDIT-R1 | **approved** | 30 | R1 通过（零阻塞 · 建议 F1–F3）· 维护者「签收」2026-08-06 |
 
 ---
 
@@ -46,10 +47,11 @@ rethink 2026-08-skills-upgrade 系列结论 GO（05）：Starter 6 帽条文头�
 ## 范围
 
 - [x] SPEC signed（HG-SPEC-SIGNOFF approved）
+- [x] R1 · HG-AUDIT-R1 approved（建议 F1–F3 已吸收进 30 落法）
 - [ ] **D1** · 6 条文头部 frontmatter（`harness/prompts/`：10-task / 10-spec / 20-task-audit / 20-spec-audit / 30 / 40）；正文一字不改
 - [ ] **D2** · `lib/skills.js` + `harness skills build [--with-execute-hats]` / `harness skills check`
 - [ ] **D3** · `skills/` 生成物入库（默认 4 帽）· `package.json` `files[]` + `"skills/"` · `skills/README.md`（生成 · 含消费指引与执行帽缺席标注）· `harness/prompts/README.md` 加封装说明段
-- [ ] **D4** · `test/skills.test.js`（生成确定性 / 链接重写 / drift 可失败 / 默认集隔离 / frontmatter 正反例）· CI 加 `skills check` + `skills-ref validate skills/` 两步 · sync overlay/index 回归全绿
+- [ ] **D4** · `test/skills.test.js`（生成确定性 / 链接重写 / drift 可失败 / 默认集隔离 / frontmatter 正反例）进 `npm test`（本仓真闸）· 新增 `ci/samples/skills-validate.yml.example`（`skills check` + `skills-ref validate` · 锁版本 · R1-F1 落点修正）· sync overlay/index 回归全绿
 - [ ] **D5** · `eval/t1_gate_bypass/`：S1–S3 fixture + 判据文档（本波不执行评测）
 - [ ] **D6** · dogfood D1：工作区 `Projects/.claude/skills/` 装 10-task / 10-spec（自本包 `skills/` 复制）· 观察数据回写 rethink README · CHANGELOG 2.23.0 条目
 - [ ] 40 自检闭环 + CLOSE
@@ -77,7 +79,7 @@ rethink 2026-08-skills-upgrade 系列结论 GO（05）：Starter 6 帽条文头�
 - [ ] `harness skills build` 默认出 4 帽；`--with-execute-hats` 出 6 帽
 - [ ] `skills/` 入库 + `files[]` 含 `"skills/"` + `skills/README.md` 含执行帽缺席标注
 - [ ] 改任一条文正文 → `skills check` 必 fail（drift 判据 · 测试内模拟）
-- [ ] CI 两步（`skills check` / `skills-ref validate`）在且绿
+- [ ] `npm test` 含 skills 测试且全绿；`ci/samples/skills-validate.yml.example` 存在（R1-F1：本仓无 .github/workflows · 真闸 = npm test）
 - [ ] `npm test` 全绿（含 sync overlay / index / hat-v2-split 回归）
 - [ ] `eval/t1_gate_bypass/` fixture + 判据落盘
 - [ ] dogfood D1 观察数据回写 rethink README；CHANGELOG 2.23.0 条目
@@ -155,3 +157,4 @@ task 自足：范围/非范围/验收/failure_paths/必读齐；思考轮控制�
 | 日期 | 说明 |
 |------|------|
 | 2026-08-06 | 00 起草（SPEC signed 后）+ 10-task R0–R5 同会话回填（SPEC→task 同会话 · task 草稿已由 00 创建）· HG-AUDIT-R1 pending |
+| 2026-08-06 | 20-task-audit R1 通过（零阻塞 · F1–F3 建议）· 维护者「签收」→ HG-AUDIT-R1 approved |
