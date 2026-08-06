@@ -24,6 +24,9 @@
 | **worktree_root** | `cyning-harness/` |
 | **graph_change_layer** | `none` |
 | **graph_delta** | `none` |
+| **graph_delta_note** | 纯过程轨（Skills 封装）· 无图谱变更 |
+| **wiki_delta** | `n/a` |
+| **wiki_delta_note** | 无新增可复用教训（rethink 2026-08-skills-upgrade 系列已承担知识沉淀） |
 | **experience_capture** | `recommended` |
 | **kpi_aggregator** | `CLOSE` |
 | **suggested_npm** | **2.23.0**（发版另批） |
@@ -48,12 +51,12 @@ rethink 2026-08-skills-upgrade 系列结论 GO（05）：Starter 6 帽条文头�
 
 - [x] SPEC signed（HG-SPEC-SIGNOFF approved）
 - [x] R1 · HG-AUDIT-R1 approved（建议 F1–F3 已吸收进 30 落法）
-- [ ] **D1** · 6 条文头部 frontmatter（`harness/prompts/`：10-task / 10-spec / 20-task-audit / 20-spec-audit / 30 / 40）；正文一字不改
-- [ ] **D2** · `lib/skills.js` + `harness skills build [--with-execute-hats]` / `harness skills check`
-- [ ] **D3** · `skills/` 生成物入库（默认 4 帽）· `package.json` `files[]` + `"skills/"` · `skills/README.md`（生成 · 含消费指引与执行帽缺席标注）· `harness/prompts/README.md` 加封装说明段
-- [ ] **D4** · `test/skills.test.js`（生成确定性 / 链接重写 / drift 可失败 / 默认集隔离 / frontmatter 正反例）进 `npm test`（本仓真闸）· 新增 `ci/samples/skills-validate.yml.example`（`skills check` + `skills-ref validate` · 锁版本 · R1-F1 落点修正）· sync overlay/index 回归全绿
-- [ ] **D5** · `eval/t1_gate_bypass/`：S1–S3 fixture + 判据文档（本波不执行评测）
-- [ ] **D6** · dogfood D1：工作区 `Projects/.claude/skills/` 装 10-task / 10-spec（自本包 `skills/` 复制）· 观察数据回写 rethink README · CHANGELOG 2.23.0 条目
+- [x] **D1** · 6 条文头部 frontmatter（`harness/prompts/`：10-task / 10-spec / 20-task-audit / 20-spec-audit / 30 / 40）；正文一字不改
+- [x] **D2** · `lib/skills.js` + `harness skills build [--with-execute-hats]` / `harness skills check`
+- [x] **D3** · `skills/` 生成物入库（默认 4 帽）· `package.json` `files[]` + `"skills/"` · `skills/README.md`（生成 · 含消费指引与执行帽缺席标注）· `harness/prompts/README.md` 加封装说明段
+- [x] **D4** · `test/skills.test.js`（生成确定性 / 链接重写 / drift 可失败 / 默认集隔离 / frontmatter 正反例）进 `npm test`（本仓真闸）· 新增 `ci/samples/skills-validate.yml.example`（`skills check` + `skills-ref validate` · 锁版本 · R1-F1 落点修正）· sync overlay/index 回归全绿
+- [x] **D5** · `eval/t1_gate_bypass/`：S1–S3 fixture + 判据文档（本波不执行评测）
+- [x] **D6** · dogfood D1：工作区 `Projects/.claude/skills/` 装 10-task / 10-spec（自本包 `skills/` 复制）· 观察数据回写 rethink README · CHANGELOG 2.23.0 条目
 - [ ] 40 自检闭环 + CLOSE
 
 ## 非范围
@@ -148,7 +151,18 @@ task 自足：范围/非范围/验收/failure_paths/必读齐；思考轮控制�
 
 ### 自检结论（执行者）
 
-（待 30/40 回填）
+**40 自检闭环 · 2026-08-06 · 全部真跑**：
+
+| 验证命令 | 退出码 | 关键输出 |
+|----------|--------|----------|
+| `npm test` | 0 | **266 pass / 0 fail**（含 skills.test.js 11 例 · sync overlay/index/hat-v2-split 回归绿） |
+| `node bin/harness.js skills check` | 0 | `SKILLS CHECK: PASS · frontmatter 合法 · skills/ 无 drift` |
+| `node bin/harness.js skills build` → 再 `check` | 0 | 再生确定性：build 后 check 仍 PASS（6 文件） |
+| `node bin/harness.js verify --task <本 task>` | 0 | `VERIFY: PASS`（30/40 invoke 于本轮回补） |
+
+验收标准逐条：frontmatter 齐备且正文无 diff（D1 commit `3da63fa` 仅头部增量）✅ · 默认 4 帽 / flag 6 帽 ✅ · `skills/` 入库 + files[] + 生成 README 标注 ✅ · drift 必 fail（测试内模拟 + 断言文件名）✅ · npm test 含 skills 测试 + ci 样例存在 ✅ · eval fixture 落盘 ✅ · dogfood 装机 + rethink 回写 + CHANGELOG 2.23.0 ✅ · 无 sync/agents 变更、默认集无 30/40 ✅
+
+**结论：pass**（CLOSE 待人指令）
 
 ---
 
