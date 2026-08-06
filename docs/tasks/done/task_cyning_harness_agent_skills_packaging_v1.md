@@ -1,6 +1,6 @@
 # Task · Agent Skills 标准封装（Starter 帽 frontmatter + skills build/check + 分发）
 
-> **状态**：`active` · R1 通过 + HG-AUDIT-R1 approved · **可 30 开工**  
+> **状态**：`done` · 30/40 完成 · 自检全绿 · CLOSE 关账中  
 > **SPEC**：[`../spec/SPEC-agent-skills-packaging_v1.md`](../spec/SPEC-agent-skills-packaging_v1.md)（signed 2026-08-06）  
 > **R1**：[`../harness/reviews/task_cyning_harness_agent_skills_packaging_audit_R1_20260806.md`](../harness/reviews/task_cyning_harness_agent_skills_packaging_audit_R1_20260806.md)  
 > **rethink**：[`../rethink/2026-08-skills-upgrade/README.md`](../rethink/2026-08-skills-upgrade/README.md)（01–05 · 30 必读输入）  
@@ -78,15 +78,15 @@ rethink 2026-08-skills-upgrade 系列结论 GO（05）：Starter 6 帽条文头�
 
 ## 验收标准
 
-- [ ] 6 条文 frontmatter 齐备过 `skills check` 规范约束；正文无 diff（git 可证）
-- [ ] `harness skills build` 默认出 4 帽；`--with-execute-hats` 出 6 帽
-- [ ] `skills/` 入库 + `files[]` 含 `"skills/"` + `skills/README.md` 含执行帽缺席标注
-- [ ] 改任一条文正文 → `skills check` 必 fail（drift 判据 · 测试内模拟）
-- [ ] `npm test` 含 skills 测试且全绿；`ci/samples/skills-validate.yml.example` 存在（R1-F1：本仓无 .github/workflows · 真闸 = npm test）
-- [ ] `npm test` 全绿（含 sync overlay / index / hat-v2-split 回归）
-- [ ] `eval/t1_gate_bypass/` fixture + 判据落盘
-- [ ] dogfood D1 观察数据回写 rethink README；CHANGELOG 2.23.0 条目
-- [ ] **无** sync 目标变更；**无** `.claude/agents/` 变更；**无** 30/40 进默认 `skills/`
+- [x] 6 条文 frontmatter 齐备过 `skills check` 规范约束；正文无 diff（git 可证 · D1 commit 仅头部增量）
+- [x] `harness skills build` 默认出 4 帽；`--with-execute-hats` 出 6 帽
+- [x] `skills/` 入库 + `files[]` 含 `"skills/"` + `skills/README.md` 含执行帽缺席标注
+- [x] 改任一条文正文 → `skills check` 必 fail（drift 判据 · 测试内模拟）
+- [x] `npm test` 含 skills 测试且全绿；`ci/samples/skills-validate.yml.example` 存在（R1-F1：本仓无 .github/workflows · 真闸 = npm test）
+- [x] `npm test` 全绿 266/266（含 sync overlay / index / hat-v2-split 回归）
+- [x] `eval/t1_gate_bypass/` fixture + 判据落盘
+- [x] dogfood D1 观察数据回写 rethink README；CHANGELOG 2.23.0 条目
+- [x] **无** sync 目标变更；**无** `.claude/agents/` 变更；**无** 30/40 进默认 `skills/`
 
 ## failure_paths
 
@@ -164,6 +164,23 @@ task 自足：范围/非范围/验收/failure_paths/必读齐；思考轮控制�
 
 **结论：pass**（CLOSE 待人指令）
 
+### KPI（00）
+
+Task_KPI%: 93
+
+| 维 | 分 |
+| --- | --- |
+| 质量 | 5 |
+| 过程 | 5 |
+| 纪律 | 4 |
+
+### 经验总结
+
+- 「闸编码进构建默认值」（30/40 须显式 flag 才生成）比「文档标注 experimental」硬一档——机械隔离优于呼吁
+- 生成物 + drift 闸（`skills check`）让「单源真值」可 CI 强制，免人工巡检
+- 脏树纪律须防 `git add <file>` 扫荡他人 WIP：同文件混合改动时用「HEAD 基底 + 本 task 段落」暂存手术（本 task D3 曾误扫后 reset 重做）
+- 资源引用正则须词界（`TASK_TEMPLATE_` 子串误配教训）
+
 ---
 
 ## 修订记录
@@ -172,3 +189,4 @@ task 自足：范围/非范围/验收/failure_paths/必读齐；思考轮控制�
 |------|------|
 | 2026-08-06 | 00 起草（SPEC signed 后）+ 10-task R0–R5 同会话回填（SPEC→task 同会话 · task 草稿已由 00 创建）· HG-AUDIT-R1 pending |
 | 2026-08-06 | 20-task-audit R1 通过（零阻塞 · F1–F3 建议）· 维护者「签收」→ HG-AUDIT-R1 approved |
+| 2026-08-06 | 30/40 完成 · 自检全绿（266 tests · skills check PASS）· **CLOSE: PASS** → 归档 done/ |
