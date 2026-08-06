@@ -33,6 +33,8 @@ description: 索引与背景 · 2026-08 cyning-harness × Agent Skills 升级思
 | 2026-08-03 | R2：实测 Starter 条文行数（27–78，全 <500）→ 修正「薄层拆分」前提；四落点决策 + SKILL.md 草案 | 03 |
 | 2026-08-03 | R2：T1 评测设计（S1–S3 判死线）+ dogfood 三阶段 + 反方向自检全过 | 04 |
 | 2026-08-04 | R3：GO 结论（A+B+C 合一 SPEC · v2.x minor · sync 不动 · Extended 帽不做 · eval/ 半自动）+ SPEC 形态草案 | 05 |
+| 2026-08-06 | **立项落地**：维护者「同意，立项」→ 10-spec（SPEC signed 当日）→ task R1 通过 → HG-AUDIT-R1 approved → 30 实施 D1–D6（分支 `task/agent-skills-packaging`） | [`../../spec/SPEC-agent-skills-packaging_v1.md`](../../spec/SPEC-agent-skills-packaging_v1.md) · [`../../tasks/active/task_cyning_harness_agent_skills_packaging_v1.md`](../../tasks/active/task_cyning_harness_agent_skills_packaging_v1.md) |
+| 2026-08-06 | **dogfood D1 装机**：工作区 `Projects/.claude/skills/` 装入 `harness-10-task` / `harness-10-spec`（自本包 `skills/` 复制）· 触发观察待后续会话数据 | 观察行待补 |
 
 **范围声明**：本轮覆盖 **npm 包分发面**（`harness/`）与 **工作区消费面**（`Projects/.claude/`、`Projects/docs/harness/`）两层。Ink 业务子仓（30/40/50 落地侧）不在本轮，方法可复用。
 
