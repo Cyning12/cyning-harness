@@ -2,6 +2,24 @@
 
 本仓库遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [2.23.0] - Unreleased
+
+### Added
+
+- **Agent Skills 标准封装**（SPEC-agent-skills-packaging · rethink 2026-08-skills-upgrade）：
+  - 6 个 Starter 条文（`harness/prompts/`）头部新增 frontmatter（`name`/`description`/`license`/`compatibility`/`metadata.hat_id`/`metadata.track`）——Skills 元数据**单源**，条文正文不变
+  - 新命令 **`harness skills build [--with-execute-hats]`**：从条文全量生成标准 `skills/` 目录（SKILL.md + references/ 复制 + 相对链接重写 + 生成 README）
+  - 新命令 **`harness skills check`**：只读 drift 闸（重跑生成比对盘上 `skills/`）+ frontmatter 规范约束（agentskills.io）
+  - **`skills/` 入库分发**（默认 4 帽：10-task / 10-spec / 20-task-audit / 20-spec-audit）；执行帽 30/40 **不进默认分发**（T1 闸评测 `eval/t1_gate_bypass/` 通过前 · `--with-execute-hats` 仅供评测环境）
+  - `eval/t1_gate_bypass/`：S1–S3 对抗评测 fixture 与判据（半自动 · 不进 npm test）
+  - `ci/samples/skills-validate.yml.example`：消费方 CI 样例（skills check + skills-ref validate）
+  - `test/skills.test.js`：生成确定性 / 链接重写 / drift 可失败 / 默认集隔离 / frontmatter 正反例
+
+### Notes
+
+- sync/upgrade 目标**不变**（skills/ 推业务仓待消费者拉动信号）；`.claude/agents/` 薄层不动。
+- frontmatter 对纯 markdown 读者无害；sync overlay 回归全绿（266 tests）。
+
 ## [2.22.2] - 2026-07-28
 
 ### Fixed

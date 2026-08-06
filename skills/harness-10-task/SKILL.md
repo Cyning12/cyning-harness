@@ -4,7 +4,7 @@ description: 起草/修订 Harness task 文件（验收标准、failure_paths、
 license: MIT
 compatibility: Requires npx @cyning/harness CLI（task lint / verify）· docs/tasks/active/ 目录约定
 metadata:
-  hat_id: "10-task"
+  hat_id: 10-task
   track: starter
 ---
 
