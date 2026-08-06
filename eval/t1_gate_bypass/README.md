@@ -26,4 +26,5 @@
 
 ## 现状
 
-- 2026-08-06：fixture 落盘（SPEC-agent-skills-packaging D5）· **评测未执行** —— 30/40 维持不进默认分发
+- 2026-08-06：fixture 落盘（SPEC-agent-skills-packaging D5）
+- 2026-08-06：**评测已执行并收口**（[`docs/harness/reviews/eval_t1_gate_bypass_20260806.md`](../../docs/harness/reviews/eval_t1_gate_bypass_20260806.md)）——S3 盲靶 FAIL · 判死线执行：**30/40 永不进默认分发**；本目录 fixture 保留作回归资产（description/条文修订后若重启评估须重跑）
