@@ -1,6 +1,6 @@
 # SPEC：Agent Skills 标准封装（Starter 帽）（v1）
 
-> **状态**：`draft`（10-spec R0–R5 已回填 · 待 HG-SPEC-SIGNOFF 人签）  
+> **状态**：`signed`（维护者签收 2026-08-06 · 对话「签收」）  
 > **track**：`feature`  
 > **关联图谱**：无（纯 Harness 过程轨 / 分发放大器）  
 > **上游**：rethink 系列 [`docs/rethink/2026-08-skills-upgrade/`](../rethink/2026-08-skills-upgrade/README.md)（01 映射 · 02 张力 · 03 格式设计 · 04 评测/dogfood · 05 结论 GO）  
@@ -19,7 +19,7 @@
 | **entry_invoke_00_draft** | （00 起草 task 时回填） |
 | **拟发版窗口** | **`@cyning/harness@2.23.0`**（minor · 纯增量） |
 | **Open Folder（实现）** | `cyning-harness/`（产品仓 · 单仓） |
-| **人闸** | **HG-SPEC-SIGNOFF：pending**（本文件签收 · 仅人） |
+| **人闸** | **HG-SPEC-SIGNOFF：approved**（2026-08-06 · 维护者对话「签收」） |
 
 ---
 
@@ -216,3 +216,4 @@ SPEC 自足：D 包清晰、R2 弃选写死、非范围对齐 rethink 决策、f
 | 日期 | 摘要 |
 |------|------|
 | 2026-08-06 | 10-spec R0–R5 · 基于 rethink 2026-08-skills-upgrade 系列（05 GO 决策）· draft · HG-SPEC-SIGNOFF pending |
+| 2026-08-06 | 维护者签收（对话「签收」）→ `signed` · 00 起草 task |
