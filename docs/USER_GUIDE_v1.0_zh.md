@@ -479,10 +479,18 @@ npx @cyning/harness graph yaml compile --graph-id 00_main --input docs/_tech_gra
 # 3. 校验 YAML 与 graph.json 切片是否一致
 npx @cyning/harness graph yaml check --graph-id 00_main --input docs/_tech_graph
 
-# 4. 一次性编译/校验全部 *.graph.yaml
+# 4. 一次性编译/校验全部 *.graph.yaml（默认递归 l0/l1/… · 跳过 shared/）
 npx @cyning/harness graph yaml compile --all --input docs/_tech_graph
 npx @cyning/harness graph yaml check --all --input docs/_tech_graph
+
+# 5. 导出合并 graph.json（默认 <input>/shared/graph.json）
+npx @cyning/harness graph yaml export --input docs/_tech_graph
+
+# 6. 旧扁平扫描（仅输入根）
+npx @cyning/harness graph yaml compile --all --input docs/_tech_graph --no-recursive
 ```
+
+**G-L / S3 物理分层**：`--input` 指 `_tech_graph` 根即可；`graphId` 为相对路径（如 `l0/00_main`）。本地亦可用 `node bin/harness.js` / `npm run harness --`。
 
 ### 10.3 schema 与迁移
 
@@ -618,5 +626,6 @@ chmod +x .git/hooks/pre-commit
 | 2026-06-16 | 补全相对链接 · §6.1 compliance-bench · §12 阅读索引 |
 | 2026-06-16 | v1.0.1：verify / gate-check / sync index CLI · `--with-scripts` · QUICKREF |
 | 2026-06-17 | v1.1.0：新增 §10 Inform-YAML · `graph yaml compile|check` · 三轨边界说明 |
+| 2026-07-29 | §10：G-L 递归 `--all` · `export` · `--no-recursive` |
 | 2026-06-17 | v2.0.1：D4-a axioms · rejected→draft 精确化 · S5 bench · optional pre-commit hook |
 | 2026-06-17 | v2.0.0：新增 §13 PIP（过程实例投影）过程轨 · `graph ingest|snapshot|axioms` · InformArtifact 与 MUST_READ 边 |
