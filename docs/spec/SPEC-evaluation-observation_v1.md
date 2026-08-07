@@ -2,7 +2,7 @@
 
 | 项 | 内容 |
 |----|------|
-| **状态** | `draft` · 对照研究产出（**未**签实现闸） |
+| **状态** | `signed` · 维护者签闸 2026-08-07（语义约定即时生效 · **不**含实现义务） |
 | **日期** | 2026-07-29 |
 | **建议版本** | 签闸后另开实现 task；本波**不** bump npm |
 | **来源** | Bench My Harness `docs/specs/05-metrics-and-evaluation.md` · `03-canonical-event-contract.md` · ADR 可比性实践 |
@@ -68,12 +68,13 @@
 
 ## 7. 验收（SPEC 级）
 
-- [ ] 一词：报告中出现成本/token 必带 `measurement_source` + `confidence`
-- [ ] 对比结论必带 `comparability`
-- [ ] 与 [`SYNTHESIS_discipline_as_benchmark_variable_v1_zh.md`](../methodology/comparisons/SYNTHESIS_discipline_as_benchmark_variable_v1_zh.md) suite 大纲可互链
+- [x] 一词：报告中出现成本/token 必带 `measurement_source` + `confidence`（签闸生效口径 · 首个消费者 = 未来 eval 报告）
+- [x] 对比结论必带 `comparability`（同上）
+- [x] 与 [`SYNTHESIS_discipline_as_benchmark_variable_v1_zh.md`](../methodology/comparisons/SYNTHESIS_discipline_as_benchmark_variable_v1_zh.md) suite 大纲可互链（双向链接已在）
 
 ## 8. 修订
 
 | 日期 | 说明 |
 |------|------|
+| 2026-08-07 | **维护者签闸** → `signed` · 字段语义成 eval 报告真值（B2/BMH 对齐依据）· 本波不 bump npm、无实现义务 |
 | 2026-07-29 | draft · M3 对照 BMH |
