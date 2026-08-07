@@ -19,6 +19,8 @@
 
 - sync/upgrade 目标**不变**（skills/ 推业务仓待消费者拉动信号）；`.claude/agents/` 薄层不动。
 - frontmatter 对纯 markdown 读者无害；sync overlay 回归全绿（266 tests）。
+- **已发布**：`@cyning/harness@2.23.0`（npm `latest` · 2026-08-07）· tag `v2.23.0` 已推送 · PR #20 已合并
+- **T1 评测判死**：30/40 执行帽永不进 `skills/` 默认分发（`docs/harness/reviews/eval_t1_gate_bypass_20260806.md` · M-B 未激活无保护模式）
 
 ## [2.22.2] - 2026-07-28
 
