@@ -3,7 +3,7 @@
 | 文档 | 说明 |
 | --- | --- |
 | **[`DESIGN_ONTOLOGY_v1_zh.md`](./DESIGN_ONTOLOGY_v1_zh.md)** | **真值** v1.3 · Track / Hat / Sync / P·S·D 公理 / ICVO |
-| **[`SDD_HAT_FLOW_v2_zh.md`](./SDD_HAT_FLOW_v2_zh.md)** | **帽链流程** · 人读版 · 30→40 · 打回规则 |
+| **[`SDD_HAT_FLOW_v2_zh.md`](./SDD_HAT_FLOW_v2_zh.md)** | **帽链流程** · **v2.1** · 路径 A/B/C/D · Inform/meta 分期 · 30→40 · 打回 |
 
 **分层**：回答「产品 **是什么** · 由哪些实体组成 · 允许哪些状态转移」。
 
