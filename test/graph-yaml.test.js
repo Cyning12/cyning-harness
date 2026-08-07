@@ -10,6 +10,7 @@ import {
   checkGraph,
   compileGraph,
   diffGraphYaml,
+  exportGraphJson,
   loadYaml,
   validateGraphYaml,
 } from '../lib/graph-yaml.js';
@@ -101,6 +102,71 @@ test('allGraphIds 列出 *.graph.yaml', () => {
   writeSample(tmp, '10_flow.graph.yaml');
   const ids = allGraphIds(tmp);
   assert.deepEqual(ids, ['00_main', '10_flow']);
+});
+
+test('allGraphIds 递归 l0/l1 · 跳过 shared', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'cyning-graph-yaml-'));
+  fs.mkdirSync(path.join(tmp, 'l0'), { recursive: true });
+  fs.mkdirSync(path.join(tmp, 'l1'), { recursive: true });
+  fs.mkdirSync(path.join(tmp, 'shared'), { recursive: true });
+  writeSample(path.join(tmp, 'l0'), '00_main.graph.yaml');
+  writeSample(path.join(tmp, 'l1'), '10_flow.graph.yaml');
+  writeSample(path.join(tmp, 'shared'), 'hidden.graph.yaml');
+  const ids = allGraphIds(tmp);
+  assert.deepEqual(ids, ['l0/00_main', 'l1/10_flow']);
+});
+
+test('allGraphIds --no-recursive 仅扁平', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'cyning-graph-yaml-'));
+  fs.mkdirSync(path.join(tmp, 'l0'), { recursive: true });
+  writeSample(tmp, 'flat.graph.yaml');
+  writeSample(path.join(tmp, 'l0'), '00_main.graph.yaml');
+  assert.deepEqual(allGraphIds(tmp, { recursive: false }), ['flat']);
+});
+
+test('compileGraph 路径型 graphId（l0/00_main）', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'cyning-graph-yaml-'));
+  fs.mkdirSync(path.join(tmp, 'l0'), { recursive: true });
+  writeSample(path.join(tmp, 'l0'), '00_main.graph.yaml');
+  const out = compileGraph('l0/00_main', tmp);
+  assert.equal(out, path.join(tmp, 'l0', '00_main.md'));
+  assert.match(fs.readFileSync(out, 'utf8'), /graph_id: 00_main/);
+});
+
+test('exportGraphJson 默认写出 shared/graph.json', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'cyning-graph-yaml-'));
+  fs.mkdirSync(path.join(tmp, 'l0'), { recursive: true });
+  writeSample(path.join(tmp, 'l0'), '00_main.graph.yaml');
+  const { outPath, payload } = exportGraphJson(tmp);
+  assert.equal(outPath, path.join(tmp, 'shared', 'graph.json'));
+  assert.ok(fs.existsSync(outPath));
+  assert.ok(payload.graphs.some((g) => g.id === 'l0/00_main'));
+});
+
+test('CLI graph yaml export', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'cyning-graph-yaml-'));
+  fs.mkdirSync(path.join(tmp, 'l1'), { recursive: true });
+  writeSample(path.join(tmp, 'l1'), '10_flow.graph.yaml');
+  const result = spawnSync(
+    'node',
+    [harnessCli, 'graph', 'yaml', 'export', '--input', tmp],
+    { encoding: 'utf8' },
+  );
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /Exported:/);
+  assert.ok(fs.existsSync(path.join(tmp, 'shared', 'graph.json')));
+});
+
+test('CLI compile --all 递归分层根', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'cyning-graph-yaml-'));
+  fs.mkdirSync(path.join(tmp, 'l0'), { recursive: true });
+  writeSample(path.join(tmp, 'l0'), '00_main.graph.yaml');
+  const result = spawnSync('node', [harnessCli, 'graph', 'yaml', 'compile', '--all', '--input', tmp], {
+    encoding: 'utf8',
+  });
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /Generated:/);
+  assert.ok(fs.existsSync(path.join(tmp, 'l0', '00_main.md')));
 });
 
 test('compileGraph 生成 MD', () => {
