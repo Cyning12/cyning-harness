@@ -1,6 +1,6 @@
 # Task · graph yaml G-L 递归发现 + export graph.json
 
-> **状态**：`done` · CLOSE: PASS（2026-08-07）· npm 发版待人（OTP · 维护者本地执行）  
+> **状态**：`done` · CLOSE: PASS（2026-08-07）· **已发布 `@cyning/harness@2.24.0`**  
 > **SPEC**：[`../spec/SPEC-graph-yaml-glayer-recurse-export_v1.md`](../spec/SPEC-graph-yaml-glayer-recurse-export_v1.md)  
 > **R1**：[`../harness/reviews/task_cyning_harness_graph_yaml_glayer_recurse_export_audit_R1_20260729.md`](../harness/reviews/task_cyning_harness_graph_yaml_glayer_recurse_export_audit_R1_20260729.md)  
 > **Open Folder**：`cyning-harness-wt-glayer-yaml/`  
@@ -55,7 +55,7 @@
 - [x] `test/graph-yaml.test.js` 16 pass  
 - [x] USER_GUIDE §10 · CHANGELOG Unreleased  
 - [x] meta dogfood：compile 5 图 · export graphs=5  
-- [x] CLOSE（2026-08-07 · PR #22 合并 · invoke gap 留痕放行）· npm 发版待人（OTP）  
+- [x] CLOSE（2026-08-07 · PR #22 合并 · invoke gap 留痕放行）· 已发布 2.24.0  
 
 ## 非范围
 
@@ -107,6 +107,7 @@ Task_KPI%: 73
 
 | 日期 | 说明 |
 |------|------|
+| 2026-08-07 | **已发布 `@cyning/harness@2.24.0`**（npm latest · tag v2.24.0 已推）· task 全终态 |
 | 2026-08-07 | PR #22 合并 · rebase 后自检全绿（272 tests · skills check PASS）· **CLOSE: PASS**（invoke gap 留痕放行）→ 归档 done/ · 发版待人 |
 | 2026-07-29 | 开立 |
 | 2026-07-29 | R1 + 30 实现 · 测/dogfood 绿 |
