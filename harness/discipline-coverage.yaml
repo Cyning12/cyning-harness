@@ -6,7 +6,7 @@
 # 禁止：把本文件当「每周全量重盘」流程；不做 audit --discipline UI（本波）
 
 version: "1"
-as_of_package_version: "2.22.2"
+as_of_package_version: "2.23.0"
 scope: "Starter · harness/prompts （10/22/30/40 + FRAGMENT）+ TEMPLATE_invoke"
 source_audit: "rethink/2026-07-mechanization-rate · 02 转录 + 03 聚合 · 状态已按 G1–G4/N1–N4 刷新（非第二轮通读盘点）"
 
@@ -296,4 +296,20 @@ statements:
     mechanism: null
     gap: G6
     notes: null
+    mechanism_quality: null
+  - id: SK1
+    source: SPEC-agent-skills-packaging_v1（v2.23.0 · Agent Skills 封装）
+    summary: skills/ 为纯生成物 · 条文改正文未重跑 build → skills check 挡
+    status: mechanical
+    mechanism: "skills check drift 闸 + test/skills.test.js（含测试内模拟 drift 必 fail）"
+    gap: null
+    notes: "非条文纪律 · 新机制登记（格式纪律机械闸）"
+    mechanism_quality: null
+  - id: SK2
+    source: SPEC-agent-skills-packaging_v1（v2.23.0）
+    summary: 30/40 执行帽不进 skills 默认分发（T1 评测判死 · eval_t1_gate_bypass 20260806）
+    status: mechanical
+    mechanism: "generateSkills track=starter-experimental 过滤 + 默认集断言（build --with-execute-hats 仅评测通道）"
+    gap: null
+    notes: "隔离编码进构建默认值 · 非文档呼吁"
     mechanism_quality: null
