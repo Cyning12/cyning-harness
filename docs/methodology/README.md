@@ -11,7 +11,7 @@
 | **关系图** | `[DOCUMENT_MAP_v1_zh.md](./DOCUMENT_MAP_v1_zh.md)` |
 
 
-> **阅读顺序（维护者）**：战略 POINTER → 产品设计本体 v1.2 → P0 差距 →（可选）HGM 草案 v0 · [一致性审计 `AUDIT_doc_consistency_2026-06-15_zh.md`](./AUDIT_doc_consistency_2026-06-15_zh.md)  
+> **阅读顺序（维护者）**：战略 POINTER → 产品设计本体 v1.2 → P0 差距 →（可选）HGM 草案 v0 · [一致性审计 `AUDIT_doc_consistency_2026-06-15_zh.md`](./AUDIT_doc_consistency_2026-06-15_zh.md) · **外仓对照** [`comparisons/`](./comparisons/README.md)（AHE + BMH）  
 > **阅读顺序（接入者）**：`[../ONBOARDING.md](../ONBOARDING.md)` → `[execution/P0_V0.2_GAP.md](./execution/P0_V0.2_GAP.md)` → 金样 `[../examples/demo_checkout/](../examples/demo_checkout/)`
 
 ---
@@ -49,6 +49,7 @@ L3  运行实例        业务仓 docs/tasks · harness · …       （S2 保�
 | `[reviews/](./reviews/)`              | **方案审核稿** · 待外部 Agent 审方向           | `REVIEW_B3_*` · `REVIEW_B9_*`                                                        |
 | `[prompts/](./prompts/)`                | 审计 / 写作 / **可行性审核** Invoke          | `PROMPT_feasibility_review_b_evidence_v1_zh.md`                                       |
 | `[pointers/](./pointers/README.md)`   | 工作区 / 治理仓 **只读 POINTER**             | 禁止复制全文                                                                               |
+| `[comparisons/](./comparisons/README.md)` | **外仓对照** · AHE 地图 + BMH 测评（一词三义） | `SYNTHESIS_*` · `AHE_*` · `BMH_*` · 链 SPEC-evaluation-observation |
 
 
 ---

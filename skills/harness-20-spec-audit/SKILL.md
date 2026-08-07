@@ -4,7 +4,7 @@ description: 书面审查 SPEC：核对范围/非范围/验收/failure_paths 与
 license: MIT
 compatibility: Requires docs/harness/reviews/ 目录约定
 metadata:
-  hat_id: "20-spec-audit"
+  hat_id: 20-spec-audit
   track: starter
 ---
 

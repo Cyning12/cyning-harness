@@ -4,7 +4,7 @@ description: 书面审查 Harness task 文件（R 轮）：对照 SPEC 核对范
 license: MIT
 compatibility: Requires npx @cyning/harness CLI（task lint / verify --task）· docs/harness/reviews/ 目录约定
 metadata:
-  hat_id: "20-task-audit"
+  hat_id: 20-task-audit
   track: starter
 ---
 

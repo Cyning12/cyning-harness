@@ -77,6 +77,7 @@ flowchart TB
 | **REVIEW B9 shell** | L2 | `methodology/reviews/` | B9 方案审核稿 · 并行 | ROADMAP §6 · task #9 |
 | **PROMPT feasibility B** | L2 | `methodology/prompts/` | B8+B9 联合审核 Invoke | REVIEW_B3 · REVIEW_B9 |
 | **AUDIT doc consistency** | L2 | `methodology/` | 一致性审计归档 | PROMPT_doc_consistency_audit |
+| **comparisons/** | L2 | `methodology/comparisons/` | AHE + BMH 外仓对照 · 消歧/测评 | DESIGN_ONTOLOGY · SPEC-evaluation-observation |
 | **methodology/README** | L2 | `cyning-harness/docs/methodology/` | **总指引** | 本文件 |
 | **DESIGN_ONTOLOGY v1.2** | L2 | `methodology/product/` | **产品语义真值** | ARCHITECTURE · templates |
 | **P0_V0.2_GAP** | L2 | `methodology/execution/` | 实现差距 · 演示命令 | ONTOLOGY §0.2 |

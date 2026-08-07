@@ -4,7 +4,7 @@ description: 起草/修订 SPEC（SDD 需求规格：背景/范围/非范围/验
 license: MIT
 compatibility: Requires docs/spec/ 目录约定 · SPEC_TEMPLATE
 metadata:
-  hat_id: "10-spec"
+  hat_id: 10-spec
   track: starter
 ---
 
