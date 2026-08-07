@@ -2,7 +2,7 @@
 
 本仓库遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
-## [Unreleased]
+## [2.24.0] - 2026-08-07
 
 ### Added
 
@@ -14,7 +14,8 @@
 ### Notes
 
 - 触发：`cyning-harness-meta` DOGFOOD（分层根 `--all` 空跑）。
-- 建议发版：minor（**2.24.0** · 2.23.0 已由 agent-skills-packaging 占用）· 发版窗口另批。
+- 实现 2026-07-29 · PR [#22](https://github.com/Cyning12/cyning-harness/pull/22) 合并 · task CLOSE: PASS（invoke gap 留痕放行 · [RETENTION_GAP note](./docs/harness/invokes/by-task/cyning-harness-graph-yaml-glayer-recurse-export/RETENTION_GAP_note_v1.md)）。
+- 发版：维护者本地 `npm publish`（OTP）后补「已发布」注记 + tag `v2.24.0`。
 
 ## [2.23.0] - 2026-08-07
 
