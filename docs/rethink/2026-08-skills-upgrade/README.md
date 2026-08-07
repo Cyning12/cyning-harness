@@ -35,6 +35,7 @@ description: 索引与背景 · 2026-08 cyning-harness × Agent Skills 升级思
 | 2026-08-04 | R3：GO 结论（A+B+C 合一 SPEC · v2.x minor · sync 不动 · Extended 帽不做 · eval/ 半自动）+ SPEC 形态草案 | 05 |
 | 2026-08-06 | **立项落地**：维护者「同意，立项」→ 10-spec（SPEC signed 当日）→ task R1 通过 → HG-AUDIT-R1 approved → 30 实施 D1–D6（分支 `task/agent-skills-packaging`） | [`../../spec/SPEC-agent-skills-packaging_v1.md`](../../spec/SPEC-agent-skills-packaging_v1.md) · [`../../tasks/active/task_cyning_harness_agent_skills_packaging_v1.md`](../../tasks/active/task_cyning_harness_agent_skills_packaging_v1.md) |
 | 2026-08-06 | **dogfood D1 装机**：工作区 `Projects/.claude/skills/` 装入 `harness-10-task` / `harness-10-spec`（自本包 `skills/` 复制）· 触发观察待后续会话数据 | 观察行待补 |
+| 2026-08-07 | **dogfood D1 观察回写（首窗口 = 空）**：扫描 08-06 装机后全部本地会话日志（`~/.claude/projects/`）——`Projects/` 根工作区 **0 会话**（skills 仅在该工作区激活）；`Projects/*` 子仓会话中 Skill 工具调用 **0 次**（35/29 次提及均为「工作对象」非触发）。**结论：非「触发失败」，是「无观察窗口」**；下次 `Projects/` 根会话做 task/spec 类工作时即为首个有效观察点 | 会话日志扫描（grep `"input":{"skill":"harness-10`） |
 | 2026-08-06 | **T1 评测执行并收口**：S1/S2 PASS（激活后纪律完整）· S3 盲靶 FAIL（未激活裸奔 · 对照组证实基座既有行为）→ **判死执行**：30/40 永不进默认分发 · D3 结果回写 04 | [`../../harness/reviews/eval_t1_gate_bypass_20260806.md`](../../harness/reviews/eval_t1_gate_bypass_20260806.md) |
 
 **范围声明**：本轮覆盖 **npm 包分发面**（`harness/`）与 **工作区消费面**（`Projects/.claude/`、`Projects/docs/harness/`）两层。Ink 业务子仓（30/40/50 落地侧）不在本轮，方法可复用。
