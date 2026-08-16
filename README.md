@@ -1,3 +1,6 @@
+> **迁移**：纪律资产已作为 DSH 插件发布 **[dsh-coding-kit](https://github.com/Cyning12/dsh-coding-kit)**（npm: `dsh-coding-kit@1.0.0`）。
+> CLI（`npx @cyning/harness verify` 等）**暂仍以本仓为准**；将在 `dsh-coding-kit@1.1.0` 迁入新库。本仓库不在 1.0.0 阶段归档。
+
 # cyning-harness
 
 ```bash
